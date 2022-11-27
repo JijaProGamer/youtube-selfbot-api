@@ -12,6 +12,7 @@ let { sleep } = require("../publicFunctions.js");
 /**
  * Connects to a browser, also creates one if no browserWSEndpoint is provided
  * 
+ * @param {Object} api
  * @param {string} executablePath Chrome binary file
  * @param {Object} extra Extra information for connecting to the browser
  * @param {string | undefined} extra.browserWSEndpoint WSEndpoint of detached browser, Browserless or other providers recommended
