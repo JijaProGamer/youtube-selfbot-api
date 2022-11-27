@@ -38,7 +38,7 @@ This project is available for use under the MIT License.
 ### API
 
 ```javascript
-let API = require("youtube-selfbot-api");
+let API = require("youtube-selfbot-api")();
 
 /* API: The API we just require'd
  chromePath: Path to chrome (example: /usr/bin/google-chrome on some linux variants)
