@@ -1,0 +1,35 @@
+{
+   "action": {
+      "default_icon": "adblockicon.png",
+      "default_title": "Autoskip for Youtube™"
+   },
+   "background": {
+      "service_worker": "background/background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "aop/e.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   } ],
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": true,
+         "id": "rules",
+         "path": "blockingrules.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "adblockicon.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyfb2P9UvIFAQAACPnYRAWZ3e5U0wo3uc2NMVRNsSKPI/XNMWN33MlbUkZShf0QLnPosmStoOyxPvxDV2VdbdYHIw3dHlR0gLjYtl9/HMlSyiSBP38goKLl2AXV9r1eyHIbpLDYN4f323IKx+SFfB9bzmoeDsl2uaYSA+zyieGXXli5lWA50NQrtaVZPWFi6Q0D8MZkmAfZiI5YaQIyfK63mBk2cWGAL8v6mF6fn5GKS1S/YJXvRAftgizblHMclZRPDr4MqPicYwRdE6EVOR1xelUhVqZCYtyuSDDPvEbKrq0MbvGTPTKuPZt7a0r0h/d5PTcf3PIjcjRcoh7Qov9QIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appTitle__",
+   "permissions": [ "storage", "unlimitedStorage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "declarativeNetRequestFeedback" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.3.0",
+   "web_accessible_resources": [  ]
+}
