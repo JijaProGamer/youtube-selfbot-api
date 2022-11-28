@@ -225,10 +225,9 @@ function uploadVideo(api, page, path, name, visibility, extra) {
         let videoUrl = await page.evaluate((e) => e.innerHTML, videoUrlElement)
         let videoId = videoUrl.split("/").pop()
 
-        console.log(videoId)
-
         if (extra.dontWaitForProcessing) {
             await clickSelector(page, `#done-button`)
+            await sleep(3000)
 
             api.data.emit(`debug`, `Finished uploading video`)
 
@@ -254,6 +253,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             api.data.emit(`debug`, `Finished waiting for proccessing`)
 
             await clickSelector(page, `#done-button`)
+            await sleep(3000)
 
             api.data.emit(`debug`, `Finished uploading video`)
 
