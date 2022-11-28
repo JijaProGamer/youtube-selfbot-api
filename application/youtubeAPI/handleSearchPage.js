@@ -3,7 +3,7 @@ let {
     waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
     jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
 
-let getVideoMetadata = require("../videoAPI/getVideoMetadata")
+let getVideoMetadata = require("../youtubeAPI/getVideoMetadata")
 
 /**
  * Opens search and navigates to video

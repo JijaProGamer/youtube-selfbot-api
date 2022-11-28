@@ -16,13 +16,14 @@ module.exports = () => {
             initWatcher: require("./application/watcherAPI/initWatcher"),
             getPlayerStatistics: require("./application/watcherAPI/getPlayerStatistics"),
         },
-        videoAPI: {
-            getVideoMetadata: require("./application/videoAPI/getVideoMetadata"),
-            handleSearchPage: require("./application/videoAPI/handleSearchPage"),
-        },
         googleAPI: {
-            login: require("./application/googleAPI/loginGoogle"),
-            
+            login: require("./application/googleAPI/loginGoogle"), 
         },
+        youtubeAPI: {
+            getVideoMetadata: require("./application/youtubeAPI/getVideoMetadata"),
+            handleSearchPage: require("./application/youtubeAPI/handleSearchPage"),
+            uploadVideo: require("./application/youtubeAPI/uploadVideo"),
+        },
+        publicFunctions: require("./application/publicFunctions")
     }
 }

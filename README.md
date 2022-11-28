@@ -132,10 +132,6 @@ await api.googleAPI.login(api, page, {
     password: "This_Is_A_Password"
 })
 
-// Search for the video and click on it
-// If you dont care about SEO you can just call page.goto(url, {waitUntil: "networkidle0"})
-await api.videoAPI.handleSearchPage(api, page, videoId)
-
 // Initialises the watcher
 // You must call handleSearchPage or goto on the page before this
 await api.watcherAPI.initWatcher(api, page)
@@ -147,4 +143,54 @@ await api.watcherAPI.makeComment(api, page, commentText)
 // Likes or removes a like on the page
 // You must call initWatcher before this
 await api.watcherAPI.likeVideo(api, page)
+
+// Gets current statistics about a watcher
+// You must call initWatcher before this
+let statistics = await api.watcherAPI.getPlayerStatistics(page)
+
+console.log(statistics.time) // current time of playback
+console.log(statistics.duration) // video duration
+console.log(statistics.percentWatched) // Current percent watched of video
+
+// Search for the video and click on it
+// If you dont care about SEO you can just call page.goto(url, {waitUntil: "networkidle0"})
+await api.youtubeAPI.handleSearchPage(api, page, videoId)
+
+// Gets information about a video using its id
+await api.youtubeAPI.getVideoMetadata(api, videoId)
+
+console.log(statistics.id) // Video id
+console.log(statistics.duration) // video duration
+console.log(statistics.views) // video views
+console.log(statistics.uploadDate) // video upload date
+console.log(statistics.chapters) // video chapters array
+console.log(statistics.author) // name of the author of the video
+console.log(statistics.title) // video title
+console.log(statistics.description) // video description
+
+// Uploads a video
+privacy = "public" || "private" || "unlisted"
+privacy = {
+    premiere: true, // Optional, if the video should be a premiere
+    hour: "12:00 PM", // PM / AM, hour:minutes format 
+    date: "12/30/2022" // month/day/year format
+}
+
+let id = await api.youtubeAPI.uploadVideo(api, page, `/path/to/video`, `video title`, privacy, 
+{ // All of these are optional
+
+    description: "video description",
+    thumbnail: "/path/to/thumbnail",
+    playlists: ["playlist1", "playlist2", ...],
+    eighteenPlus: true, // If the video is 18+
+    madeForKids: true, // If the video is made for kids (eighteenPlus must be false or it will error)
+    includesPaidPromotion: true, // If the video includes a paid promotion
+    ignoreAutomaticChapters: true, // If youtube should not generate automatic chapters
+    tags: ["tag1", "tag2", ...],
+    category: "gaming", // Video category
+    disableEmbedding: true, // if websites should not be able to embed this video
+    dontPublishToFeed: true, // Dont publish to subscribers feed
+})
+
+console.log(id) // Video id
 ```

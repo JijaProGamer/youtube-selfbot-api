@@ -11,7 +11,7 @@ const waitForSelector = (page, selector, selectorNum) => {
             })
         } catch (e) {
             const elements = await page.$$(selector)
-            if (elements[0]) {
+            if (elements[selectorNum]) {
                 resolve(elements[selectorNum])
             } else {
                 reject(err)
@@ -20,19 +20,21 @@ const waitForSelector = (page, selector, selectorNum) => {
     })
 }
 
-const waitForXPath = (page, xPath) => {
+const waitForXPath = (page, xPath, selectorNum) => {
+    selectorNum = selectorNum ? selectorNum : 0
+
     return new Promise(async (resolve, reject) => {
         try {
             page.waitForXPath(xPath, { visible: true }).then(async () => {
                 const elements = await page.$x(xPath)
-                resolve(elements[0])
+                resolve(elements[selectorNum])
             }).catch((err) => {
                 reject(err)
             })
         } catch (e) {
             const elements = await page.$x(xPath)
-            if (elements[0]) {
-                resolve(elements[0])
+            if (elements[selectorNum]) {
+                resolve(elements[selectorNum])
             } else {
                 reject(err)
             }
@@ -62,11 +64,11 @@ const clickXPath = async (page, XPath) => {
     })
 }
 
-const typeXPath = async (page, XPath, text) => {
+const typeXPath = async (page, XPath, text, selectorNum, typingSpeed) => {
     return new Promise((resolve, reject) => {
-        waitForXPath(page, XPath).then(async (element) => {
+        waitForXPath(page, XPath, selectorNum).then(async (element) => {
             await element.focus()
-            await page.keyboard.type(text, { delay: 25 })
+            await page.keyboard.type(text, { delay: typingSpeed || 25 })
 
             resolve()
         }).catch(err => {

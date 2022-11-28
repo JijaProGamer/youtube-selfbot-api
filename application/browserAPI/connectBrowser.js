@@ -26,6 +26,8 @@ let { sleep } = require("../publicFunctions.js");
 */
 
 function connectBrowser(api, executablePath, extra) {
+    if(!extra) extra = {}
+    
     let dataEvent = new EventEmitter()
     let extensionFolder = fs.readdirSync(path.join(__dirname, "../../extensions")).map(value => value = path.join(__dirname, `../../extensions/${value}`))
     
