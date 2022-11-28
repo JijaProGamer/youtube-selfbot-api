@@ -178,6 +178,7 @@ privacy = {
 
 let id = await api.youtubeAPI.uploadVideo(api, page, `/path/to/video`, `video title`, privacy, 
 { // All of these are optional
+ // Tags dont work on shorts
 
     description: "video description",
     thumbnail: "/path/to/thumbnail",
