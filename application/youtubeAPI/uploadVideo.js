@@ -132,7 +132,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             await clickXPath(page, XPaths.playlists.finishPlaylist)
         }
 
-        if((await page.$x())[0]){
+        if((await page.$x(XPaths.showMore))[0]){
             await clickXPath(page, XPaths.showMore)
             await clickXPath(page, XPaths.showMoreAge)
         }
