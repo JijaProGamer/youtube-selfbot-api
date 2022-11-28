@@ -1,7 +1,7 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
-    waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
+    waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
+    jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
 
 let getVideoMetadata = require("../youtubeAPI/getVideoMetadata")
 
@@ -48,11 +48,13 @@ let XPaths = {
         createPlaylist: `/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[3]/ytcp-button[2]`,
         finishPlaylist: `/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/ytcp-button[3]`,
     },
+    videoStatus: `/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress/span`,
+
 }
 
 function uploadVideo(api, page, path, name, visibility, extra) {
-    if(!extra) extra = {}
-    
+    if (!extra) extra = {}
+
     return new Promise(async (resolve, reject) => {
         if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
         if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
@@ -71,17 +73,17 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
         api.data.emit(`debug`, `Successfully wrote title`)
 
-        if(extra.description){
+        if (extra.description) {
             await typeXPath(page, `//*[@id="textbox"]`, extra.description, 1)
             api.data.emit(`debug`, `Successfully wrote description`)
         }
 
-        if(extra.thumbnail){
+        if (extra.thumbnail) {
             await uploadFileXPath(page, XPaths.thumbnail, extra.thumbnail)
             api.data.emit(`debug`, `Successfully uploaded thumbnail`)
         }
 
-        if(extra.playlists){
+        if (extra.playlists) {
             await clickXPath(page, XPaths.playlists.playlists)
             await sleep(500)
 
@@ -91,26 +93,26 @@ function uploadVideo(api, page, path, name, visibility, extra) {
                         let start = new Date() / 1000
 
                         let interval = setInterval(() => {
-                             let playlists = Array.from(document.querySelector(`#items`).childNodes)
-                            .filter((v) => v.childNodes[0])
-                            .map((v) => v.childNodes[0].childNodes[0].childNodes[1].childNodes[1])
+                            let playlists = Array.from(document.querySelector(`#items`).childNodes)
+                                .filter((v) => v.childNodes[0])
+                                .map((v) => v.childNodes[0].childNodes[0].childNodes[1].childNodes[1])
 
-                            if(playlists.length > 0){
+                            if (playlists.length > 0) {
                                 clearInterval(interval)
                                 return r(playlists)
                             }
-    
-                            if((new Date() / 1000) - start > 5){
+
+                            if ((new Date() / 1000) - start > 5) {
                                 clearInterval(interval)
-                                return r([]) 
+                                return r([])
                             }
-                        }, 250) 
+                        }, 250)
                     })
 
                     let done = []
 
-                    for (let [index, element] of playlists.entries()){
-                        if(todo.includes(element.innerHTML)){
+                    for (let [index, element] of playlists.entries()) {
+                        if (todo.includes(element.innerHTML)) {
                             done.push(element.innerHTML)
                             element.click()
                         }
@@ -120,7 +122,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
                 })
             }, extra.playlists)
 
-            for (let [index, playlistName] of stillTodo.entries()){
+            for (let [index, playlistName] of stillTodo.entries()) {
                 await clickXPath(page, XPaths.playlists.newPlaylist)
                 await sleep(500)
 
@@ -134,44 +136,44 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
         let showMoreButton = (await page.$x(XPaths.showMore))[0]
 
-        if(showMoreButton){
+        if (showMoreButton) {
             await page.evaluate((e) => e.click(), showMoreButton)
             await page.evaluate((e) => e.click(), (await page.$x(XPaths.showMoreAge))[0])
         }
 
         await sleep(1000)
 
-        if(extra.eighteenPlus){
+        if (extra.eighteenPlus) {
             await clickXPath(page, XPaths.eighteenPlus)
         }
 
-        if(extra.madeForKids){
+        if (extra.madeForKids) {
             await clickXPath(page, XPaths.madeForKids)
         }
 
-        if(extra.includesPaidPromotion){
+        if (extra.includesPaidPromotion) {
             await clickXPath(page, XPaths.includesPaidPromotion)
         }
 
-        if(extra.ignoreAutomaticChapters){
+        if (extra.ignoreAutomaticChapters) {
             await clickXPath(page, XPaths.automaticChapters)
         }
 
-        if(extra.tags && extra.tags.length > 0){
+        if (extra.tags && extra.tags.length > 0) {
             await typeXPath(page, XPaths.tags, extra.tags.join(",") + ",", 0)
         }
 
-        if(extra.category){
+        if (extra.category) {
             await clickXPath(page, XPaths.category)
-            await page.keyboard.type(extra.category, {delay: 25})
+            await page.keyboard.type(extra.category, { delay: 25 })
             await page.keyboard.press("Enter")
         }
 
-        if(extra.disableEmbedding){
+        if (extra.disableEmbedding) {
             await clickXPath(page, XPaths.embeds)
         }
 
-        if(extra.dontPublishToFeed){
+        if (extra.dontPublishToFeed) {
             await clickXPath(page, XPaths.feed)
         }
 
@@ -189,19 +191,19 @@ function uploadVideo(api, page, path, name, visibility, extra) {
         await clickSelector(page, `#next-button`)
         await clickSelector(page, `#next-button`)
 
-        if(XPaths.visibility[visibility]){
+        if (XPaths.visibility[visibility]) {
             await clickXPath(page, XPaths.save)
 
             await clickXPath(page, XPaths.visibility[visibility])
         } else {
             await clickXPath(page, XPaths.schedule)
 
-            if(visibility.premiere){
+            if (visibility.premiere) {
                 await clickXPath(page, XPaths.premiere)
             }
 
             await clickXPath(page, XPaths.hour)
-            for(let i = 0; i < 15; i++){
+            for (let i = 0; i < 15; i++) {
                 await page.keyboard.press('Backspace')
             }
 
@@ -210,7 +212,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             await clickXPath(page, XPaths.date)
             await clickXPath(page, XPaths.date_input)
 
-            for(let i = 0; i < 15; i++){
+            for (let i = 0; i < 15; i++) {
                 await page.keyboard.press('Backspace')
             }
 
@@ -218,16 +220,45 @@ function uploadVideo(api, page, path, name, visibility, extra) {
         }
 
         api.data.emit(`debug`, `Successfully finished last page`)
- 
+
         let videoUrlElement = await waitForXPath(page, XPaths.videoId)
         let videoUrl = await page.evaluate((e) => e.innerHTML, videoUrlElement)
         let videoId = videoUrl.split("/").pop()
 
-        await clickSelector(page, `#done-button`)
+        console.log(videoId)
 
-        api.data.emit(`debug`, `Finished uploading video`)
+        if (extra.dontWaitForProcessing) {
+            await clickSelector(page, `#done-button`)
 
-        resolve(videoId)
+            api.data.emit(`debug`, `Finished uploading video`)
+
+            resolve(videoId)
+        } else {
+            let status = await waitForXPath(page, XPaths.videoStatus)
+
+            api.data.emit(`debug`, `Started waiting for proccessing`)
+
+            await new Promise((resolve, reject) => {
+                let interval = setInterval(async () => {
+                    let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase(), status)
+                    if (
+                        statusText.includes("checking") || 
+                        statusText.includes("complete")
+                     ) {
+                        resolve()
+                        clearInterval(interval)
+                    }
+                }, 250)
+            })
+
+            api.data.emit(`debug`, `Finished waiting for proccessing`)
+
+            await clickSelector(page, `#done-button`)
+
+            api.data.emit(`debug`, `Finished uploading video`)
+
+            resolve(videoId)
+        }
     })
 }
 

@@ -191,6 +191,9 @@ let id = await api.youtubeAPI.uploadVideo(api, page, `/path/to/video`, `video ti
     category: "gaming", // Video category
     disableEmbedding: true, // if websites should not be able to embed this video
     dontPublishToFeed: true, // Dont publish to subscribers feed
+    
+    // If it should not wait for proccessing (Otherwise it waits for at least SD proccessing)
+    dontWaitForProcessing: true, 
 })
 
 console.log(id) // Video id
