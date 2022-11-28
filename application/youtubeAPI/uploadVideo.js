@@ -129,7 +129,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
                 await sleep(500)
             }
 
-            await clickXPath(page, XPaths.finishPlaylist)
+            await clickXPath(page, XPaths.playlists.finishPlaylist)
         }
 
         await clickXPath(page, XPaths.showMore)
