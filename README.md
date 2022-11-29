@@ -38,7 +38,7 @@ This project is available for use under the MIT License.
 ### API
 
 ```javascript
-let api = require("youtube-selfbot-api")();
+let api = new (require("youtube-selfbot-api"))();
 
 /* API: The API we just require'd
  chromePath: Path to chrome (example: /usr/bin/google-chrome on some linux variants)
@@ -63,7 +63,7 @@ let api = require("youtube-selfbot-api")();
 }
 */
 
-let browserConnection = api.browserAPI.connectBrowser(chromePath, extraArguments)
+let browserConnection = api.connectBrowser(chromePath, extraArguments)
 let data = browserConnection.data
 
 // Used for debugging, to see where your application fails and when
@@ -118,7 +118,7 @@ let browser = await browserConnection.browser()
 // Creates a new puppeteer page
 // The second argument means if it should use no proxy for this page (Usefull for logging in)
 
-let page = await api.browserAPI.handleNewPage(false)
+let page = await api.handleNewPage(false)
 
 // Logs into google, using some credentials
 // Optional, but needed for publishing, commenting and liking
@@ -127,7 +127,7 @@ let page = await api.browserAPI.handleNewPage(false)
 // Fails if password is invalid, browser got detected
 // Or 2FA appears
 
-await api.googleAPI.login(page, {
+await api.login(page, {
     email: "this_is_an_email@example.com",
     password: "This_Is_A_Password"
 })
@@ -135,27 +135,27 @@ await api.googleAPI.login(page, {
 // Initialises the watcher
 // You must call handleSearchPage or goto on the page before this
 // Errors if video is a short
-await api.watcherAPI.initWatcher(page)
+await api.initWatcher(page)
 
 // Creates a comment on the page
 // You must call initWatcher before this
-await api.watcherAPI.makeComment(page, commentText)
+await api.makeComment(page, commentText)
 
 // Likes or removes a like on the page
 // You must call initWatcher before this
-await api.watcherAPI.likeVideo(page)
+await api.likeVideo(page)
 
 // pauses the video on a page
 // You must call initWatcher before this
-await api.watcherAPI.pauseVideo(page)
+await api.pauseVideo(page)
 
 // continues the video on a page
 // You must call initWatcher before this
-await api.watcherAPI.playVideo(page)
+await api.playVideo(page)
 
 // Gets current statistics about a watcher
 // You must call initWatcher before this
-let statistics = await api.watcherAPI.getPlayerStatistics(page)
+let statistics = await api.getPlayerStatistics(page)
 
 console.log(statistics.time) // current time of playback
 console.log(statistics.duration) // video duration
@@ -164,10 +164,10 @@ console.log(statistics.percentWatched) // Current percent watched of video
 // Search for the video and click on it
 // If you dont care about SEO you can just call page.goto(url, {waitUntil: "networkidle0"})
 // Errors if video is a short
-await api.youtubeAPI.handleSearchPage(page, videoId)
+await api.handleSearchPage(page, videoId)
 
 // Gets information about a video using its id
-await api.youtubeAPI.getVideoMetadata(videoId)
+await api.getVideoMetadata(videoId)
 
 console.log(statistics.id) // Video id
 console.log(statistics.duration) // video duration
@@ -186,7 +186,7 @@ privacy = {
     date: "12/30/2022" // month/day/year format
 }
 
-let id = await api.youtubeAPI.uploadVideo(page, `/path/to/video`, `video title`, privacy, 
+let id = await api.uploadVideo(page, `/path/to/video`, `video title`, privacy, 
 { // All of these are optional
  // Tags dont work on shorts
 

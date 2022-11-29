@@ -1,7 +1,7 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random } = require("../publicFunctions/everything")
 
 let getVideoMetadata = require("./getVideoMetadata")
 

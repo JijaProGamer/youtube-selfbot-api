@@ -35,7 +35,7 @@ let ignoredFlags = [
   '--disable-component-update',
   '--disable-default-apps',
   '--disable-dev-shm-usage',
-  '--disable-extensions',
+  //'--disable-extensions',
   '--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints',
   '--disable-hang-monitor',
   '--disable-ipc-flooding-protection',
