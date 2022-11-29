@@ -1,22 +1,22 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
 
-let getVideoMetadata = require("../youtubeAPI/getVideoMetadata")
+let getVideoMetadata = require("./getVideoMetadata")
 
 /**
  * Opens search and navigates to video
- * @param {Object} api the api
+ * 
  * @param {Object} page result of api.handleNewPage()
 */
 
-function initWatcher(api, page, id) {
+function initWatcher(page, id) {
     return new Promise(async (resolve, reject) => {
-        if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
-        if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        api.data.emit(`debug`, `Started search init`)
+        this.__data.emit(`debug`, `Started search init`)
 
         let videoMetadata = await getVideoMetadata(id)
         await goto(page, `https://www.youtube.com/results?search_query=${encodeURIComponent(videoMetadata.title)}`, 0)
@@ -64,23 +64,23 @@ function initWatcher(api, page, id) {
             })
         })
 
-        api.data.emit(`debug`, `Videos found from search: ${JSON.stringify(videosFound)}`)
+        this.__data.emit(`debug`, `Videos found from search: ${JSON.stringify(videosFound)}`)
 
         let videoFound = videosFound.filter((video, index) => {
             return video.title == videoMetadata.title && video.channel == videoMetadata.author
         })[0]
 
         if(videoFound){
-            api.data.emit(`debug`, `Video found, clicking on it...`)
+            this.__data.emit(`debug`, `Video found, clicking on it...`)
 
             await clickXPath(page, videoFound.button)
         } else {
-            api.data.emit(`debug`, `No video found, going for direct play...`)
+            this.__data.emit(`debug`, `No video found, going for direct play...`)
 
             await goto(page, `https://www.youtube.com/watch?v=${id}`)
         }
 
-        api.data.emit(`debug`, `Finished search query`)
+        this.__data.emit(`debug`, `Finished search query`)
 
         resolve()
     })

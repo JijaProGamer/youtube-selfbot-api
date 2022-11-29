@@ -3,11 +3,11 @@ let {
     waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
     jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
 
-let getVideoMetadata = require("../youtubeAPI/getVideoMetadata")
+let getVideoMetadata = require("./getVideoMetadata")
 
 /**
  * Opens search and navigates to video
- * @param {Object} api the api
+ * 
  * @param {Object} page result of api.handleNewPage()
  * @param {String} path Video path
  * @param {String} name Video name
@@ -52,35 +52,35 @@ let XPaths = {
 
 }
 
-function uploadVideo(api, page, path, name, visibility, extra) {
+function uploadVideo(page, path, name, visibility, extra) {
     if (!extra) extra = {}
 
     return new Promise(async (resolve, reject) => {
-        if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
-        if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        api.data.emit(`debug`, `Started video upload`)
+        this.__data.emit(`debug`, `Started video upload`)
 
         await goto(page, `https://www.youtube.com/upload`, 0)
         await uploadFileSelector(page, `#select-files-button`, path)
 
-        api.data.emit(`debug`, `Successfully uploaded video file`)
+        this.__data.emit(`debug`, `Successfully uploaded video file`)
 
         await waitForXPath(page, `//*[@id="textbox"]`, 0)
         await sleep(500)
 
         await typeXPath(page, `//*[@id="textbox"]`, name, 0)
 
-        api.data.emit(`debug`, `Successfully wrote title`)
+        this.__data.emit(`debug`, `Successfully wrote title`)
 
         if (extra.description) {
             await typeXPath(page, `//*[@id="textbox"]`, extra.description, 1)
-            api.data.emit(`debug`, `Successfully wrote description`)
+            this.__data.emit(`debug`, `Successfully wrote description`)
         }
 
         if (extra.thumbnail) {
             await uploadFileXPath(page, XPaths.thumbnail, extra.thumbnail)
-            api.data.emit(`debug`, `Successfully uploaded thumbnail`)
+            this.__data.emit(`debug`, `Successfully uploaded thumbnail`)
         }
 
         if (extra.playlists) {
@@ -179,14 +179,14 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
         await clickSelector(page, `#next-button`)
 
-        api.data.emit(`debug`, `Successfully finished first page`)
+        this.__data.emit(`debug`, `Successfully finished first page`)
 
         /*if(extra.subtitles){
             await clickXPath(page, XPaths.addSubtitles)
             await clickXPath(page, XPaths.addSubtitlesFile)
         }*/
 
-        api.data.emit(`debug`, `Successfully finished second page`)
+        this.__data.emit(`debug`, `Successfully finished second page`)
 
         await clickSelector(page, `#next-button`)
         await clickSelector(page, `#next-button`)
@@ -219,7 +219,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             await typeXPath(page, XPaths.date_input, visibility.date)
         }
 
-        api.data.emit(`debug`, `Successfully finished last page`)
+        this.__data.emit(`debug`, `Successfully finished last page`)
 
         let videoUrlElement = await new Promise((resolve, reject) => {
             waitForXPath(page, XPaths.videoId).then((element) => {
@@ -237,19 +237,19 @@ function uploadVideo(api, page, path, name, visibility, extra) {
         let videoUrl = await page.evaluate((e) => e.innerHTML, videoUrlElement)
         let videoId = videoUrl.split("/").pop()
 
-        api.data.emit(`debug`, `Video ID: ${videoId}`)
+        this.__data.emit(`debug`, `Video ID: ${videoId}`)
 
         if (extra.dontWaitForProcessing) {
             await clickSelector(page, `#done-button`)
-            await sleep(8000)
+            await sleep(5000)
 
-            api.data.emit(`debug`, `Finished uploading video`)
+            this.__data.emit(`debug`, `Finished uploading video`)
 
             resolve(videoId)
         } else {
             let status = await waitForXPath(page, XPaths.videoStatus)
 
-            api.data.emit(`debug`, `Started waiting for proccessing`)
+            this.__data.emit(`debug`, `Started waiting for proccessing`)
 
             await new Promise((resolve, reject) => {
                 let interval = setInterval(async () => {
@@ -266,12 +266,12 @@ function uploadVideo(api, page, path, name, visibility, extra) {
                 }, 250)
             })
 
-            api.data.emit(`debug`, `Finished waiting for proccessing`)
+            this.__data.emit(`debug`, `Finished waiting for proccessing`)
 
             await clickSelector(page, `#done-button`)
-            await sleep(8000)
+            await sleep(5000)
 
-            api.data.emit(`debug`, `Finished uploading video`)
+            this.__data.emit(`debug`, `Finished uploading video`)
 
             resolve(videoId)
         }
