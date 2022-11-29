@@ -221,9 +221,23 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
         api.data.emit(`debug`, `Successfully finished last page`)
 
-        let videoUrlElement = await waitForXPath(page, XPaths.videoId)
+        let videoUrlElement = await new Promise((resolve, reject) => {
+            waitForXPath(page, XPaths.videoId).then((element) => {
+                resolve(element)
+            }).catch(async (err) => {
+                let element = (await page.$x(XPaths.videoId))[0]
+                if(element){
+                    resolve(element)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+
         let videoUrl = await page.evaluate((e) => e.innerHTML, videoUrlElement)
         let videoId = videoUrl.split("/").pop()
+
+        api.data.emit(`debug`, `Video ID: ${videoId}`)
 
         if (extra.dontWaitForProcessing) {
             await clickSelector(page, `#done-button`)
@@ -240,6 +254,8 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             await new Promise((resolve, reject) => {
                 let interval = setInterval(async () => {
                     let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase(), status)
+                    console.log(statusText)
+
                     if (
                         statusText.includes("checking") || 
                         statusText.includes("complete")
