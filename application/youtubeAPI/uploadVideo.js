@@ -258,7 +258,8 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
                     if (
                         statusText.includes("checking") || 
-                        statusText.includes("complete")
+                        statusText.includes("complete") || 
+                        !statusText.includes("proccessing")
                      ) {
                         resolve()
                         clearInterval(interval)

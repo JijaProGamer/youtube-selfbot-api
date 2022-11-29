@@ -2,20 +2,21 @@ const waitForSelector = (page, selector, selectorNum) => {
     selectorNum = selectorNum ? selectorNum : 0
 
     return new Promise(async (resolve, reject) => {
-        try {
+        const firstElements = await page.$$(selector)
+        if (firstElements[selectorNum]) {
+            resolve(firstElements[selectorNum])
+        } else {
             page.waitForSelector(selector, { visible: true }).then(async () => {
                 const elements = await page.$$(selector)
                 resolve(elements[selectorNum])
-            }).catch((err) => {
-                reject(err)
+            }).catch(async (err) => {
+                const elements = await page.$$(selector)
+                if (elements[selectorNum]) {
+                    resolve(elements[selectorNum])
+                } else {
+                    reject(err)
+                }
             })
-        } catch (e) {
-            const elements = await page.$$(selector)
-            if (elements[selectorNum]) {
-                resolve(elements[selectorNum])
-            } else {
-                reject(err)
-            }
         }
     })
 }
@@ -24,20 +25,21 @@ const waitForXPath = (page, xPath, selectorNum) => {
     selectorNum = selectorNum ? selectorNum : 0
 
     return new Promise(async (resolve, reject) => {
-        try {
+        const firstElements = await page.$x(xPath)
+        if (firstElements[selectorNum]) {
+            resolve(firstElements[selectorNum])
+        } else {
             page.waitForXPath(xPath, { visible: true }).then(async () => {
                 const elements = await page.$x(xPath)
                 resolve(elements[selectorNum])
-            }).catch((err) => {
-                reject(err)
+            }).catch(async (err) => {
+                const elements = await page.$x(xPath)
+                if (elements[selectorNum]) {
+                    resolve(elements[selectorNum])
+                } else {
+                    reject(err)
+                }
             })
-        } catch (e) {
-            const elements = await page.$x(xPath)
-            if (elements[selectorNum]) {
-                resolve(elements[selectorNum])
-            } else {
-                reject(err)
-            }
         }
     })
 }
@@ -54,7 +56,7 @@ const clickSelector = async (page, selector, selectorNum) => {
 }
 
 const clickXPath = async (page, XPath) => {
-    return new Promise((resolve, reject) => {        
+    return new Promise((resolve, reject) => {
         waitForXPath(page, XPath).then(async (element) => {
             await element.click()
             resolve()
@@ -141,10 +143,72 @@ const jiggleMouse = async (page, position) => {
 const confirmNavigation = (page) => {
     return new Promise(async (resolve, reject) => {
         try {
-            page.goto(website, { timeout: 30 * 1000, waitUntil: "networkidle0" }).then(resolve).catch(resolve)
+            page.waitForNavigation({ timeout: 30 * 1000, waitUntil: "networkidle0" }).then(resolve).catch(resolve)
         } catch (err) {
             resolve(err)
         }
+    })
+}
+
+const scrollUntilXPathVisible = (page, XPath, limitSeconds) => {
+    return new Promise(async (resolve, reject) => {
+        page.evaluate((XPath, limit) => {
+            function getElementByXpath(path) {
+                return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            }
+
+            return new Promise((resolve, reject) => {
+                let start = new Date() / 1000
+
+                let interval = setInterval(() => {
+                    let current = new Date() / 1000
+                    let element = getElementByXpath(XPath)
+
+                    if (element) {
+                        clearInterval(interval)
+                        resolve(element)
+                    } else {
+                        window.scrollBy(0, 300);
+                    }
+
+                    if (current - start > limit) {
+                        clearInterval(interval)
+                        reject(new Error(`Too much time spent scrolling`))
+                    }
+                }, 500)
+            })
+        }, XPath, limitSeconds || 30)
+            .then(resolve)
+            .catch(reject)
+    })
+}
+
+const scrollUntilSelectorVisible = (page, Selector, limitSeconds) => {
+    return new Promise(async (resolve, reject) => {
+        page.evaluate((selector, limit) => {
+            return new Promise((resolve, reject) => {
+                let start = new Date() / 1000
+
+                let interval = setInterval(() => {
+                    let current = new Date() / 1000
+                    let element = document.querySelector(selector)
+
+                    if (element) {
+                        clearInterval(interval)
+                        resolve(element)
+                    } else {
+                        window.scrollBy(0, 300);
+                    }
+
+                    if (current - start > limit) {
+                        clearInterval(interval)
+                        reject(new Error(`Too much time spent scrolling`))
+                    }
+                }, 500)
+            })
+        }, Selector, limitSeconds || 30)
+            .then(resolve)
+            .catch(reject)
     })
 }
 
@@ -154,6 +218,7 @@ const random = (min, max) => min + Math.floor(Math.random() * (max - min));
 module.exports = {
     uploadFileXPath, waitForXPath, clickXPath, typeXPath,
     uploadFileSelector, waitForSelector, clickSelector, typeSelector,
+    scrollUntilXPathVisible, scrollUntilSelectorVisible,
     goto, jiggleMouse,
     confirmNavigation,
     sleep, random

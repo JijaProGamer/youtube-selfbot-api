@@ -1,6 +1,7 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
+    scrollUntilXPathVisible, scrollUntilSelectorVisible,
     jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
 
 /**
@@ -15,40 +16,14 @@ function makeComment(api, page, text) {
     return new Promise(async (resolve, reject) => {
         api.data.emit(`debug`, `Started scrolling to comment`)
 
-        await page.evaluate(() => {
-            return new Promise((resolve, reject) => {
-                let interval = setInterval(() => {
-                    let commentsBar = document.querySelector(`#placeholder-area`)
-
-                    if (commentsBar) {
-                        resolve()
-                        clearInterval(interval)
-                    } else {
-                        window.scrollBy(0, 300);
-                    }
-                }, 1000)
-            })
-        })
+        await scrollUntilSelectorVisible(page, `#placeholder-area`)
 
         api.data.emit(`debug`, `scrolled to comment`)
 
         await clickSelector(page, `#placeholder-area`)
         await typeSelector(page, `#contenteditable-root`, text)
 
-        await page.evaluate(() => {
-            return new Promise((resolve, reject) => {
-                let interval = setInterval(() => {
-                    let commentsBar = document.querySelector(`#submit-button`)
-
-                    if (commentsBar) {
-                        resolve()
-                        clearInterval(interval)
-                    } else {
-                        window.scrollBy(0, 300);
-                    }
-                }, 1000)
-            })
-        })
+        await scrollUntilSelectorVisible(page, `#submit-button`)
 
         await clickSelector(page, `#submit-button`)
 
