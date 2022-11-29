@@ -1,0 +1,37 @@
+{
+   "background": {
+      "service_worker": "worker.js"
+   },
+   "content_scripts": [ {
+      "css": [ "data/inject.css" ],
+      "js": [ "data/inject.js" ],
+      "matches": [ "*://*.youtube.com/*" ],
+      "run_at": "document_start"
+   } ],
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": true,
+         "id": "ruleset",
+         "path": "rules.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_description__",
+   "homepage_url": "https://add0n.com/stop-autoplay.html",
+   "icons": {
+      "128": "data/icons/128.png",
+      "16": "data/icons/16.png",
+      "256": "data/icons/256.png",
+      "32": "data/icons/32.png",
+      "48": "data/icons/48.png",
+      "512": "data/icons/512.png",
+      "64": "data/icons/64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmGf/wkhsDSFAOzvFbKqFfnLgzxV9/Wyz8U5H9MKCqzhoWhSqV5mhvEKdv7TYvnxKYTCQh9GQ7gpUczo5yuYyWbtNhv3/+z+j2BjkVfCEB9Q84C8v8ZzsDzhpACgB9iABel2CtHgt9QuNA0hfBylfNh0JtktjmvquIRPUu3hBfcCcCpbCDX1lDD3NLp3hMzONHlitjOivHsiogPEqqhqKjCU1xrzOsmOzJfrPs6kysxNY5CZ7qrWhVrWwgapqjRzfaO5iI0BKuXfmjLPLLdFKcQRf8EFoKZb8Q3t+dKgICbNyvExrp2Ksrmo+Ea9UiH0mBBeeTDxLc0DkVGF9YmFYHwIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "95",
+   "name": "Stop AutoPlay Next for YouTube™",
+   "permissions": [ "storage", "declarativeNetRequest" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.3.0"
+}
