@@ -34,6 +34,22 @@ function makeComment(api, page, text) {
 
         await clickSelector(page, `#placeholder-area`)
         await typeSelector(page, `#contenteditable-root`, text)
+
+        await page.evaluate(() => {
+            return new Promise((resolve, reject) => {
+                let interval = setInterval(() => {
+                    let commentsBar = document.querySelector(`#submit-button`)
+
+                    if (commentsBar) {
+                        resolve()
+                        clearInterval(interval)
+                    } else {
+                        window.scrollBy(0, 300);
+                    }
+                }, 1000)
+            })
+        })
+
         await clickSelector(page, `#submit-button`)
 
         await page.evaluate(() => {
