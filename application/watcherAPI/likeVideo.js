@@ -16,11 +16,11 @@ function likeVideo(page) {
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
         if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
 
-        api.data.emit(`debug`, `Started liking the video`)
+        this.__data.emit(`debug`, `Started liking the video`)
 
         await clickSelector(page, `ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > div:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`)
 
-        api.data.emit(`debug`, `Sucesfully liked the video`)
+        this.__data.emit(`debug`, `Sucesfully liked the video`)
 
         resolve()
     })
