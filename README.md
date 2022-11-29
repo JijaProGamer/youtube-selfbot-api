@@ -144,6 +144,14 @@ await api.watcherAPI.makeComment(api, page, commentText)
 // You must call initWatcher before this
 await api.watcherAPI.likeVideo(api, page)
 
+// pauses the video on a page
+// You must call initWatcher before this
+await api.watcherAPI.pauseVideo(api, page)
+
+// continues the video on a page
+// You must call initWatcher before this
+await api.watcherAPI.playVideo(api, page)
+
 // Gets current statistics about a watcher
 // You must call initWatcher before this
 let statistics = await api.watcherAPI.getPlayerStatistics(page)

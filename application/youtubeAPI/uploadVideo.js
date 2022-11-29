@@ -257,8 +257,8 @@ function uploadVideo(api, page, path, name, visibility, extra) {
                     console.log(statusText)
 
                     if (
-                        statusText.includes("checking") || 
-                        statusText.includes("complete") || 
+                        (statusText.includes("checking") || 
+                        statusText.includes("complete")) && 
                         !statusText.includes("proccessing")
                      ) {
                         resolve()

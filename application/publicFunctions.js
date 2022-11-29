@@ -10,12 +10,15 @@ const waitForSelector = (page, selector, selectorNum) => {
                 const elements = await page.$$(selector)
                 resolve(elements[selectorNum])
             }).catch(async (err) => {
-                const elements = await page.$$(selector)
-                if (elements[selectorNum]) {
-                    resolve(elements[selectorNum])
-                } else {
+                page.$$(selector).then((elements) => {
+                    if (elements[selectorNum]) {
+                        resolve(elements[selectorNum])
+                    } else {
+                        reject(err)
+                    }
+                }).catch(() => {
                     reject(err)
-                }
+                })
             })
         }
     })
@@ -33,12 +36,15 @@ const waitForXPath = (page, xPath, selectorNum) => {
                 const elements = await page.$x(xPath)
                 resolve(elements[selectorNum])
             }).catch(async (err) => {
-                const elements = await page.$x(xPath)
-                if (elements[selectorNum]) {
-                    resolve(elements[selectorNum])
-                } else {
+                page.$x(xPath).then((elements) => {
+                    if (elements[selectorNum]) {
+                        resolve(elements[selectorNum])
+                    } else {
+                        reject(err)
+                    }
+                }).catch(() => {
                     reject(err)
-                }
+                })
             })
         }
     })

@@ -11,6 +11,8 @@ module.exports = () => {
             handleNewPage: require("./application/browserAPI/handleNewPage"),
         },
         watcherAPI: {
+            pauseVideo: require("./application/watcherAPI/pauseVideo"),
+            playVideo: require("./application/watcherAPI/playVideo"),
             likeVideo: require("./application/watcherAPI/likeVideo"),
             makeComment: require("./application/watcherAPI/makeComment"),
             initWatcher: require("./application/watcherAPI/initWatcher"),

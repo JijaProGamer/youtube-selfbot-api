@@ -4,7 +4,7 @@ let {
     jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
 
 /**
- * Gets information about the video being played in the page
+ * Likes the video
  * 
  * @param {Object} api the api
  * @param {Object} page result of api.handleNewPage()

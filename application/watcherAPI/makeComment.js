@@ -5,7 +5,7 @@ let {
     jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
 
 /**
- * Gets information about the video being played in the page
+ * Makes a comment
  * 
  * @param {Object} api the api
  * @param {Object} page result of api.handleNewPage()
@@ -22,6 +22,10 @@ function makeComment(api, page, text) {
 
         await clickSelector(page, `#placeholder-area`)
         await typeSelector(page, `#contenteditable-root`, text)
+
+        await page.evaluate(() => {
+            window.scrollTo(0, 0);
+        })
 
         await scrollUntilSelectorVisible(page, `#submit-button`)
 
