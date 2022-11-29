@@ -1,13 +1,13 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
 
 
 /**
  * Logins into google account if not logged in already
- * @param {Object} api the api
- * @param {Object} page result of api.handleNewPage()
+
+* @param {Object} page result of api.handleNewPage()
  * @param {Object} accountInfo Account to log into
  * @param {Object} accountInfo.email Email to log into
  * @param {Object} accountInfo.password Password to use
@@ -18,12 +18,12 @@ let loginFailXPath = `/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/d
 let badBrowserXPath = `/html/body/div[1]/div[1]/div[2]/div/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`
 let comfirmIdentityXPath = `/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[1]/div/h1/span`
 
-function loginGoogle(api, page, accountInfo) {
+function loginGoogle(page, accountInfo) {
     return new Promise(async (resolve, reject) => {
-        if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
-        if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        api.data.emit(`debug`, `Started google login`)
+        this.__data.emit(`debug`, `Started google login`)
 
         await goto(page, `https://myaccount.google.com/email`, 0)
 
@@ -41,14 +41,14 @@ function loginGoogle(api, page, accountInfo) {
             if(currentEmail === accountInfo.email){
                 continueScript = false
 
-                api.data.emit(`debug`, `Sucessfully login into google account`)
+                this.__data.emit(`debug`, `Sucessfully login into google account`)
 
-                api.__loggedin = true
-                api.__loginInfo = accountInfo
+                this.__loggedin = true
+                this.__loginInfo = accountInfo
                 resolve()
             } else {
-                await api.__client.send('Network.clearBrowserCookies');
-                await api.__client.send('Network.clearBrowserCache');
+                await page.__client.send('Network.clearBrowserCookies');
+                await page.__client.send('Network.clearBrowserCache');
 
                 await goto(page, `https://myaccount.google.com/email`, 0)
             }
@@ -67,7 +67,7 @@ function loginGoogle(api, page, accountInfo) {
 
             if(badBrowserElement){
                 let pageError = await page.evaluate((e) => e.innerHTML, badBrowserElement)
-                api.data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
+                this.__data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
     
                 return reject(new Error(`Failed to loggin into google account. Error: "${pageError}"`))
             }
@@ -86,22 +86,22 @@ function loginGoogle(api, page, accountInfo) {
             
                     if(pageErrorElement){
                         let pageError = await page.evaluate((e) => e.innerHTML, pageErrorElement)
-                        api.data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
+                        this.__data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
             
                         return reject(new Error(`Failed to loggin into google account. Error: "${pageError}"`))
                     }
         
                     if(comfirmIdentityElement){
                         let pageError = await page.evaluate((e) => e.innerHTML, comfirmIdentityElement)
-                        api.data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
+                        this.__data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
             
                         return reject(new Error(`Failed to loggin into google account. Error: "${pageError}"`))
                     }
                 } else {
-                    api.data.emit(`debug`, `Sucessfully login into google account`)
+                    this.__data.emit(`debug`, `Sucessfully login into google account`)
 
-                    api.__loggedin = true
-                    api.__loginInfo = accountInfo
+                    this.__loggedin = true
+                    this.__loginInfo = accountInfo
                     resolve()
                 }
             })

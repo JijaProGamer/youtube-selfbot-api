@@ -1,20 +1,20 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
 
 /**
  * Initialises the video player, should be run only once per page
- * @param {Object} api the api
+ *
  * @param {Object} page result of api.handleNewPage()
 */
 
-function initWatcher(api, page) {
+function initWatcher(page) {
     return new Promise(async (resolve, reject) => {
-        if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
-        if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        api.data.emit(`debug`, `Started watch init`)
+        this.__data.emit(`debug`, `Started watch init`)
     
         //let playButton = await waitForSelector(page, `#movie_player > div.ytp-cued-thumbnail-overlay > button`)
         //await playButton.click()
@@ -25,16 +25,18 @@ function initWatcher(api, page) {
         let videoElement = await waitForSelector(page, `video`)
         //await page.evaluate((e) => e.pause(), videoElement)
 
-        api.data.emit(`debug`, `Sucesfully grabbed video element`)
+        this.__data.emit(`debug`, `Sucesfully grabbed video element`)
         
         //await waitForSelector(page, "ytp-settings-button")
         await page.evaluate(() => {
             document.getElementsByClassName("ytp-settings-button")[0].click()
         })
 
-        api.data.emit(`debug`, `Sucesfully stopped autoplay`)
+        this.__data.emit(`debug`, `Sucesfully stopped autoplay`)
     
         await clickSelector(page, `.ytp-right-controls > button:nth-child(1)`)
+
+        this.__data.emit(`debug`, `Sucesfully pressed the settings button`)
     
         //await waitForSelector(page, "ytp-panel-menu")
 
@@ -42,6 +44,8 @@ function initWatcher(api, page) {
         await page.evaluate(() => {
             document.getElementsByClassName("ytp-panel-menu")[0].lastChild.click()
         })
+
+        this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
     
         await sleep(500)
     
@@ -51,13 +55,14 @@ function initWatcher(api, page) {
             items[items.length - 2].click()
         })
 
-        api.data.emit(`debug`, `Sucesfully changed resolution`)
+        this.__data.emit(`debug`, `Sucesfully changed resolution`)
     
         await sleep(100)
         //await page.evaluate((e) => e.play(), videoElement)
 
-        api.data.emit(`debug`, `Started playing video`)
+        this.__data.emit(`debug`, `Started playing video`)
 
+        page.__wasInit = true
         resolve()
     })
 }

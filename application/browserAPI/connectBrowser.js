@@ -1,18 +1,17 @@
 const { EventEmitter } = require("events"); 
 
-const puppeteer = require("puppeteer-extra")
+const puppeteer = require("puppeteer-core")
 const fs = require("fs")
 const path = require("path")
 
 //const plugin_stealth = require("puppeteer-extra-plugin-stealth")
 //puppeteer.use(plugin_stealth)
 
-let { sleep } = require("../publicFunctions.js");
+let { sleep } = require("../publicFunctions/everything.js");
 
 /**
  * Connects to a browser, also creates one if no browserWSEndpoint is provided
  * 
- * @param {Object} api
  * @param {string} executablePath Chrome binary file
  * @param {Object} extra Extra information for connecting to the browser
  * @param {string | undefined} extra.browserWSEndpoint WSEndpoint of detached browser, Browserless or other providers recommended
@@ -59,16 +58,19 @@ let ignoredFlags = [
   //'about:blank'
 ]
 
-function connectBrowser(api, executablePath, extra) {
+function connectBrowser(executablePath, extra) {
+    if (this.__handled) reject(new Error(`You can call api.connectBrowser only one time per API`))
+
     if(!extra) extra = {}
     
     let dataEvent = new EventEmitter()
-    let extensionFolder = fs.readdirSync(path.join(__dirname, "../../extensions")).map(value => value = path.join(__dirname, `../../extensions/${value}`))
+    let extensionFolder = fs.readdirSync(path.join(__dirname, "../../extensions"))
+    .map(value => value = path.join(__dirname, `../../extensions/${value}`))
     
     return {
         browser: () => new Promise((resolve, reject) => {
-            api.data = dataEvent
-            api.extra = extra
+            this.__data = dataEvent
+            this.__extra = extra
 
             let launchArguments = {
                 headless: extra.headless || false,
@@ -105,24 +107,24 @@ function connectBrowser(api, executablePath, extra) {
 
             if(extra.browserWSEndpoint){ // If using a WSEndpoint directly connect to the browser
                 puppeteer.connect(launchArguments).then((browser) => {
-                    api.__handled = true
-                    api.__launched = true
-                    api.browser = browser
+                    this.__handled = true
+                    this.__launched = true
+                    this.browser = browser
     
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)
                 }).catch((error) => {
-                    api.__handled = true
-                    api.__launched = false
+                    this.__handled = true
+                    this.__launched = false
                     
                     dataEvent.emit("debug", `Browser failed to connect with error ${error}`)
                     reject(error)
                 })
             } else { // Else launch a new browser
                 puppeteer.launch(launchArguments).then(async (browser) => {
-                    api.__handled = true
-                    api.__launched = true
-                    api.browser = browser
+                    this.__handled = true
+                    this.__launched = true
+                    this.browser = browser
     
                     dataEvent.emit("debug", "Browser connecting...")
 
@@ -140,8 +142,8 @@ function connectBrowser(api, executablePath, extra) {
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)
                 }).catch((error) => {
-                    api.__handled = true
-                    api.__launched = false
+                    this.__handled = true
+                    this.__launched = false
                     
                     dataEvent.emit("debug", `Browser failed to connect with error ${error}`)
                     reject(error)

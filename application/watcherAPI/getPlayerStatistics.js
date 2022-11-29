@@ -1,7 +1,7 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
 
 /**
  * Gets information about the video being played in the page
@@ -13,6 +13,10 @@ let {
 
 function getPlayerStatistics(page) {
     return new Promise(async (resolve, reject) => {
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
+        
         let info = {}
         //this.data.emit(`debug`, `Started gathering player statistics`)
 

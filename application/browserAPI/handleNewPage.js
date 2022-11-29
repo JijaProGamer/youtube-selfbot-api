@@ -2,18 +2,18 @@ const useProxy = require('puppeteer-page-proxy');
 const puppeteerAfp = require('puppeteer-afp');
 
 /**
- * Connects to a browser, also creates one if no browserWSEndpoint is provided
- * @param {Object} api the api
+ * Creates a new page and adds a few bot bypasses
+ * 
  * @param {Boolean} noProxy if it should bypass the proxy for this page
 */
 
-function handleNewPage(api, noProxy) {
+function handleNewPage(noProxy) {
     return new Promise(async (resolve, reject) => {
-        if (!api.__handled) reject(new Error(`Please call api.connectBrowser first`))
-        if (!api.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        const page = puppeteerAfp(await api.browser.newPage())
-        api.data.emit(`debug`, `Created a new page`)
+        const page = puppeteerAfp(await this.browser.newPage())
+        this.__data.emit(`debug`, `Created a new page`)
 
         await page.evaluateOnNewDocument(() => {
             const newProto = navigator.__proto__
@@ -29,27 +29,27 @@ function handleNewPage(api, noProxy) {
         await session.send('Page.setWebLifecycleState', { state: 'active' });
         //await session.send('Network.clearBrowserCookies');
 
-        api.__client = session
-        api.data.emit(`debug`, `Spoofed new page`)
+        this.__client = session
+        this.__data.emit(`debug`, `Spoofed new page`)
 
         page.on('console', message => {
             if (message.type() === "error") {
-                api.data.emit(`pageError`, message.text());
+                this.__data.emit(`pageError`, message.text());
             } else if (message.type() === "warning") {
-                api.data.emit(`pageWarning`, message.text());
+                this.__data.emit(`pageWarning`, message.text());
             } else if (message.type() === "info") {
-                api.data.emit(`pageInfo`, message.text());
+                this.__data.emit(`pageInfo`, message.text());
             } else if (message.type() === "log") {
-                api.data.emit(`pageMessage`, message.text());
+                this.__data.emit(`pageMessage`, message.text());
             }
         }) // Monitor page information
 
-        page.on('pageerror', message => api.data.emit(`pageError`, message.message)) // Oops, error
+        page.on('pageerror', message => this.__data.emit(`pageError`, message.message)) // Oops, error
 
-        let proxy = api.extra.proxyServer
+        let proxy = this.__extra.proxyServer
 
         page.on('request', (request) => {
-            if (api.extra.saveBandwith) { // Block useless media
+            if (this.__extra.saveBandwith) { // Block useless media
                 if (["image", "font", "other"].includes(request.resourceType())) return request.abort()
 
                 if (request.resourceType() === "stylesheet") {
@@ -67,7 +67,7 @@ function handleNewPage(api, noProxy) {
             }
 
 
-            api.data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
+            this.__data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
 
             if(!noProxy){
                 if (proxy && proxy !== "direct://") {
@@ -83,7 +83,7 @@ function handleNewPage(api, noProxy) {
         page.on('response', async (response) => { // Monitor responses and bandwith usage
             let headers = response.headers()
 
-            api.data.emit(`requestHandled`, { 
+            this.__data.emit(`requestHandled`, { 
                 headers: response.headers(), 
                 method: response.request().method(),
                 ip: response.remoteAddress(),
@@ -92,16 +92,16 @@ function handleNewPage(api, noProxy) {
             })
 
             if (headers[`content-length`]) {
-                api.data.emit("bandwithUsed", parseFloat(headers[`content-length`]))
+                this.__data.emit("bandwithUsed", parseFloat(headers[`content-length`]))
             } else {
                 response.buffer().then((buffer) => {
-                    api.data.emit("bandwithUsed", buffer.length)
+                    this.__data.emit("bandwithUsed", buffer.length)
                 }).catch(() => { })
             }
         })
 
         page.on('requestfailed', (request) => {
-            api.data.emit(`requestFail`, { error: request.failure().errorText, url: request.url() })
+            this.__data.emit(`requestFail`, { error: request.failure().errorText, url: request.url() })
         })
 
         resolve(page)

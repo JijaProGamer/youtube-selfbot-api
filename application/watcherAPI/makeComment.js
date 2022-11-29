@@ -2,23 +2,27 @@ let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
     waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
     scrollUntilXPathVisible, scrollUntilSelectorVisible,
-    jiggleMouse, confirmNavigation, random } = require("../publicFunctions.js")
+    jiggleMouse, confirmNavigation, random } = require("../publicFunctions/everything")
 
 /**
  * Makes a comment
  * 
- * @param {Object} api the api
  * @param {Object} page result of api.handleNewPage()
  * @param {String} text Text to comment
 */
 
-function makeComment(api, page, text) {
+function makeComment(page, text) {
     return new Promise(async (resolve, reject) => {
-        api.data.emit(`debug`, `Started scrolling to comment`)
+        if (!this.__loggedin) reject(new Error(`Please call api.loginGoogle first`))
+        if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
+        if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
+        if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
+        
+        this.__data.emit(`debug`, `Started scrolling to comment`)
 
         await scrollUntilSelectorVisible(page, `#placeholder-area`)
 
-        api.data.emit(`debug`, `scrolled to comment`)
+        this.__data.emit(`debug`, `scrolled to comment`)
 
         await clickSelector(page, `#placeholder-area`)
         await typeSelector(page, `#contenteditable-root`, text)
@@ -35,7 +39,7 @@ function makeComment(api, page, text) {
             window.scrollTo(0, 0);
         })
 
-        api.data.emit(`debug`, `Sucesfully created comment`)
+        this.__data.emit(`debug`, `Sucesfully created comment`)
 
         resolve()
     })
