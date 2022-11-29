@@ -56,22 +56,6 @@ function initWatcher(api, page) {
         await sleep(100)
         //await page.evaluate((e) => e.play(), videoElement)
 
-        await page.evaluate(() => {
-            return new Promise((resolve, reject) => {
-                let interval = setInterval(() => {
-                    let commentsBar = document.querySelector(`#placeholder-area`)
-    
-                    if(commentsBar){
-                        resolve()
-                        clearInterval(interval)
-                        window.scroll(0, 0);
-                    } else {
-                        window.scrollBy(0, 300);
-                    }
-                }, 1000)
-            })
-        })
-
         api.data.emit(`debug`, `Started playing video`)
 
         resolve()

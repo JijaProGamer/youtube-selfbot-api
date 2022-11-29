@@ -1,14 +1,14 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "JijaProGamer",
+  "license": "MIT",
   "dependencies": {
     "puppeteer-afp": "^1.0.3",
     "puppeteer-core": "^19.3.0",

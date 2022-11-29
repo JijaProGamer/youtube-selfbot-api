@@ -227,7 +227,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
 
         if (extra.dontWaitForProcessing) {
             await clickSelector(page, `#done-button`)
-            await sleep(3000)
+            await sleep(8000)
 
             api.data.emit(`debug`, `Finished uploading video`)
 
@@ -253,7 +253,7 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             api.data.emit(`debug`, `Finished waiting for proccessing`)
 
             await clickSelector(page, `#done-button`)
-            await sleep(3000)
+            await sleep(8000)
 
             api.data.emit(`debug`, `Finished uploading video`)
 

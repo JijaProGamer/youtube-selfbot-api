@@ -25,6 +25,40 @@ let { sleep } = require("../publicFunctions.js");
  * @returns {Promise<Browser>, Event<data>} the browser generator promise and data logger
 */
 
+let ignoredFlags = [
+  '--allow-pre-commit-input',
+  '--disable-background-networking',
+  '--disable-background-timer-throttling',
+  '--disable-backgrounding-occluded-windows',
+  '--disable-breakpad',
+  '--disable-client-side-phishing-detection',
+  '--disable-component-extensions-with-background-pages',
+  '--disable-component-update',
+  '--disable-default-apps',
+  '--disable-dev-shm-usage',
+  '--disable-extensions',
+  '--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints',
+  '--disable-hang-monitor',
+  '--disable-ipc-flooding-protection',
+  '--disable-popup-blocking',
+  '--disable-prompt-on-repost',
+  '--disable-renderer-backgrounding',
+  '--disable-sync',
+  //'--enable-automation',
+  '--enable-blink-features=IdleDetection',
+  '--enable-features=NetworkServiceInProcess2',
+  '--export-tagged-pdf',
+  '--force-color-profile=srgb',
+  '--metrics-recording-only',
+  //'--no-first-run',
+  '--password-store=basic',
+  '--use-mock-keychain',
+  '--headless',
+  '--hide-scrollbars',
+  '--mute-audio',
+  //'about:blank'
+]
+
 function connectBrowser(api, executablePath, extra) {
     if(!extra) extra = {}
     
@@ -39,7 +73,7 @@ function connectBrowser(api, executablePath, extra) {
             let launchArguments = {
                 headless: extra.headless || false,
                 defaultViewport: null,
-                ignoreDefaultArgs: true,
+                ignoreDefaultArgs: ignoredFlags,
                 args: [
                     `--start-maximized`, 
                     `--mute-audio`,
