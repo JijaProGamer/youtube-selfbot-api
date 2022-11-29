@@ -254,7 +254,6 @@ function uploadVideo(api, page, path, name, visibility, extra) {
             await new Promise((resolve, reject) => {
                 let interval = setInterval(async () => {
                     let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase(), status)
-                    console.log(statusText)
 
                     if (
                         (statusText.includes("checking") || 
