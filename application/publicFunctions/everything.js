@@ -2,10 +2,10 @@ const waitForSelector = (page, selector, selectorNum) => {
     selectorNum = selectorNum ? selectorNum : 0
 
     return new Promise(async (resolve, reject) => {
-        const firstElements = await page.$$(selector)
+        /*const firstElements = await page.$$(selector)
         if (firstElements[selectorNum]) {
             resolve(firstElements[selectorNum])
-        } else {
+        } else {*/
             page.waitForSelector(selector, { visible: true }).then(async () => {
                 const elements = await page.$$(selector)
                 resolve(elements[selectorNum])
@@ -20,7 +20,7 @@ const waitForSelector = (page, selector, selectorNum) => {
                     reject(err)
                 })
             })
-        }
+        //}
     })
 }
 
@@ -28,10 +28,10 @@ const waitForXPath = (page, xPath, selectorNum) => {
     selectorNum = selectorNum ? selectorNum : 0
 
     return new Promise(async (resolve, reject) => {
-        const firstElements = await page.$x(xPath)
+        /*const firstElements = await page.$x(xPath)
         if (firstElements[selectorNum]) {
             resolve(firstElements[selectorNum])
-        } else {
+        } else {*/
             page.waitForXPath(xPath, { visible: true }).then(async () => {
                 const elements = await page.$x(xPath)
                 resolve(elements[selectorNum])
@@ -46,7 +46,7 @@ const waitForXPath = (page, xPath, selectorNum) => {
                     reject(err)
                 })
             })
-        }
+        //}
     })
 }
 
