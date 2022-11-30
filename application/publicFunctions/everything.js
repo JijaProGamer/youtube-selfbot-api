@@ -53,44 +53,40 @@ const waitForXPath = (page, xPath, selectorNum) => {
 const clickSelector = async (page, selector, selectorNum) => {
     return new Promise((resolve, reject) => {
         waitForSelector(page, selector, selectorNum).then(async (element) => {
-            await element.click()
-            resolve()
-        }).catch(err => {
-            reject(err)
-        })
+            element.click().then(resolve).catch(reject)
+        }).catch(reject)
     })
 }
 
 const clickXPath = async (page, XPath) => {
     return new Promise((resolve, reject) => {
         waitForXPath(page, XPath).then(async (element) => {
-            await element.click()
-            resolve()
-        }).catch(err => {
-            reject(err)
-        })
+            element.click().then(resolve).catch(reject)
+        }).catch(reject)
     })
 }
 
 const typeXPath = async (page, XPath, text, selectorNum, typingSpeed) => {
     return new Promise((resolve, reject) => {
         waitForXPath(page, XPath, selectorNum).then(async (element) => {
-            await element.focus()
-            await page.keyboard.type(text, { delay: typingSpeed || 25 })
+            element.focus().then(async () => {
+                await page.keyboard.type(text, { delay: typingSpeed || 25 })
 
-            resolve()
+                resolve()
+            }).catch(reject)
         }).catch(err => {
             reject(err)
         })
     })
 }
-const typeSelector = async (page, selector, text, selectorNum) => {
+const typeSelector = async (page, selector, text, selectorNum, typingSpeed) => {
     return new Promise((resolve, reject) => {
         waitForSelector(page, selector, selectorNum).then(async (element) => {
-            await element.focus()
-            await page.keyboard.type(text, { delay: 25 })
+            element.focus().then(async () => {
+                await page.keyboard.type(text, { delay: typingSpeed || 25 })
 
-            resolve()
+                resolve()
+            }).catch(reject)
         }).catch(err => {
             reject(err)
         })
@@ -101,7 +97,7 @@ const typeSelector = async (page, selector, text, selectorNum) => {
 const goto = (page, website, tryNum) => {
     return new Promise(async (resolve, reject) => {
         try {
-            page.goto(website, { waitUntil: "networkidle2" }).then(() => {
+            page.goto(website, { waitUntil: "networkidle0" }).then(() => {
                 resolve()
             }).catch(async (err) => {
                 if (tryNum <= 3) {
@@ -164,6 +160,8 @@ const scrollUntilXPathVisible = (page, XPath, limitSeconds) => {
             }
 
             return new Promise((resolve, reject) => {
+                window.scrollTo(0, 0);
+
                 let start = new Date() / 1000
 
                 let interval = setInterval(() => {
@@ -193,6 +191,8 @@ const scrollUntilSelectorVisible = (page, Selector, limitSeconds) => {
     return new Promise(async (resolve, reject) => {
         page.evaluate((selector, limit) => {
             return new Promise((resolve, reject) => {
+                window.scrollTo(0, 0);
+
                 let start = new Date() / 1000
 
                 let interval = setInterval(() => {

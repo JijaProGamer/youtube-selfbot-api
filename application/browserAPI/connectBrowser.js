@@ -54,7 +54,7 @@ let ignoredFlags = [
   '--use-mock-keychain',
   '--headless',
   '--hide-scrollbars',
-  '--mute-audio',
+  //'--mute-audio',
   //'about:blank'
 ]
 
