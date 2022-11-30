@@ -1,7 +1,10 @@
-let {
-    uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
-    waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
+let {uploadFileXPath, waitForXPath, clickXPath, typeXPath,
+    uploadFileSelector, waitForSelector, clickSelector, typeSelector,
+    scrollUntilXPathVisible, scrollUntilSelectorVisible,
+    waitForClassName,
+    goto, jiggleMouse,
+    confirmNavigation,
+    sleep, random} = require("../publicFunctions/everything")
 
 /**
  * Initialises the video player, should be run only once per page
@@ -16,21 +19,16 @@ function initWatcher(page) {
 
         this.__data.emit(`debug`, `Started watch init`)
     
-        //let playButton = await waitForSelector(page, `#movie_player > div.ytp-cued-thumbnail-overlay > button`)
-        //await playButton.click()
-    
-        //await jiggleMouse(page, random(85, 200))
-        //setInterval(() => {jiggleMouse(page, random(85, 200))}, 500)
-    
         let videoElement = await waitForSelector(page, `video`)
-        //await page.evaluate((e) => e.pause(), videoElement)
+        await page.evaluate((e) => e.pause(), videoElement)
 
         this.__data.emit(`debug`, `Sucesfully grabbed video element`)
-        
-        //await waitForSelector(page, "ytp-settings-button")
-        await page.evaluate(() => {
+        await waitForClassName(page, "ytp-settings-button")
+    
+        await page.evaluate((element) => {
             document.getElementsByClassName("ytp-settings-button")[0].click()
         })
+
 
         this.__data.emit(`debug`, `Sucesfully stopped autoplay`)
     
@@ -38,17 +36,16 @@ function initWatcher(page) {
 
         this.__data.emit(`debug`, `Sucesfully pressed the settings button`)
     
-        //await waitForSelector(page, "ytp-panel-menu")
+        await waitForClassName(page, "ytp-panel-menu")
 
-        await sleep(500)
         await page.evaluate(() => {
             document.getElementsByClassName("ytp-panel-menu")[0].lastChild.click()
         })
 
         this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
     
-        await sleep(500)
-    
+        await waitForClassName(page, "ytp-menuitem")
+
         await page.evaluate(() => {
             let items = Array.from(document.getElementsByClassName("ytp-menuitem"))
     
@@ -58,7 +55,7 @@ function initWatcher(page) {
         this.__data.emit(`debug`, `Sucesfully changed resolution`)
     
         await sleep(100)
-        //await page.evaluate((e) => e.play(), videoElement)
+        await page.evaluate((e) => e.play(), videoElement)
 
         this.__data.emit(`debug`, `Started playing video`)
 

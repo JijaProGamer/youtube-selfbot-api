@@ -1,4 +1,4 @@
-const { EventEmitter } = require("events"); 
+const { EventEmitter } = require("events");
 
 const puppeteer = require("puppeteer-core")
 const fs = require("fs")
@@ -7,7 +7,8 @@ const path = require("path")
 //const plugin_stealth = require("puppeteer-extra-plugin-stealth")
 //puppeteer.use(plugin_stealth)
 
-let { sleep } = require("../publicFunctions/everything.js");
+let { sleep, random } = require("../publicFunctions/everything.js");
+const randomUseragent = require('random-useragent');
 
 /**
  * Connects to a browser, also creates one if no browserWSEndpoint is provided
@@ -25,48 +26,64 @@ let { sleep } = require("../publicFunctions/everything.js");
 */
 
 let ignoredFlags = [
-  '--allow-pre-commit-input',
-  '--disable-background-networking',
-  '--disable-background-timer-throttling',
-  '--disable-backgrounding-occluded-windows',
-  '--disable-breakpad',
-  '--disable-client-side-phishing-detection',
-  '--disable-component-extensions-with-background-pages',
-  '--disable-component-update',
-  '--disable-default-apps',
-  '--disable-dev-shm-usage',
-  //'--disable-extensions',
-  '--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints',
-  '--disable-hang-monitor',
-  '--disable-ipc-flooding-protection',
-  '--disable-popup-blocking',
-  '--disable-prompt-on-repost',
-  '--disable-renderer-backgrounding',
-  '--disable-sync',
-  //'--enable-automation',
-  '--enable-blink-features=IdleDetection',
-  '--enable-features=NetworkServiceInProcess2',
-  '--export-tagged-pdf',
-  '--force-color-profile=srgb',
-  '--metrics-recording-only',
-  //'--no-first-run',
-  '--password-store=basic',
-  '--use-mock-keychain',
-  '--headless',
-  '--hide-scrollbars',
-  //'--mute-audio',
-  //'about:blank'
+    '--allow-pre-commit-input',
+    '--disable-background-networking',
+    '--disable-background-timer-throttling',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-breakpad',
+    '--disable-client-side-phishing-detection',
+    '--disable-component-extensions-with-background-pages',
+    '--disable-component-update',
+    '--disable-default-apps',
+    '--disable-dev-shm-usage',
+    //'--disable-extensions',
+    '--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints',
+    '--disable-hang-monitor',
+    '--disable-ipc-flooding-protection',
+    '--disable-popup-blocking',
+    '--disable-prompt-on-repost',
+    '--disable-renderer-backgrounding',
+    '--disable-sync',
+    //'--enable-automation',
+    '--enable-blink-features=IdleDetection',
+    '--enable-features=NetworkServiceInProcess2',
+    '--export-tagged-pdf',
+    '--force-color-profile=srgb',
+    '--metrics-recording-only',
+    //'--no-first-run',
+    '--password-store=basic',
+    '--use-mock-keychain',
+    '--headless',
+    '--hide-scrollbars',
+    //'--mute-audio',
+    //'about:blank'
 ]
+
+let getRandomUserAgent = () => {
+    return randomUseragent.getRandom(function (ua) {
+        return ua.browserName === 'Chrome' 
+            && ua.osName == "Windows"
+            && ua.osVersion == 10
+            && parseFloat(ua.browserMajor) > 55
+    })
+}
+
+let randomDevice = () => {
+    let deviceKeys = Object.keys(puppeteer.KnownDevices)
+    let randomDevice = deviceKeys[random(0, deviceKeys.length)]
+
+    return puppeteer.KnownDevices[randomDevice]
+}
 
 function connectBrowser(executablePath, extra) {
     if (this.__handled) reject(new Error(`You can call api.connectBrowser only one time per API`))
 
-    if(!extra) extra = {}
-    
+    if (!extra) extra = {}
+
     let dataEvent = new EventEmitter()
     let extensionFolder = fs.readdirSync(path.join(__dirname, "../../extensions"))
-    .map(value => value = path.join(__dirname, `../../extensions/${value}`))
-    
+        .map(value => value = path.join(__dirname, `../../extensions/${value}`))
+
     return {
         browser: () => new Promise((resolve, reject) => {
             this.__data = dataEvent
@@ -77,7 +94,7 @@ function connectBrowser(executablePath, extra) {
                 defaultViewport: null,
                 ignoreDefaultArgs: ignoredFlags,
                 args: [
-                    `--start-maximized`, 
+                    `--start-maximized`,
                     `--mute-audio`,
                     `--always-authorize-plugins`,
                     '--proxy-bypass-list=*',
@@ -92,12 +109,11 @@ function connectBrowser(executablePath, extra) {
                 userDataDir: extra.userDataDir,
             }
 
-            if(extra.args) launchArguments.args = [...launchArguments.args, ...extra.args]
-            if(extra.userDataDir) launchArguments.args.push(`--user-data-dir=${extra.userDataDir}`)
-
+            if (extra.args) launchArguments.args = [...launchArguments.args, ...extra.args]
+            if (extra.userDataDir) launchArguments.args.push(`--user-data-dir=${extra.userDataDir}`)
 
             launchArguments.args.push(`--disable-extensions-except=${extensionFolder.join(",")}`)
-        
+
             extensionFolder.forEach((extension) => {
                 launchArguments.args.push(`--load-extension=${extension}`)
             })
@@ -105,18 +121,21 @@ function connectBrowser(executablePath, extra) {
             dataEvent.emit("debug", `Launching browser`)
             //dataEvent.emit("debug", `Launching browser with external arguments ${JSON.stringify(launchArguments)}`)
 
-            if(extra.browserWSEndpoint){ // If using a WSEndpoint directly connect to the browser
+            this.__userAgent = getRandomUserAgent()
+            this.__device = randomDevice()
+
+            if (extra.browserWSEndpoint) { // If using a WSEndpoint directly connect to the browser
                 puppeteer.connect(launchArguments).then((browser) => {
                     this.__handled = true
                     this.__launched = true
                     this.browser = browser
-    
+
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)
                 }).catch((error) => {
                     this.__handled = true
                     this.__launched = false
-                    
+
                     dataEvent.emit("debug", `Browser failed to connect with error ${error}`)
                     reject(error)
                 })
@@ -125,16 +144,16 @@ function connectBrowser(executablePath, extra) {
                     this.__handled = true
                     this.__launched = true
                     this.browser = browser
-    
+
                     dataEvent.emit("debug", "Browser connecting...")
 
                     await sleep(2000)
                     let browserPages = await browser.pages()
 
-                    for (let [index, page] of browserPages.entries()){
+                    for (let [index, page] of browserPages.entries()) {
                         let url = await page.url()
 
-                        if(["ytadblock", "bit.ly"].some(e => url.includes(e))){
+                        if (["ytadblock", "bit.ly"].some(e => url.includes(e))) {
                             page.close()
                         }
                     }
@@ -144,7 +163,7 @@ function connectBrowser(executablePath, extra) {
                 }).catch((error) => {
                     this.__handled = true
                     this.__launched = false
-                    
+
                     dataEvent.emit("debug", `Browser failed to connect with error ${error}`)
                     reject(error)
                 })

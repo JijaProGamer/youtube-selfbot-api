@@ -21,6 +21,9 @@ function handleNewPage(noProxy) {
             navigator.__proto__ = newProto
         });
 
+        await page.setUserAgent(this.__userAgent)
+        await page.setViewport(this.__device.viewport)
+
         await page.setRequestInterception(true)
         await page.setBypassCSP(true)
 

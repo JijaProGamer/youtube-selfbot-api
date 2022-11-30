@@ -24,6 +24,33 @@ const waitForSelector = (page, selector, selectorNum) => {
     })
 }
 
+const waitForClassName = (page, ClassName, selectorNum) => {
+    selectorNum = selectorNum ? selectorNum : 0
+
+    return new Promise(async (resolve, reject) => {
+        page.evaluate((e) => {
+            let {ClassName, selectorNum} = e
+
+            return new Promise((resolve, reject) => {
+                let start = new Date() / 1000
+
+                let interval = setInterval(() => {
+                    let element = document.getElementsByClassName(ClassName)[selectorNum]
+                    if(element){
+                        clearInterval(interval)
+                        resolve(element)
+                    } else {
+                        if ((new Date() / 1000) - start > 5){
+                            clearInterval(interval)
+                            reject()
+                        }
+                    }
+                }, 500)
+            })
+        }, {ClassName,selectorNum: selectorNum || 0}).then(resolve).catch(reject)
+    })
+}
+
 const waitForXPath = (page, xPath, selectorNum) => {
     selectorNum = selectorNum ? selectorNum : 0
 
@@ -225,6 +252,7 @@ module.exports = {
     uploadFileXPath, waitForXPath, clickXPath, typeXPath,
     uploadFileSelector, waitForSelector, clickSelector, typeSelector,
     scrollUntilXPathVisible, scrollUntilSelectorVisible,
+    waitForClassName,
     goto, jiggleMouse,
     confirmNavigation,
     sleep, random

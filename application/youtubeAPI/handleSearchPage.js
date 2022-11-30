@@ -19,7 +19,7 @@ function initWatcher(page, id) {
         this.__data.emit(`debug`, `Started search init`)
 
         let videoMetadata = await getVideoMetadata(id)
-        await goto(page, `https://www.youtube.com/results?search_query=${encodeURIComponent(videoMetadata.title)}`, 0)
+        await goto(page, `https://www.youtube.com/results?search_query=${encodeURIComponent(videoMetadata.title)}`)
     
         await waitForSelector(page, `#contents`, 1)
 
