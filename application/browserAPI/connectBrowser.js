@@ -10,21 +10,6 @@ const path = require("path")
 let { sleep, random } = require("../publicFunctions/everything.js");
 const randomUseragent = require('random-useragent');
 
-/**
- * Connects to a browser, also creates one if no browserWSEndpoint is provided
- * 
- * @param {string} executablePath Chrome binary file
- * @param {Object} extra Extra information for connecting to the browser
- * @param {string | undefined} extra.browserWSEndpoint WSEndpoint of detached browser, Browserless or other providers recommended
- * @param {string | undefined} extra.proxyServer IP of the proxy to connect to (Optional, but should be used)
- * @param {string | undefined} extra.userDataDir used for extra caching, anti bot detection and fast login (Optional, but recommended)
- * @param {boolean | undefined} extra.saveBandwith Bypass useless requests
- * @param {boolean | undefined} extra.headless Launch browser in headless mode?
- * @param {Array | undefined} extra.args Extra arguments to pass to chrome's launch arguments
- * 
- * @returns {Promise<Browser>, Event<data>} the browser generator promise and data logger
-*/
-
 let ignoredFlags = [
     '--allow-pre-commit-input',
     '--disable-background-networking',
@@ -74,6 +59,35 @@ let randomDevice = () => {
 
     return puppeteer.KnownDevices[randomDevice]
 }
+
+function attemptLaunch(launchArguments, tryNum = 0){
+    return new Promise((resolve, reject) => {
+        puppeteer.launch(launchArguments).then(resolve).catch((err) => {
+            if(tryNum >= 2){
+                reject(err)
+            } else {
+                attemptLaunch(browser, tryNum + 1)
+                .then(resolve)
+                .catch(reject)
+            }
+        })
+    })
+}
+
+/**
+ * Connects to a browser, also creates one if no browserWSEndpoint is provided
+ * 
+ * @param {string} executablePath Chrome binary file
+ * @param {Object} extra Extra information for connecting to the browser
+ * @param {string | undefined} extra.browserWSEndpoint WSEndpoint of detached browser, Browserless or other providers recommended
+ * @param {string | undefined} extra.proxyServer IP of the proxy to connect to (Optional, but should be used)
+ * @param {string | undefined} extra.userDataDir used for extra caching, anti bot detection and fast login (Optional, but recommended)
+ * @param {boolean | undefined} extra.saveBandwith Bypass useless requests
+ * @param {boolean | undefined} extra.headless Launch browser in headless mode?
+ * @param {Array | undefined} extra.args Extra arguments to pass to chrome's launch arguments
+ * 
+ * @returns {Promise<Browser>, Event<data>} the browser generator promise and data logger
+*/
 
 function connectBrowser(executablePath, extra) {
     if (this.__handled) reject(new Error(`You can call api.connectBrowser only one time per API`))
@@ -140,23 +154,10 @@ function connectBrowser(executablePath, extra) {
                     reject(error)
                 })
             } else { // Else launch a new browser
-                puppeteer.launch(launchArguments).then(async (browser) => {
+                attemptLaunch(launchArguments).then(async (browser) => {
                     this.__handled = true
                     this.__launched = true
                     this.browser = browser
-
-                    dataEvent.emit("debug", "Browser connecting...")
-
-                    await sleep(2000)
-                    let browserPages = await browser.pages()
-
-                    for (let [index, page] of browserPages.entries()) {
-                        let url = await page.url()
-
-                        if (["ytadblock", "bit.ly"].some(e => url.includes(e))) {
-                            page.close()
-                        }
-                    }
 
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)

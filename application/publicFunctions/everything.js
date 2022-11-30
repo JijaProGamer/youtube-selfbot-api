@@ -1,6 +1,4 @@
-const waitForSelector = (page, selector, selectorNum) => {
-    selectorNum = selectorNum ? selectorNum : 0
-
+const waitForSelector = (page, selector, selectorNum = 0) => {
     return new Promise(async (resolve, reject) => {
         /*const firstElements = await page.$$(selector)
         if (firstElements[selectorNum]) {
@@ -24,9 +22,7 @@ const waitForSelector = (page, selector, selectorNum) => {
     })
 }
 
-const waitForClassName = (page, ClassName, selectorNum) => {
-    selectorNum = selectorNum ? selectorNum : 0
-
+const waitForClassName = (page, ClassName, selectorNum = 0) => {
     return new Promise(async (resolve, reject) => {
         page.evaluate((e) => {
             let {ClassName, selectorNum} = e
@@ -51,9 +47,7 @@ const waitForClassName = (page, ClassName, selectorNum) => {
     })
 }
 
-const waitForXPath = (page, xPath, selectorNum) => {
-    selectorNum = selectorNum ? selectorNum : 0
-
+const waitForXPath = (page, xPath, selectorNum = 0) => {
     return new Promise(async (resolve, reject) => {
         /*const firstElements = await page.$x(xPath)
         if (firstElements[selectorNum]) {
@@ -93,11 +87,11 @@ const clickXPath = async (page, XPath) => {
     })
 }
 
-const typeXPath = async (page, XPath, text, selectorNum, typingSpeed) => {
+const typeXPath = async (page, XPath, text, selectorNum, typingSpeed = 25) => {
     return new Promise((resolve, reject) => {
         waitForXPath(page, XPath, selectorNum).then(async (element) => {
             element.focus().then(async () => {
-                await page.keyboard.type(text, { delay: typingSpeed || 25 })
+                await page.keyboard.type(text, { delay: typingSpeed})
 
                 resolve()
             }).catch(reject)
@@ -106,11 +100,11 @@ const typeXPath = async (page, XPath, text, selectorNum, typingSpeed) => {
         })
     })
 }
-const typeSelector = async (page, selector, text, selectorNum, typingSpeed) => {
+const typeSelector = async (page, selector, text, selectorNum, typingSpeed = 25) => {
     return new Promise((resolve, reject) => {
         waitForSelector(page, selector, selectorNum).then(async (element) => {
             element.focus().then(async () => {
-                await page.keyboard.type(text, { delay: typingSpeed || 25 })
+                await page.keyboard.type(text, { delay: typingSpeed})
 
                 resolve()
             }).catch(reject)
@@ -121,7 +115,7 @@ const typeSelector = async (page, selector, text, selectorNum, typingSpeed) => {
 }
 
 
-const goto = (page, website, tryNum) => {
+const goto = (page, website, tryNum = 0) => {
     return new Promise(async (resolve, reject) => {
         try {
             page.goto(website, { waitUntil: "networkidle0" }).then(() => {
@@ -179,7 +173,7 @@ const confirmNavigation = (page) => {
     })
 }
 
-const scrollUntilXPathVisible = (page, XPath, limitSeconds) => {
+const scrollUntilXPathVisible = (page, XPath, limitSeconds = 30) => {
     return new Promise(async (resolve, reject) => {
         page.evaluate((XPath, limit) => {
             function getElementByXpath(path) {
@@ -208,13 +202,13 @@ const scrollUntilXPathVisible = (page, XPath, limitSeconds) => {
                     }
                 }, 500)
             })
-        }, XPath, limitSeconds || 30)
+        }, XPath, limitSeconds)
             .then(resolve)
             .catch(reject)
     })
 }
 
-const scrollUntilSelectorVisible = (page, Selector, limitSeconds) => {
+const scrollUntilSelectorVisible = (page, Selector, limitSeconds = 30) => {
     return new Promise(async (resolve, reject) => {
         page.evaluate((selector, limit) => {
             return new Promise((resolve, reject) => {
@@ -239,7 +233,7 @@ const scrollUntilSelectorVisible = (page, Selector, limitSeconds) => {
                     }
                 }, 500)
             })
-        }, Selector, limitSeconds || 30)
+        }, Selector, limitSeconds)
             .then(resolve)
             .catch(reject)
     })

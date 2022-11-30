@@ -12,6 +12,16 @@ function handleNewPage(noProxy) {
         if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
+        let browserPages = await browser.pages()
+
+        for (let [index, page] of browserPages.entries()) {
+            let url = await page.url()
+
+            if (["ytadblock", "bit.ly"].some(e => url.includes(e))) {
+                page.close()
+            }
+        }
+
         const page = puppeteerAfp(await this.browser.newPage())
         this.__data.emit(`debug`, `Created a new page`)
 
