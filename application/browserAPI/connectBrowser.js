@@ -83,7 +83,7 @@ function connectBrowser(executablePath, extra) {
                     '--proxy-bypass-list=*',
                     //`--proxy-server=${extra.proxyServer || "direct://"}`,
                     `--disable-web-security`, `--ignore-certificate-errors`,
-                    `--use-gl=egl`,
+                    //`--use-gl=egl`,
                 ],
                 //ignoreDefaultArgs: true,
                 executablePath: executablePath,
