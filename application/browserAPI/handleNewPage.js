@@ -12,7 +12,7 @@ function handleNewPage(noProxy) {
         if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
-        let browserPages = await browser.pages()
+        let browserPages = await this.browser.pages()
 
         for (let [index, page] of browserPages.entries()) {
             let url = await page.url()

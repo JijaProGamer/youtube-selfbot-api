@@ -139,17 +139,17 @@ function connectBrowser(executablePath, extra) {
             this.__device = randomDevice()
 
             if (extra.browserWSEndpoint) { // If using a WSEndpoint directly connect to the browser
-                puppeteer.connect(launchArguments).then((browser) => {
+                puppeteer.connect(launchArguments).then(async (browser) => {
                     this.__handled = true
                     this.__launched = true
                     this.browser = browser
 
+                    await sleep(2000)
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)
                 }).catch((error) => {
                     this.__handled = true
                     this.__launched = false
-
                     dataEvent.emit("debug", `Browser failed to connect with error ${error}`)
                     reject(error)
                 })
@@ -159,6 +159,7 @@ function connectBrowser(executablePath, extra) {
                     this.__launched = true
                     this.browser = browser
 
+                    await sleep(2000)
                     dataEvent.emit("debug", "Browser connected sucessfully")
                     resolve(browser)
                 }).catch((error) => {
