@@ -66,7 +66,7 @@ function attemptLaunch(launchArguments, tryNum = 0){
             if(tryNum >= 2){
                 reject(err)
             } else {
-                attemptLaunch(browser, tryNum + 1)
+                attemptLaunch(launchArguments, tryNum + 1)
                 .then(resolve)
                 .catch(reject)
             }
