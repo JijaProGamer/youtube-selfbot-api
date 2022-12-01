@@ -18,26 +18,35 @@ function makeComment(page, text) {
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
         if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
         
-        this.__data.emit(`debug`, `Started scrolling to comment`)
+        if(page.__isShort){
+            this.__data.emit(`debug`, `Started scrolling to comment`)
 
-        await scrollUntilSelectorVisible(page, `#placeholder-area`)
+            await scrollUntilSelectorVisible(page, `#placeholder-area`)
+    
+            this.__data.emit(`debug`, `scrolled to comment`)
+    
+            await clickSelector(page, `#placeholder-area`)
+            await typeSelector(page, `#contenteditable-root`, text)
 
-        this.__data.emit(`debug`, `scrolled to comment`)
+            this.__data.emit(`debug`, `Wrote comment`)
+    
+            await scrollUntilSelectorVisible(page, `#submit-button`)
+            await clickSelector(page, `#submit-button`)
+            
+    
+            await page.evaluate(() => {
+                window.scrollTo(0, 0);
+            })
+        } else {
+            await clickSelector(page, `#comments-button > ytd-button-renderer > yt-button-shape > label`)
 
-        await clickSelector(page, `#placeholder-area`)
-        await typeSelector(page, `#contenteditable-root`, text)
+            await clickSelector(page, `#placeholder-area`)
+            await typeSelector(page, `#contenteditable-root`, text)
 
-        await page.evaluate(() => {
-            window.scrollTo(0, 0);
-        })
+            this.__data.emit(`debug`, `Wrote comment`)
 
-        await scrollUntilSelectorVisible(page, `#submit-button`)
-
-        await clickSelector(page, `#submit-button`)
-
-        await page.evaluate(() => {
-            window.scrollTo(0, 0);
-        })
+            await clickSelector(page, `#submit-button`)
+        }
 
         this.__data.emit(`debug`, `Sucesfully created comment`)
 

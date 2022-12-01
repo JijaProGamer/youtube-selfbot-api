@@ -53,11 +53,16 @@ let getRandomUserAgent = () => {
     })
 }
 
-let randomDevice = () => {
+function randomDevice(){
     let deviceKeys = Object.keys(puppeteer.KnownDevices)
-    let randomDevice = deviceKeys[random(0, deviceKeys.length)]
-
-    return puppeteer.KnownDevices[randomDevice]
+    let rDevice = deviceKeys[random(0, deviceKeys.length)]
+    let device = puppeteer.KnownDevices[rDevice]
+    
+    if(device.viewport.height > 500 && device.viewport.isLandscape){
+        return device
+    } else {
+        return randomDevice()
+    }
 }
 
 function attemptLaunch(launchArguments, tryNum = 0){

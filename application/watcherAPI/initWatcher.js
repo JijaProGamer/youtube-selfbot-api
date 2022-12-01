@@ -6,6 +6,8 @@ let {uploadFileXPath, waitForXPath, clickXPath, typeXPath,
     confirmNavigation,
     sleep, random} = require("../publicFunctions/everything")
 
+let getVideoMetadata = require("../youtubeAPI/getVideoMetadata")
+
 /**
  * Initialises the video player, should be run only once per page
  *
@@ -18,41 +20,47 @@ function initWatcher(page) {
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
 
         this.__data.emit(`debug`, `Started watch init`)
-    
+
         let videoElement = await waitForSelector(page, `video`)
         await page.evaluate((e) => e.pause(), videoElement)
 
         this.__data.emit(`debug`, `Sucesfully grabbed video element`)
-        await waitForClassName(page, "ytp-settings-button")
+
+        let isShort = !(await page.url()).includes("?v=")
+        page.__isShort = isShort
+
+        if(!isShort){
+            await waitForClassName(page, "ytp-settings-button")
     
-        await page.evaluate((element) => {
-            document.getElementsByClassName("ytp-settings-button")[0].click()
-        })
-
-
-        this.__data.emit(`debug`, `Sucesfully stopped autoplay`)
+            await page.evaluate((element) => {
+                document.getElementsByClassName("ytp-settings-button")[0].click()
+            })
     
-        await clickSelector(page, `.ytp-right-controls > button:nth-child(1)`)
-
-        this.__data.emit(`debug`, `Sucesfully pressed the settings button`)
     
-        await waitForClassName(page, "ytp-panel-menu")
-
-        await page.evaluate(() => {
-            document.getElementsByClassName("ytp-panel-menu")[0].lastChild.click()
-        })
-
-        this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
+            this.__data.emit(`debug`, `Sucesfully stopped autoplay`)
+        
+            await clickSelector(page, `.ytp-right-controls > button:nth-child(1)`)
     
-        await waitForClassName(page, "ytp-menuitem")
-
-        await page.evaluate(() => {
-            let items = Array.from(document.getElementsByClassName("ytp-menuitem"))
+            this.__data.emit(`debug`, `Sucesfully pressed the settings button`)
+        
+            await waitForClassName(page, "ytp-panel-menu")
     
-            items[items.length - 2].click()
-        })
-
-        this.__data.emit(`debug`, `Sucesfully changed resolution`)
+            await page.evaluate(() => {
+                document.getElementsByClassName("ytp-panel-menu")[0].lastChild.click()
+            })
+    
+            this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
+        
+            await waitForClassName(page, "ytp-menuitem")
+    
+            await page.evaluate(() => {
+                let items = Array.from(document.getElementsByClassName("ytp-menuitem"))
+        
+                items[items.length - 2].click()
+            })
+    
+            this.__data.emit(`debug`, `Sucesfully changed resolution`)
+        }
     
         await sleep(100)
         await page.evaluate((e) => e.play(), videoElement)
