@@ -19,6 +19,15 @@ function makeComment(page, text) {
         if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
         
         if(page.__isShort){
+            await clickSelector(page, `#comments-button > ytd-button-renderer > yt-button-shape > label`)
+
+            await clickSelector(page, `#placeholder-area`)
+            await typeSelector(page, `#contenteditable-root`, text)
+
+            this.__data.emit(`debug`, `Wrote comment`)
+        } else {
+            await clickSelector(page, `#submit-button`)
+            
             this.__data.emit(`debug`, `Started scrolling to comment`)
 
             await scrollUntilSelectorVisible(page, `#placeholder-area`)
@@ -37,15 +46,6 @@ function makeComment(page, text) {
             await page.evaluate(() => {
                 window.scrollTo(0, 0);
             })
-        } else {
-            await clickSelector(page, `#comments-button > ytd-button-renderer > yt-button-shape > label`)
-
-            await clickSelector(page, `#placeholder-area`)
-            await typeSelector(page, `#contenteditable-root`, text)
-
-            this.__data.emit(`debug`, `Wrote comment`)
-
-            await clickSelector(page, `#submit-button`)
         }
 
         this.__data.emit(`debug`, `Sucesfully created comment`)
