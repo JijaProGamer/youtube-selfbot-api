@@ -256,8 +256,7 @@ function uploadVideo(page, path, name, visibility, extra) {
                     let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase(), status)
 
                     if (
-                        (statusText.includes("checking") || 
-                        statusText.includes("complete")) && 
+                        !statusText.includes("upload") &&
                         !statusText.includes("proccessing")
                      ) {
                         resolve()
