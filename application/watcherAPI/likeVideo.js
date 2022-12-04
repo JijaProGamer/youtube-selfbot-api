@@ -19,9 +19,9 @@ function likeVideo(page) {
         this.__data.emit(`debug`, `Started liking the video`)
 
         if(page.__isShort){
-            await clickSelector(page, `ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > div:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`)
-        } else {
             await clickSelector(page, `#like-button > yt-button-shape > label`)
+        } else {
+            await clickSelector(page, `ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > div:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`)
         }
 
         this.__data.emit(`debug`, `Sucesfully liked the video`)

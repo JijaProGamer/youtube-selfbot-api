@@ -52,7 +52,7 @@ let getRandomUserAgent = () => {
     let parserResults = parser.getResult();
 
     //console.log(parserResults)
-    if (parserResults.browser.name == "Chrome" && parseFloat(parserResults.browser.major) > 85) {
+    if (!agent.includes(`HeadlessChrome`) && parseFloat(parserResults.browser.major) > 85) {
         if(parseFloat(parserResults.os.version) >= 10){
             return agent
         } else {
