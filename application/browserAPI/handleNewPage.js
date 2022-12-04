@@ -42,7 +42,7 @@ function handleNewPage(noProxy) {
         await session.send('Page.setWebLifecycleState', { state: 'active' });
         //await session.send('Network.clearBrowserCookies');
 
-        this.__client = session
+        page.__client = session
         this.__data.emit(`debug`, `Spoofed new page`)
 
         page.on('console', message => {

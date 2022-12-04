@@ -17,6 +17,7 @@ let emailXPath = `/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/di
 let loginFailXPath = `/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`
 let badBrowserXPath = `/html/body/div[1]/div[1]/div[2]/div/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`
 let comfirmIdentityXPath = `/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[1]/div/h1/span`
+let identityXPath = `/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`
 
 function loginGoogle(page, accountInfo) {
     return new Promise(async (resolve, reject) => {
@@ -93,9 +94,23 @@ function loginGoogle(page, accountInfo) {
         
                     if(comfirmIdentityElement){
                         let pageError = await page.evaluate((e) => e.innerHTML, comfirmIdentityElement)
-                        this.__data.emit(`debug`, `Failed to loggin into google account. Error: "${pageError}"`)
+                        let identityNum = await page.evaluate((e) => e.innerHTML, await waitForXPath(page, identityXPath))
+                        this.__data.emit(`debug`, `Please confirm your identity: "${identityNum}"`)
             
-                        return reject(new Error(`Failed to loggin into google account. Error: "${pageError}"`))
+                        let result = await Promise.race([
+                            waitForXPath(page, emailXPath),
+                            sleep(25 * 1000),
+                        ])
+
+                        if(result){
+                            this.__data.emit(`debug`, `Sucessfully login into google account`)
+
+                            this.__loggedin = true
+                            this.__loginInfo = accountInfo
+                            resolve()
+                        } else {
+                            return reject(new Error(`Failed to loggin into google account. Error: "${pageError}"`))
+                        }
                     }
                 } else {
                     this.__data.emit(`debug`, `Sucessfully login into google account`)

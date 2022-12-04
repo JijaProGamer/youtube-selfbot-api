@@ -25,9 +25,9 @@ function makeComment(page, text) {
             await typeSelector(page, `#contenteditable-root`, text)
 
             this.__data.emit(`debug`, `Wrote comment`)
-        } else {
+
             await clickSelector(page, `#submit-button`)
-            
+        } else {
             this.__data.emit(`debug`, `Started scrolling to comment`)
 
             await scrollUntilSelectorVisible(page, `#placeholder-area`)
@@ -41,7 +41,6 @@ function makeComment(page, text) {
     
             await scrollUntilSelectorVisible(page, `#submit-button`)
             await clickSelector(page, `#submit-button`)
-            
     
             await page.evaluate(() => {
                 window.scrollTo(0, 0);
