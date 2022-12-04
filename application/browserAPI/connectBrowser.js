@@ -8,7 +8,9 @@ const path = require("path")
 //puppeteer.use(plugin_stealth)
 
 let { sleep, random } = require("../publicFunctions/everything.js");
-const randomUseragent = require('random-useragent');
+
+const randUserAgent = require('rand-user-agent');
+const UAParser = require("ua-parser-js")
 
 let ignoredFlags = [
     '--allow-pre-commit-input',
@@ -45,35 +47,43 @@ let ignoredFlags = [
 ]
 
 let getRandomUserAgent = () => {
-    return randomUseragent.getRandom(function (ua) {
-        return ua.browserName === 'Chrome' 
-            && ua.osName == "Windows"
-            && ua.osVersion == 10
-            && parseFloat(ua.browserMajor) > 55
-    })
+    const agent = randUserAgent("desktop", "chrome", "windows");
+    const parser = new UAParser(agent);
+    let parserResults = parser.getResult();
+
+    //console.log(parserResults)
+    if (parserResults.browser.name == "Chrome" && parseFloat(parserResults.browser.major) > 85) {
+        if(parseFloat(parserResults.os.version) >= 10){
+            return agent
+        } else {
+            return getRandomUserAgent()
+        }
+    } else {
+        return agent
+    }
 }
 
-function randomDevice(){
+function randomDevice() {
     let deviceKeys = Object.keys(puppeteer.KnownDevices)
     let rDevice = deviceKeys[random(0, deviceKeys.length)]
     let device = puppeteer.KnownDevices[rDevice]
-    
-    if(device.viewport.height > 500 && device.viewport.isLandscape){
+
+    if (device.viewport.height > 500 && device.viewport.isLandscape) {
         return device
     } else {
         return randomDevice()
     }
 }
 
-function attemptLaunch(launchArguments, tryNum = 0){
+function attemptLaunch(launchArguments, tryNum = 0) {
     return new Promise((resolve, reject) => {
         puppeteer.launch(launchArguments).then(resolve).catch((err) => {
-            if(tryNum >= 2){
+            if (tryNum >= 2) {
                 reject(err)
             } else {
                 attemptLaunch(launchArguments, tryNum + 1)
-                .then(resolve)
-                .catch(reject)
+                    .then(resolve)
+                    .catch(reject)
             }
         })
     })
