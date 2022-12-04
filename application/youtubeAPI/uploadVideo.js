@@ -257,8 +257,11 @@ function uploadVideo(page, path, name, visibility, extra) {
 
                     if (
                         !statusText.includes("upload") &&
-                        !statusText.includes("proccessing")
+                        !statusText.includes("proccessing") && 
+                        !statusText.includes("processing")
                      ) {
+                        console.log(true)
+                        
                         resolve()
                         clearInterval(interval)
                     }

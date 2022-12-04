@@ -47,20 +47,14 @@ let ignoredFlags = [
 ]
 
 let getRandomUserAgent = () => {
-    const agent = randUserAgent("desktop", "chrome", "windows");
+    const agent = randUserAgent("desktop", "chrome", "windows").replace("HeadlessChrome", `Chrome`)
     const parser = new UAParser(agent);
     let parserResults = parser.getResult();
 
-    //console.log(parserResults)
-    if (!agent.includes(`HeadlessChrome`) && parseFloat(parserResults.browser.major) > 85) {
-        if(parseFloat(parserResults.os.version) >= 10){
-            return agent
-        } else {
-            return getRandomUserAgent()
-        }
-    } else {
-        return agent
-    }
+    if(parseFloat(parserResults.browser.major) < 85) return getRandomUserAgent()
+    if(parseFloat(parserResults.os.version) < 10) return getRandomUserAgent()
+
+    return agent
 }
 
 function randomDevice() {
