@@ -33,7 +33,7 @@ function handleSearchPage(page, id) {
         } else {
             this.__data.emit(`debug`, `No video found, going for direct play...`)
 
-            await goto(page, `https://www.youtube.com/watch?v=${id}`)
+            await goto(page, `https://www.youtube.com/watch?v=${id}?feature=share`)
         }
 
         this.__data.emit(`debug`, `Finished search query`)

@@ -72,7 +72,7 @@ function randomDevice() {
 function attemptLaunch(launchArguments, tryNum = 0) {
     return new Promise((resolve, reject) => {
         puppeteer.launch(launchArguments).then(resolve).catch((err) => {
-            if (tryNum >= 2) {
+            if (tryNum > 4) {
                 reject(err)
             } else {
                 attemptLaunch(launchArguments, tryNum + 1)
