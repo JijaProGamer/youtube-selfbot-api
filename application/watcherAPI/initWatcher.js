@@ -22,7 +22,8 @@ function initWatcher(page) {
         this.__data.emit(`debug`, `Started watch init`)
 
         let videoElement = await waitForSelector(page, `video`)
-        await page.evaluate((e) => e.pause(), videoElement)
+        await page.evaluate(async (e) => await e.play(), videoElement)
+        await page.evaluate(async (e) => await e.pause(), videoElement)
 
         this.__data.emit(`debug`, `Sucesfully grabbed video element`)
 
@@ -63,7 +64,7 @@ function initWatcher(page) {
         }
     
         await sleep(100)
-        await page.evaluate((e) => e.play(), videoElement)
+        await page.evaluate(async (e) => await e.play(), videoElement)
 
         this.__data.emit(`debug`, `Started playing video`)
 

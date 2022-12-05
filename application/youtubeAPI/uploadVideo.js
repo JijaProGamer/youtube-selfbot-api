@@ -253,17 +253,22 @@ function uploadVideo(page, path, name, visibility, extra) {
 
             await new Promise((resolve, reject) => {
                 let interval = setInterval(async () => {
-                    let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase(), status)
+                    let statusText = await page.evaluate((e) => e.innerHTML.toLowerCase().trim(), status)
 
+                    this.__data.emit(`debug`, `Current proccessing status: ${statusText}`)
+                    
                     if (
                         !statusText.includes("upload") &&
                         !statusText.includes("proccessing") && 
-                        !statusText.includes("processing")
-                     ) {                        
+                        !statusText.includes("processing") && 
+                        statusText.length > 3
+                     ) {     
+                        this.__data.emit(`debug`, `Finished proccessing with status: ${statusText}`)
+
                         resolve()
                         clearInterval(interval)
                     }
-                }, 250)
+                }, 1000)
             })
 
             this.__data.emit(`debug`, `Finished waiting for proccessing`)
