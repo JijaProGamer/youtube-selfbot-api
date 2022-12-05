@@ -11,8 +11,6 @@ function getVideoMetadata(id) {
     return new Promise(async (resolve, reject) => {
         ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${id}`).then((fullInfo) => {
             fullInfo = fullInfo.videoDetails
-
-            console.log(fullInfo)
             
             let thumbnail = fullInfo.media && fullInfo.media.thumbnails && fullInfo.media.thumbnails[0] 
                             || fullInfo.thumbnails[0]
