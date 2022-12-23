@@ -1,0 +1,30 @@
+{
+   "background": {
+      "scripts": [ "js/background.js" ]
+   },
+   "browser_action": {
+      "default_title": "Audio Only Youtube"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "css": [ "css/content-script.css" ],
+      "js": [ "js/content-script.js" ],
+      "matches": [ "*://www.youtube.com/*", "*://music.youtube.com/*" ],
+      "run_at": "document_start"
+   } ],
+   "description": "Enables you to disable video streams on youtube and listen audio",
+   "icons": {
+      "128": "img/icon128.png",
+      "19": "img/icon19.png",
+      "38": "img/icon38.png",
+      "48": "img/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArqGh/KnS7QI11myXdl3anZjD5uIh/J9Y81v2LqOjuD1r4IjHuiHF+7bF06tceStVBSiQ2C3elhQR57tKIt5Gb1KpxHm7hM19FAXeUV6zlygvXDEfeDBzZrVz47c6wfpdApl2gGDziL+xir1xNCjFoIv7HgFRmT6JOoF3z1ByS/RL7s6D1aJTZL4+5R3LPYOQ6lz7nvfxe/de5pPToKLQNKAWS9L1nc4JI88Jb0zsX9T4LWOe6uYRi22vCIv1gMlj148ztUC5gkTdxfK1OuyzkdxnhNIgR+e9kYl9w3CM4Efjvr1hUxY8JZjlXFCJzb93shmljpC0PqgTzRb5lxmZ6wIDAQAB",
+   "manifest_version": 2,
+   "name": "Audio Only Youtube",
+   "offline_enabled": true,
+   "options_page": "html/options.html",
+   "permissions": [ "tabs", "webRequest", "storage", "*://www.youtube.com/*", "*://music.youtube.com/*", "*://*.googlevideo.com/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.9.0"
+}

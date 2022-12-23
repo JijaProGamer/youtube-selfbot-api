@@ -1,0 +1,20 @@
+.audio_only_div {
+  z-index: 10;
+  color: #FFF;
+  cursor: pointer;
+  position: relative;
+  font-size: 18px;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  text-shadow: #00000080 0 0 2px;
+  pointer-events: none;
+}
+
+#movie_player:active .audio_only_div {
+  display: none !important;
+}
+
+.alert_text {
+  position: relative;
+  top: 10%;
+  text-align: center;
+}

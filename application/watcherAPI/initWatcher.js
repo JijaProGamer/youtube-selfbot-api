@@ -31,6 +31,7 @@ function initWatcher(page) {
         page.__isShort = isShort
 
         if(!isShort){
+            await clickSelector(page, `#movie_player`)
             await waitForClassName(page, "ytp-settings-button")
     
             await page.evaluate((element) => {
