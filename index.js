@@ -12,8 +12,9 @@ function API() {
         initWatcher: require("./application/watcherAPI/initWatcher"),
         getPlayerStatistics: require("./application/watcherAPI/getPlayerStatistics"),
 
-        getVideoMetadata: require("./application/youtubeAPI/getVideoMetadata"),
+        handleSubscriptionPage: require("./application/youtubeAPI/handleSubscriptionPage"),
         handleSearchPage: require("./application/youtubeAPI/handleSearchPage"),
+        getVideoMetadata: require("./application/youtubeAPI/getVideoMetadata"),
         uploadVideo: require("./application/youtubeAPI/uploadVideo"),
 
         login: require("./application/googleAPI/loginGoogle"),
