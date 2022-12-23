@@ -145,6 +145,10 @@ await api.makeComment(page, commentText)
 // You must call initWatcher before this
 await api.likeVideo(page)
 
+// Dislikes or removes a like on the page
+// You must call initWatcher before this
+await api.dislikeVideo(page)
+
 // pauses the video on a page
 // You must call initWatcher before this
 await api.pauseVideo(page)
@@ -163,7 +167,11 @@ console.log(statistics.percentWatched) // Current percent watched of video
 
 // Search for the video and click on it
 // If you dont care about SEO you can just call page.goto(url, {waitUntil: "networkidle0"})
-// Errors if video is a short
+await api.handleSearchPage(page, videoId)
+
+// Search for the video in the subscribers feed and click on it
+// If you dont care about SEO you can just call page.goto(url, {waitUntil: "networkidle0"})
+// Must be logged in or it errors
 await api.handleSearchPage(page, videoId)
 
 // Gets information about a video using its id
