@@ -40,7 +40,7 @@ let XPaths = {
     addSubtitles: `/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-video-elements/div[2]/ytcp-button`,
     addSubtitlesFile: `/html/body/ytve-captions-editor-modal/ytcp-dialog/tp-yt-paper-dialog/div[2]/div/ytve-editor/div[1]/div/ytve-captions-editor-options-panel/div[2]/div/ul/li[1]/ytcp-ve/a`,
     uploadSubtitles: `/html/body/ytve-captions-editor-upload-dialog/ytcp-dialog/tp-yt-paper-dialog/div[3]/div/ytcp-button[2]/div`,
-    videoId: `/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[3]/ytcp-video-info/div/div[3]/div[1]/div[2]/span/a`,
+    videoId: `a.ytcp-video-info`,
     playlists: {
         playlists: `/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-basics/div[4]/div[3]/div[1]/ytcp-video-metadata-playlists/ytcp-text-dropdown-trigger/ytcp-dropdown-trigger`,
         newPlaylist: `/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/ytcp-button[1]/div`,
@@ -222,10 +222,10 @@ function uploadVideo(page, path, name, visibility, extra) {
         this.__data.emit(`debug`, `Successfully finished last page`)
 
         let videoUrlElement = await new Promise((resolve, reject) => {
-            waitForXPath(page, XPaths.videoId).then((element) => {
+            waitForSelector(page, XPaths.videoId).then((element) => {
                 resolve(element)
             }).catch(async (err) => {
-                let element = (await page.$x(XPaths.videoId))[0]
+                let element = (await page.$$(XPaths.videoId))[0]
                 if(element){
                     resolve(element)
                 } else {
