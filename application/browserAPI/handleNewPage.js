@@ -103,8 +103,6 @@ function handleNewPage(noProxy) {
             this.__data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
             if(this.__extra.useCache){
                 let type = await request.resourceType();
-
-                console.log(type)
                 
                 if (
                     type == "document" ||
@@ -114,12 +112,12 @@ function handleNewPage(noProxy) {
                         if (result) {
                             request.respond(result);
                         } else {
-                            if(!noProxy && proxy && proxy !== "direct://") return request.continue();
+                            if(!noProxy || !proxy || proxy !== "direct://") return request.continue();
                             useProxy(request, proxy)
                         }
                     });
                 } else {
-                    if(!noProxy && proxy && proxy !== "direct://") return request.continue();
+                    if(!noProxy || !proxy || proxy !== "direct://") return request.continue();
                     useProxy(request, proxy)
                 }
             }
