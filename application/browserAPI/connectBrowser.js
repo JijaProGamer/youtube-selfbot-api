@@ -7,6 +7,8 @@ const path = require("path")
 //const plugin_stealth = require("puppeteer-extra-plugin-stealth")
 //puppeteer.use(plugin_stealth)
 
+//puppeteer.use(require('puppeteer-extra-plugin-timezone')())
+
 let { sleep, random } = require("../publicFunctions/everything.js");
 
 const randUserAgent = require('rand-user-agent');

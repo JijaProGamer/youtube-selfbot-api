@@ -40,7 +40,7 @@ This project is available for use under the MIT License.
 ```javascript
 let api = new (require("youtube-selfbot-api"))();
 
-/* API: The API we just require'd
+/*
  chromePath: Path to chrome (example: /usr/bin/google-chrome on some linux variants)
  extraArguments: {
     // WSEndpoint of detached browser, Browserless or other providers recommended
@@ -120,17 +120,21 @@ let browser = await browserConnection.browser()
 
 let page = await api.handleNewPage(false)
 
-// Logs into google, using some credentials
+// Logs into google, using some credentials or using cookies
 // Optional, but needed for publishing, commenting and liking
 // Logged in accounts views are better for SEO than guest views
 
-// Fails if password is invalid, browser got detected
-// Or 2FA appears
+// Fails if password is invalid or browser got detected
+// if cookies are incorrect or undefined then it attempts to use credentials
+// and returns the new cookies
 
-await api.login(page, {
+// if 2FA appears then a debug message will appear with the 2FA code
+// You have 30 seconds before the page closes
+
+let newCookies = await api.login(page, {
     email: "this_is_an_email@example.com",
     password: "This_Is_A_Password"
-})
+}, cookies) 
 
 // Initialises the watcher
 // You must call handleSearchPage or goto on the page before this
@@ -156,6 +160,11 @@ await api.pauseVideo(page)
 // continues the video on a page
 // You must call initWatcher before this
 await api.playVideo(page)
+
+// seeks to an time
+// You must call initWatcher before this
+
+await api.seek(page, time) 
 
 // Gets current statistics about a watcher
 // You must call initWatcher before this

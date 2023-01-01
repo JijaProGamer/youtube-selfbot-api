@@ -5,28 +5,29 @@ let {
     jiggleMouse, confirmNavigation, random } = require("../publicFunctions/everything")
 
 /**
- * Plays the video
+ * seeks to a second
  * 
  * @param {Object} page result of api.handleNewPage()
+ * @param {Number} time the point to seek to
 */
 
-function playVideo(page) {
+function seek(page, time) {
     return new Promise(async (resolve, reject) => {
         if (!this.__handled) reject(new Error(`Please call api.connectBrowser first`))
         if (!this.__launched) reject(new Error(`api.connectBrowser was called, but failed doing so`))
         if (!page.__wasInit) reject(new Error(`Please call api.initWatcher on this page first`))
         
-        this.__data.emit(`debug`, `Playing video...`)
+        this.__data.emit(`debug`, `Seeking video...`)
 
         let videoElement = await waitForSelector(page, `video`)
 
         this.__data.emit(`debug`, `Got the video selector`)
 
-        await page.evaluate((e) => e.play(), videoElement)
+        await page.evaluate((e) => e.videoElement.currentTime = e.time, {videoElement, time})
 
-        this.__data.emit(`debug`, `Sucessfully played the video`)
+        this.__data.emit(`debug`, `Sucessfully seeked the video`)
         resolve()
     })
 }
 
-module.exports = playVideo
+module.exports = seek

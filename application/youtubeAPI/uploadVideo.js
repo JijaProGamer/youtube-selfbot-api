@@ -235,7 +235,7 @@ function uploadVideo(page, path, name, visibility, extra) {
         })
 
         let videoUrl = await page.evaluate((e) => e.innerHTML, videoUrlElement)
-        let videoId = videoUrl.split("/").pop()
+        let videoId = videoUrl.split("/").pop().trim()
 
         this.__data.emit(`debug`, `Video ID: ${videoId}`)
 
