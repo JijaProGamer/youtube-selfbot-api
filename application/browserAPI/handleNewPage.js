@@ -1,5 +1,6 @@
 const useProxy = require('puppeteer-page-proxy');
 const puppeteerAfp = require('puppeteer-afp');
+const cacher = require("puppeteer-cacher");
 
 /**
  * Creates a new page and adds a few bot bypasses
@@ -41,7 +42,7 @@ function handleNewPage(noProxy) {
         await session.send('Page.enable'); // Disable automatic view stopper
         await session.send('Page.setWebLifecycleState', { state: 'active' });
         //await session.send('Network.clearBrowserCookies');
-
+        
         page.__client = session
         this.__data.emit(`debug`, `Spoofed new page`)
 
@@ -60,8 +61,27 @@ function handleNewPage(noProxy) {
         page.on('pageerror', message => this.__data.emit(`pageError`, message.message)) // Oops, error
 
         let proxy = this.__extra.proxyServer
+        let cache = new cacher(true);
 
-        page.on('request', (request) => {
+        if(this.__extra.useCache){
+            page.on("requestfinished", async (request) => {
+                let type = await request.resourceType();
+                if (
+                    type == "document" ||
+                    type == "script" ||
+                    type == "font" ||
+                    type == "stylesheet"
+                ) {
+                    await cache.save(await request.response());
+                }
+            });
+
+            if(this.__extra.cacheStore){
+                cache.memoryStore = this.__extra.cacheStore
+            }
+        }
+
+        page.on('request', async (request) => {
             if (this.__extra.saveBandwith) { // Block useless media
                 if (["image", "font", "other"].includes(request.resourceType())) return request.abort()
 
@@ -81,15 +101,27 @@ function handleNewPage(noProxy) {
 
 
             this.__data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
+            if(this.__extra.useCache){
+                let type = await request.resourceType();
 
-            if(!noProxy){
-                if (proxy && proxy !== "direct://") {
-                    useProxy(request, proxy)
+                console.log(type)
+                
+                if (
+                    type == "document" ||
+                    type == "script"
+                ) {
+                    cache.get(request).then((result) => {
+                        if (result) {
+                            request.respond(result);
+                        } else {
+                            if(!noProxy && proxy && proxy !== "direct://") return request.continue();
+                            useProxy(request, proxy)
+                        }
+                    });
                 } else {
-                    request.continue()
+                    if(!noProxy && proxy && proxy !== "direct://") return request.continue();
+                    useProxy(request, proxy)
                 }
-            } else {
-                request.continue()
             }
         })
 
