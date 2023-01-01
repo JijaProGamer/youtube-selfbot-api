@@ -40,6 +40,8 @@ function initWatcher(page) {
     
     
             this.__data.emit(`debug`, `Sucesfully stopped autoplay`)
+
+            await sleep(1000)
         
             await clickSelector(page, `.ytp-right-controls > button:nth-child(1)`)
     

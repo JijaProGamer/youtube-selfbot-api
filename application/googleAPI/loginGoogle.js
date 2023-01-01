@@ -83,7 +83,7 @@ function loginGoogle(page, accountInfo, accountCookies) {
                 waitForXPath(page, loginFailXPath),
                 waitForXPath(page, comfirmIdentityXPath)
             ]).then(async (afterLogin) => {
-                if (afterLogin.toString() === "JSHandle@node") {
+                if (afterLogin && afterLogin.toString() === "JSHandle@node") {
                     let pageErrorElement = (await page.$x(loginFailXPath))[0]
                     let comfirmIdentityElement = (await page.$x(comfirmIdentityXPath))[0]
 
