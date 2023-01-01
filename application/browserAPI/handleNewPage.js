@@ -61,24 +61,24 @@ function handleNewPage(noProxy) {
         page.on('pageerror', message => this.__data.emit(`pageError`, message.message)) // Oops, error
 
         let proxy = this.__extra.proxyServer
-        let cache = new cacher(true);
+        let cache = new cacher(false);
+
+        if(this.__extra.cacheStore){
+            cache.memoryStore = this.__extra.cacheStore
+        }
 
         if(this.__extra.useCache){
             page.on("requestfinished", async (request) => {
                 let type = await request.resourceType();
+
                 if (
                     type == "document" ||
-                    type == "script" ||
-                    type == "font" ||
-                    type == "stylesheet"
+                    type == "script"
                 ) {
+
                     await cache.save(await request.response());
                 }
             });
-
-            if(this.__extra.cacheStore){
-                cache.memoryStore = this.__extra.cacheStore
-            }
         }
 
         page.on('request', async (request) => {
@@ -98,7 +98,6 @@ function handleNewPage(noProxy) {
                     return request.abort()
                 }
             }
-
 
             this.__data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
             if(this.__extra.useCache){
