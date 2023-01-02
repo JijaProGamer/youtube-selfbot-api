@@ -115,6 +115,10 @@ function handleNewPage(noProxy) {
         })
 
         page.on('response', async (response) => {
+            if(response.fromCache()){
+                return
+            }
+
             let alreadyCached
             await new Promise(resolve => {
                 cache.get(response.request(), (result, wasFound) => {

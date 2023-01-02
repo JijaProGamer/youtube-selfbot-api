@@ -1,7 +1,7 @@
 let {
     uploadFileXPath, uploadFileSelector, clickSelector, clickXPath, goto,
-    waitForSelector,waitForXPath, typeSelector, typeXPath, sleep,
-    jiggleMouse, confirmNavigation, random} = require("../publicFunctions/everything")
+    waitForSelector, waitForXPath, typeSelector, typeXPath, sleep,
+    jiggleMouse, confirmNavigation, random } = require("../publicFunctions/everything")
 
 let getVideoMetadata = require("./getVideoMetadata")
 
@@ -21,19 +21,49 @@ function handleSearchPage(page, id) {
 
         let videoMetadata = await getVideoMetadata(id)
         await goto(page, `https://www.youtube.com/results?search_query=${encodeURIComponent(videoMetadata.title)}`)
-    
+
         await waitForSelector(page, `#contents`, 1)
 
         let videoFound = (await page.$x(`//a[contains(@href,"${id}")]`))[0]
 
-        if(videoFound){
+        if (videoFound) {
             this.__data.emit(`debug`, `Video found, clicking on it...`)
 
             await clickXPath(page, `//a[contains(@href,"${id}")]`)
         } else {
-            this.__data.emit(`debug`, `No video found, going for direct play...`)
+            let found = await page.evaluate((id) => {
+                let start = new Date() / 1000
+                function getElementByXpath(path) {
+                    return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                }
 
-            await goto(page, `https://www.youtube.com/watch?v=${id}?feature=share`)
+                return new Promise(resolve => {
+                    let interval = setInterval(() => {
+                        let element = getElementByXpath(`//a[contains(@href,"${id}")]`)
+                        if(element){
+                            clearInterval(interval)
+                            return resolve(true)
+                        }
+
+                        if((new Date() / 1000) > start + 15){
+                            clearInterval(interval)
+                            return resolve(false)
+                        }
+
+                        window.scrollBy(0, 800)
+                    }, 1500)
+                })
+            }, id)
+
+            if(found){
+                this.__data.emit(`debug`, `Video found, clicking on it...`)
+
+                await clickXPath(page, `//a[contains(@href,"${id}")]`)
+            } else {
+                this.__data.emit(`debug`, `No video found, going for direct play...`)
+
+                await goto(page, `https://www.youtube.com/watch?v=${id}?feature=share`)
+            }
         }
 
         this.__data.emit(`debug`, `Finished search query`)

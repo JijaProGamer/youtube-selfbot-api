@@ -56,6 +56,8 @@ function initWatcher(page) {
             this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
 
             await waitForClassName(page, "ytp-menuitem")
+
+            await sleep(500)
     
             await page.evaluate(() => {
                 let items = Array.from(document.getElementsByClassName("ytp-menuitem"))
