@@ -1,5 +1,6 @@
 const useProxy = require('puppeteer-page-proxy');
 const puppeteerAfp = require('puppeteer-afp');
+const cacher = require("puppeteer-cacher");
 
 /**
  * Creates a new page and adds a few bot bypasses
@@ -42,6 +43,9 @@ function handleNewPage(noProxy) {
         await session.send('Page.setWebLifecycleState', { state: 'active' });
         //await session.send('Network.clearBrowserCookies');
 
+        await page.setCacheEnabled(true);
+        await session.send('Network.setCacheDisabled', { cacheDisabled: false });
+
         page.__client = session
         this.__data.emit(`debug`, `Spoofed new page`)
 
@@ -60,17 +64,25 @@ function handleNewPage(noProxy) {
         page.on('pageerror', message => this.__data.emit(`pageError`, message.message)) // Oops, error
 
         let proxy = this.__extra.proxyServer
+        let cache = new cacher(false)
+
+        if (this.__extra.cache && this.__extra.memoryStore) {
+            cache.changeMemory(this.__extra.memoryStore)
+        }
 
         page.on('request', async (request) => {
-            if (this.__extra.saveBandwith) { // Block useless media
-                if (["image", "font", "other"].includes(request.resourceType())) return request.abort()
+            let type = request.resourceType()
+            let url = request.url()
 
-                if (request.resourceType() === "stylesheet") {
+            if (this.__extra.saveBandwith) { // Block useless media
+                if (["image", "font", "other"].includes(type)) return request.abort()
+
+                if (type === "stylesheet") {
                     if (request.url().includes(`https://www.youtube.com/s/desktop/`)) return request.abort()
                     if (request.url().includes(`fonts.googleapis.com/css`)) return request.abort()
                 }
 
-                if (request.resourceType() === "media") {
+                if (type === "media") {
                     return request.abort()
                 }
 
@@ -81,27 +93,67 @@ function handleNewPage(noProxy) {
 
             this.__data.emit(`requestAccepted`, { url: request.url(), headers: request.headers() })
 
-            if (!noProxy || !proxy || proxy !== "direct://") return request.continue();
-            useProxy(request, proxy)
+            if (this.__extra.cache && (
+                type == "document" ||
+                type == "script" ||
+                type == "manifest" ||
+                url.includes(".json") ||
+                url.includes("generate_204")
+            )) {
+                cache.get(request, (result, wasFound) => {
+                    if (!wasFound) {
+                        if (noProxy || proxy || proxy == "direct://") return request.continue();
+                        return useProxy(request, proxy)
+                    }
+
+                    request.respond(result)
+                })
+            } else {
+                if (noProxy || !proxy || proxy == "direct://") return request.continue();
+                useProxy(request, proxy)
+            }
         })
 
-        page.on('response', async (response) => { // Monitor responses and bandwith usage
+        page.on('response', async (response) => {
+            let alreadyCached
+            await new Promise(resolve => {
+                cache.get(response.request(), (result, wasFound) => {
+                    alreadyCached = result
+                    resolve()
+                })
+            })
+
+            let url = response.url()
+            let type = response.request().resourceType()
             let headers = response.headers()
 
+            if (this.__extra.cache && (
+                type == "document" ||
+                type == "script" ||
+                type == "manifest" ||
+                url.includes(".json") ||
+                url.includes("generate_204")
+            ) && (!alreadyCached || alreadyCached.expires > Date.now())) {
+                cache.save(response)
+            }
+
             this.__data.emit(`requestHandled`, {
-                headers: response.headers(),
                 method: response.request().method(),
                 ip: response.remoteAddress(),
                 status: response.status(),
                 url: response.url(),
             })
 
-            if (headers[`content-length`]) {
-                this.__data.emit("bandwithUsed", parseFloat(headers[`content-length`]))
-            } else {
-                response.buffer().then((buffer) => {
-                    this.__data.emit("bandwithUsed", buffer.length)
-                }).catch(() => { })
+            if(!this.__extra.cache || !alreadyCached || alreadyCached.expires > Date.now()){
+                if (headers[`content-length`]) {
+                    this.__data.emit("bandwithUsed", parseFloat(headers[`content-length`]))
+                } else {
+                    response.buffer()
+                        .then((buffer) => {
+                            this.__data.emit("bandwithUsed", buffer.length)
+                        })
+                        .catch(() => { })
+                }
             }
         })
 

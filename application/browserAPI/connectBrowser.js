@@ -95,6 +95,8 @@ function attemptLaunch(launchArguments, tryNum = 0) {
  * @param {string | undefined} extra.userDataDir used for extra caching, anti bot detection and fast login (Optional, but recommended)
  * @param {boolean | undefined} extra.saveBandwith Bypass useless requests
  * @param {boolean | undefined} extra.headless Launch browser in headless mode?
+ * @param {boolean | undefined} extra.cache If is should cache js and html files
+ * @param {Object | undefined} extra.memoryStore Object with set and get functions for cache
  * @param {Array | undefined} extra.args Extra arguments to pass to chrome's launch arguments
  * 
  * @returns {Promise<Browser>, Event<data>} the browser generator promise and data logger
@@ -115,7 +117,7 @@ function connectBrowser(executablePath, extra) {
             this.__extra = extra
 
             let launchArguments = {
-                headless: extra.headless || false,
+                headless: false,
                 defaultViewport: null,
                 ignoreDefaultArgs: ignoredFlags,
                 args: [
@@ -136,6 +138,7 @@ function connectBrowser(executablePath, extra) {
 
             if (extra.args) launchArguments.args = [...launchArguments.args, ...extra.args]
             if (extra.userDataDir) launchArguments.args.push(`--user-data-dir=${extra.userDataDir}`)
+            if (extra.headless) launchArguments.args.push(`--headless=chrome`)
 
             launchArguments.args.push(`--disable-extensions-except=${extensionFolder.join(",")}`)
 

@@ -37,7 +37,6 @@ function handleSearchPage(page, id) {
         }
 
         this.__data.emit(`debug`, `Finished search query`)
-        await confirmNavigation(page)
 
         resolve()
     })

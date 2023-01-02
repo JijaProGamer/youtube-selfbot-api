@@ -19,11 +19,11 @@ function seek(page, time) {
         
         this.__data.emit(`debug`, `Seeking video...`)
 
-        let videoElement = await waitForSelector(page, `video`)
+        await waitForSelector(page, `video`)
 
         this.__data.emit(`debug`, `Got the video selector`)
 
-        await page.evaluate((e) => e.videoElement.currentTime = e.time, {videoElement, time})
+        await page.evaluate((time) => document.getElementsByTagName("video")[0].currentTime = time, time)
 
         this.__data.emit(`debug`, `Sucessfully seeked the video`)
         resolve()

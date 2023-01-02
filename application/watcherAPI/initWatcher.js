@@ -54,7 +54,7 @@ function initWatcher(page) {
             })
     
             this.__data.emit(`debug`, `Sucesfully pressed the settings button #2`)
-        
+
             await waitForClassName(page, "ytp-menuitem")
     
             await page.evaluate(() => {
@@ -65,7 +65,7 @@ function initWatcher(page) {
     
             this.__data.emit(`debug`, `Sucesfully changed resolution`)
         }
-    
+
         await sleep(100)
         await page.evaluate(async (e) => await e.play(), videoElement)
 

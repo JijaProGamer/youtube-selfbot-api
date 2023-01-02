@@ -32,9 +32,10 @@ const waitForClassName = (page, ClassName, selectorNum = 0) => {
 
                 let interval = setInterval(() => {
                     let element = document.getElementsByClassName(ClassName)[selectorNum]
-                    if(element){
+
+                    if(element){                        
                         clearInterval(interval)
-                        resolve(element)
+                        resolve()
                     } else {
                         if ((new Date() / 1000) - start > 5){
                             clearInterval(interval)
@@ -43,7 +44,10 @@ const waitForClassName = (page, ClassName, selectorNum = 0) => {
                     }
                 }, 500)
             })
-        }, {ClassName,selectorNum: selectorNum || 0}).then(resolve).catch(reject)
+        }, {ClassName,selectorNum: selectorNum || 0})
+        .then(() => {
+            resolve()
+        }).catch(reject)
     })
 }
 
