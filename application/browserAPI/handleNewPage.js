@@ -102,7 +102,7 @@ function handleNewPage(noProxy) {
             )) {
                 cache.get(request, (result, wasFound) => {
                     if (!wasFound) {
-                        if (noProxy || proxy || proxy == "direct://") return request.continue();
+                        if (noProxy || !proxy || proxy == "direct://") return request.continue();
                         return useProxy(request, proxy)
                     }
 
