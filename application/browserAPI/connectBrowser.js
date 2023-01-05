@@ -151,8 +151,8 @@ function connectBrowser(executablePath, extra) {
             "--disable-infobars",
             "--disable-breakpad",
 
-            //"--no-zygote",
-            //"--no-sandbox",
+            "--no-zygote",
+            "--no-sandbox",
 
             "--disable-setuid-sandbox",
             //`--use-gl=egl`,
