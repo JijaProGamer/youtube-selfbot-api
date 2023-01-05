@@ -12,6 +12,7 @@
   "author": "JijaProGamer",
   "license": "MIT",
   "dependencies": {
+    "ghost-cursor": "^1.1.16",
     "puppeteer-afp": "^1.0.3",
     "puppeteer-cacher": "^1.0.3",
     "puppeteer-core": "^19.3.0",

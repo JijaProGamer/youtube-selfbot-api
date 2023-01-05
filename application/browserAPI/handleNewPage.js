@@ -1,6 +1,7 @@
 const useProxy = require('puppeteer-page-proxy');
 const puppeteerAfp = require('puppeteer-afp');
 const cacher = require("puppeteer-cacher");
+const ghost = require("ghost-cursor")
 
 /**
  * Creates a new page and adds a few bot bypasses
@@ -24,6 +25,8 @@ function handleNewPage(noProxy) {
         }
 
         const page = puppeteerAfp(await this.browser.newPage())
+        page.__cursor = ghost.createCursor(page)
+
         this.__data.emit(`debug`, `Created a new page`)
 
         await page.evaluateOnNewDocument(() => {

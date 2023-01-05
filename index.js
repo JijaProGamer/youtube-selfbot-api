@@ -14,6 +14,7 @@ function API() {
         getPlayerStatistics: require("./application/watcherAPI/getPlayerStatistics"),
 
         handleSubscriptionPage: require("./application/youtubeAPI/handleSubscriptionPage"),
+        gotoVideo: require("./application/youtubeAPI/gotoVideo"),
         handleSearchPage: require("./application/youtubeAPI/handleSearchPage"),
         getVideoMetadata: require("./application/youtubeAPI/getVideoMetadata"),
         uploadVideo: require("./application/youtubeAPI/uploadVideo"),
