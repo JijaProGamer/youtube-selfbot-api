@@ -83,10 +83,12 @@ function handleNewPage(noProxy) {
 
       if (this.__extra.saveBandwith) {
         // Block useless media
-        if (["image", "font", "other", "stylesheet"].includes(type)) return request.abort();
+        if (["image", "font", "other", /*"stylesheet"*/].includes(type)) return request.abort();
 
         if (type === "media") {
-          if(request.url().includes("/audio")) return request.abort();
+          if(url.includes("/audio")) return request.abort();
+
+          if(page.skipMedia) return request.abort();
         }
       }
 

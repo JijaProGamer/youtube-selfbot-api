@@ -33,6 +33,7 @@ function initWatcher(page) {
       reject(new Error(`api.connectBrowser was called, but failed doing so`));
 
     this.__data.emit(`debug`, `Started watch init`);
+    page.skipMedia = true
 
     let videoElement = await waitForSelector(page, `video`);
     //await page.evaluate(async (e) => await e.play(), videoElement)
@@ -76,7 +77,11 @@ function initWatcher(page) {
         items[items.length - 2].click();
       });
 
+      page.skipMedia = false
+
       this.__data.emit(`debug`, `Sucesfully changed resolution`);
+    } else {
+      page.skipMedia = false
     }
 
     await sleep(100);
