@@ -87,8 +87,6 @@ function handleNewPage(noProxy) {
 
         if (type === "media") {
           if(url.includes("/audio")) return request.abort();
-
-          if(page.skipMedia) return request.abort();
         }
       }
 
