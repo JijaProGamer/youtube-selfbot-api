@@ -1,13 +1,18 @@
 const { EventEmitter } = require("events");
 
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer-extra");
 const fs = require("fs");
 const path = require("path");
 
-//const plugin_stealth = require("puppeteer-extra-plugin-stealth")
-//puppeteer.use(plugin_stealth)
+let devices = JSON.parse(fs.readFileSync(path.join(__dirname, "../devices.json"), "utf-8"))
 
-//puppeteer.use(require('puppeteer-extra-plugin-timezone')())
+const stealthPlugin = require("puppeteer-extra-plugin-stealth")()
+stealthPlugin.enabledEvasions.delete('iframe.contentWindow');
+stealthPlugin.enabledEvasions.delete('navigator.plugins');
+
+puppeteer.use(stealthPlugin);
+puppeteer.use(require('puppeteer-extra-plugin-timezone').default())
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
 
 let { sleep, random } = require("../publicFunctions/everything.js");
 
@@ -28,26 +33,17 @@ let ignoredFlags = [
   "--hide-scrollbars",
   //'--mute-audio',
   //'about:blank'
+
+  '--enable-automation', 
+  '--disable-extensions', 
+  '--disable-default-apps', 
+  '--disable-component-extensions-with-background-pages'
 ];
 
-let getRandomUserAgent = () => {
-  const agent = randUserAgent("desktop", "chrome", "windows").replace(
-    "HeadlessChrome",
-    `Chrome`
-  );
-  const parser = new UAParser(agent);
-  let parserResults = parser.getResult();
-
-  if (parseFloat(parserResults.browser.major) < 85) return getRandomUserAgent();
-  if (parseFloat(parserResults.os.version) < 10) return getRandomUserAgent();
-
-  return agent;
-};
-
 function randomDevice() {
-  let deviceKeys = Object.keys(puppeteer.KnownDevices);
+  let deviceKeys = Object.keys(devices);
   let rDevice = deviceKeys[random(0, deviceKeys.length)];
-  let device = puppeteer.KnownDevices[rDevice];
+  let device = devices[rDevice];
 
   if (device.viewport.height > 500 && device.viewport.isLandscape) {
     return device;
@@ -164,7 +160,6 @@ function connectBrowser(executablePath, extra) {
         dataEvent.emit("debug", `Launching browser`);
         //dataEvent.emit("debug", `Launching browser with external arguments ${JSON.stringify(launchArguments)}`)
 
-        this.__userAgent = getRandomUserAgent();
         this.__device = randomDevice();
 
         if (extra.browserWSEndpoint) {
