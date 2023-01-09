@@ -6,18 +6,25 @@ const path = require("path");
 
 let devices = JSON.parse(fs.readFileSync(path.join(__dirname, "../devices.json"), "utf-8"))
 
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+
 const stealthPlugin = require("puppeteer-extra-plugin-stealth")()
 stealthPlugin.enabledEvasions.delete('iframe.contentWindow');
 stealthPlugin.enabledEvasions.delete('navigator.plugins');
+
+puppeteer.use(
+  AdblockerPlugin({
+    interceptResolutionPriority: 5,
+    blockTrackersAndAnnoyances: true,
+    useCache: true,
+  })
+)
 
 puppeteer.use(stealthPlugin);
 puppeteer.use(require('puppeteer-extra-plugin-timezone').default())
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
 
 let { sleep, random } = require("../publicFunctions/everything.js");
-
-const randUserAgent = require("rand-user-agent");
-const UAParser = require("ua-parser-js");
 
 let ignoredFlags = [
   //'--enable-automation',
@@ -80,7 +87,9 @@ function attemptLaunch(launchArguments, tryNum = 0) {
  * @param {boolean | undefined} extra.saveBandwith Bypass useless requests
  * @param {boolean | undefined} extra.headless Launch browser in headless mode?
  * @param {boolean | undefined} extra.cache If is should cache js and html files
+ * @param {boolean | undefined} extra.blockAds If is should block ads
  * @param {Object | undefined} extra.memoryStore Object with set and get functions for cache
+ * @param {Array | undefined} extra.extensions Array of extensions to use
  * @param {Array | undefined} extra.args Extra arguments to pass to chrome's launch arguments
  *
  * @returns {Promise<Browser>, Event<data>} the browser generator promise and data logger
@@ -93,11 +102,7 @@ function connectBrowser(executablePath, extra) {
   if (!extra) extra = {};
 
   let dataEvent = new EventEmitter();
-  let extensionFolder = fs
-    .readdirSync(path.join(__dirname, "../../extensions"))
-    .map(
-      (value) => (value = path.join(__dirname, `../../extensions/${value}`))
-    );
+  let extensionFolder = extra.extensions || []
 
   return {
     browser: () =>

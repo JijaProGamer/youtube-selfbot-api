@@ -17,11 +17,11 @@
     "puppeteer-cacher": "^1.0.3",
     "puppeteer-core": "^19.3.0",
     "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-adblocker": "^2.13.5",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.4",
     "puppeteer-extra-plugin-stealth": "^2.11.1",
     "puppeteer-extra-plugin-timezone": "^1.0.5",
     "puppeteer-page-proxy": "^1.3.0",
-    "rand-user-agent": "^1.0.93",
-    "ua-parser-js": "^1.0.32",
     "ytdl-core": "^4.11.2"
   }
 }
