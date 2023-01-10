@@ -14,9 +14,11 @@ function handleNewPage(noProxy) {
         if (!this.__handled) 
             reject(new Error(`Please call api.connectBrowser first`));
         
+
         if (!this.__launched) 
             reject(new Error(`api.connectBrowser was called, but failed doing so`));
         
+
 
         let browserPages = await this.browser.pages();
 
@@ -136,7 +138,24 @@ function handleNewPage(noProxy) {
             });
         }
 
-        //await page.setViewport(this.__device.viewport);
+        await page.evaluateOnNewDocument(() => {
+            localStorage.setItem("yt-player-quality",JSON.stringify({data: {quality:144, previousQuality: 144},expiration:1704219034431,creation:1673115034431}))
+
+            Object.defineProperty(window.document, 'hidden', {
+                get: function () {
+                    return false;
+                },
+                configurable: true
+            })
+            Object.defineProperty(window.document, 'visibilityState', {
+                get: function () {
+                    return 'visible';
+                },
+                configurable: true
+            })
+        })
+
+        // await page.setViewport(this.__device.viewport);
 
         await page.setRequestInterception(true);
         await page.setBypassCSP(true);
@@ -178,6 +197,7 @@ function handleNewPage(noProxy) {
                 return;
             
 
+
             let type = request.resourceType();
             let url = request.url();
 
@@ -188,10 +208,12 @@ function handleNewPage(noProxy) {
                     return request.abort();
                 
 
+
                 if (type === "media") {
                     if (url.includes("/audio")) 
                         return request.abort();
                     
+
                 }
             }
 
@@ -206,6 +228,7 @@ function handleNewPage(noProxy) {
                         if (noProxy || ! proxy || proxy == "direct://") 
                             return request.continue();
                         
+
                         return useProxy(request, proxy);
                     }
 
@@ -215,6 +238,7 @@ function handleNewPage(noProxy) {
                 if (noProxy || ! proxy || proxy == "direct://") 
                     return request.continue();
                 
+
                 useProxy(request, proxy);
             }
         });

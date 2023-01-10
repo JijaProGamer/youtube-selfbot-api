@@ -45,17 +45,12 @@ function initWatcher(page) {
 
     if (!isShort) {
       //await clickSelector(page, `#movie_player`)
+
       await waitForClassName(page, "ytp-settings-button");
 
       await page.evaluate((element) => {
         document.getElementsByClassName("ytp-settings-button")[0].click();
       });
-
-      this.__data.emit(`debug`, `Sucesfully stopped autoplay`);
-
-      await sleep(1000);
-
-      await clickSelector(page, `.ytp-right-controls > button:nth-child(1)`);
 
       this.__data.emit(`debug`, `Sucesfully pressed the settings button`);
 

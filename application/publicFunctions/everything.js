@@ -27,13 +27,26 @@ const waitForClassName = (page, ClassName, selectorNum = 0) => {
         page.evaluate((e) => {
             let {ClassName, selectorNum} = e
 
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                const style = window.getComputedStyle(element)
+
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+                    style.display !== "none"
+                );
+            }
+
             return new Promise((resolve, reject) => {
                 let start = new Date() / 1000
 
                 let interval = setInterval(() => {
                     let element = document.getElementsByClassName(ClassName)[selectorNum]
 
-                    if(element){                        
+                    if(element && isInViewport(element)){                        
                         clearInterval(interval)
                         resolve()
                     } else {

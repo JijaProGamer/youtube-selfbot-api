@@ -2,6 +2,7 @@ const { EventEmitter } = require("events");
 
 const puppeteer = require("puppeteer-extra");
 const fs = require("fs");
+const os = require("os")
 const path = require("path");
 
 let devices = JSON.parse(fs.readFileSync(path.join(__dirname, "../devices.json"), "utf-8"))
@@ -14,7 +15,7 @@ stealthPlugin.enabledEvasions.delete('navigator.plugins');
 
 puppeteer.use(
   AdblockerPlugin({
-    interceptResolutionPriority: 5,
+    //interceptResolutionPriority: 5,
     blockTrackersAndAnnoyances: true,
     useCache: true,
   })
@@ -41,9 +42,9 @@ let ignoredFlags = [
   //'--mute-audio',
   //'about:blank'
 
-  '--enable-automation', 
-  '--disable-extensions', 
-  '--disable-default-apps', 
+  '--enable-automation',
+  '--disable-extensions',
+  '--disable-default-apps',
   '--disable-component-extensions-with-background-pages'
 ];
 
@@ -120,25 +121,18 @@ function connectBrowser(executablePath, extra) {
             `--mute-audio`,
             `--always-authorize-plugins`,
             "--proxy-bypass-list=*",
-            `--disable-web-security`,
+            //`--disable-web-security`,
             `--ignore-certificate-errors`,
             `--disable-session-crashed-bubble`,
 
             "--disable-canvas-aa",
-            "--disable-2d-canvas-clip-aa", 
+            "--disable-2d-canvas-clip-aa",
             "--disable-dev-shm-usage",
-            //"--use-gl=swiftshader",
             "--enable-webgl",
             "--hide-scrollbars",
             "--no-first-run",
             "--disable-infobars",
             "--disable-breakpad",
-
-            "--no-zygote",
-            "--no-sandbox",
-
-            "--disable-setuid-sandbox",
-            //`--use-gl=egl`,
           ],
           //ignoreDefaultArgs: true,
           executablePath: executablePath,
@@ -147,14 +141,19 @@ function connectBrowser(executablePath, extra) {
           userDataDir: extra.userDataDir,
         };
 
+        if(os.platform() !== "win32"){
+          launchArguments.args.push(`--no-zygote`, `--no-sandbox`, `--disable-setuid-sandbox`);
+          launchArguments.args.push(`--single-process`);
+        }
+
         if (extra.args)
           launchArguments.args = [...launchArguments.args, ...extra.args];
         if (extra.userDataDir)
           launchArguments.args.push(`--user-data-dir=${extra.userDataDir}`);
         if (extra.headless) launchArguments.args.push(`--headless=chrome`);
-        if(extra.no_visuals) launchArguments.args.push(`--disable-gl-drawing-for-tests`);
+        if (extra.no_visuals) launchArguments.args.push(`--disable-gl-drawing-for-tests`);
 
-        launchArguments.args.push(
+        if (extensionFolder.length > 0) launchArguments.args.push(
           `--disable-extensions-except=${extensionFolder.join(",")}`
         );
 
