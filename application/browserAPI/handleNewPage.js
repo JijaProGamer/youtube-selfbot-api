@@ -139,6 +139,15 @@ function handleNewPage(noProxy) {
         }
 
         await page.evaluateOnNewDocument(() => {
+            setInterval(() => {
+                let e = document.querySelector(`#content > div.body.style-scope.ytd-consent-bump-v2-lightbox > div.eom-buttons.style-scope.ytd-consent-bump-v2-lightbox > div:nth-child(1) > ytd-button-renderer:nth-child(2) > yt-button-shape > button`)
+                if(e){
+                    e.click()
+                }
+            }, 1000)
+        })
+
+        await page.evaluateOnNewDocument(() => {
             localStorage.setItem("yt-player-quality",JSON.stringify({data: {quality:144, previousQuality: 144},expiration:1704219034431,creation:1673115034431}))
 
             Object.defineProperty(window.document, 'hidden', {
