@@ -1,0 +1,25 @@
+{
+  "name": "youtube-selfbot-api",
+  "version": "3.3.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fast_CI": "node ./CI/fast.js",
+    "slow_CI": "node ./CI/slow.js"
+  },
+  "keywords": [],
+  "author": "JijaProGamer",
+  "license": "MIT",
+  "dependencies": {
+    "await-to-js": "^3.0.0",
+    "better-ytdl-core": "^1.0.1",
+    "proxy-agent-v2": "^1.0.3",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.4",
+    "puppeteer-extra-plugin-fingerprinter": "^1.0.1",
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
+    "puppeteer-page-proxy": "^1.3.0",
+    "uuid": "^9.0.0"
+  }
+}
