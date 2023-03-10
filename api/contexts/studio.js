@@ -242,6 +242,7 @@ module.exports = class {
                     let finishButton = await this.#page.waitForSelector(`#done-button`).catch(reject)
                     await finishButton.click().catch(reject)
 
+                    await sleep(7500)
                     resolve(id)
                 } else {
                     await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress/span`).catch(reject)
@@ -277,6 +278,7 @@ module.exports = class {
                     let finishButton = await this.#page.waitForSelector(`#done-button`).catch(reject)
                     await finishButton.click().catch(reject)
 
+                    await sleep(7500)
                     resolve(id)
                 }
             } catch (err) {
