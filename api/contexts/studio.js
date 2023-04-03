@@ -178,7 +178,7 @@ module.exports = class {
                     await sleep(1000)
                 }
 
-                await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/tp-yt-paper-radio-button[3]/div[1]`).catch(reject)
+                await this.#page.waitForSelector(`tp-yt-paper-radio-button[name="PUBLIC"]`).catch(reject)
 
                 if (opts.privacy == "schedule") {
                     if (opts.scheduleDate < Date.now()) {
@@ -219,7 +219,7 @@ module.exports = class {
                 } else {
                     switch (opts.privacy) {
                         case "public":
-                            await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/tp-yt-paper-radio-button[3]/div[1]`).catch(reject)
+                            await this.#page.click(`tp-yt-paper-radio-button[name="PUBLIC"]`).catch(reject)
 
                             if (opts.premiere) {
                                 await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/div[2]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
@@ -227,10 +227,10 @@ module.exports = class {
                             }
                             break;
                         case "private":
-                            await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/tp-yt-paper-radio-button[1]/div[1]`).catch(reject)
+                            await this.#page.click(`tp-yt-paper-radio-button[name="PRIVATE"]`).catch(reject)
                             break;
                         case "unlisted":
-                            await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/tp-yt-paper-radio-button[2]/div[1]`).catch(reject)
+                            await this.#page.click(`tp-yt-paper-radio-button[name="UNLISTED"]`).catch(reject)
                             break;
                     }
                 }

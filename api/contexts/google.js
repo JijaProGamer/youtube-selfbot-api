@@ -147,6 +147,7 @@ module.exports = class {
                     await this.#page.click(`#passwordNext`).catch(reject)
 
                     await Promise.race([
+                        this.#page.waitForSelector(`button[jsname="bySMBb"]`),
                         this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForXPath(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
                         this.#page.waitForXPath(`//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`),
@@ -197,6 +198,13 @@ module.exports = class {
                             this.#browser.on("cancelCodeHandling", reject)
                             this.#browser.on("codeHandled", resolve)
                         })
+                    }
+
+                    if(await this.#page.$(`button[jsname="bySMBb"]`)){
+                        await Promise.all([
+                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.click(`button[jsname="bySMBb"]`)
+                        ])
                     }
 
                     await this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`).catch(reject)
