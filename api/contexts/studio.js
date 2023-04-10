@@ -237,7 +237,7 @@ module.exports = class {
 
                 let idElement = await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[3]/ytcp-video-info/div/div[2]/div[1]/div[2]/span/a`, { visible: true }).catch(reject)
                 let id = await idElement.evaluate(e => e.textContent.split("/").pop().trim()).catch(reject)
-
+                
                 if (opts.skipProcessing) {
                     let finishButton = await this.#page.waitForSelector(`#done-button`).catch(reject)
                     await finishButton.click().catch(reject)
