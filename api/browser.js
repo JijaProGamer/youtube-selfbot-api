@@ -217,23 +217,6 @@ module.exports = class {
                                 pgClass.__onContinue()
                                 pgClass.__onContinue = undefined
                             }
-
-                            /*let sequence = parseInt(headers["x-sequence-num"])
-        
-                            if (status == 200 && sequence) {
-                                if (!sequenceSaved[sequence]) {
-                                    sequenceSaved[sequence] = 1
-                                } else {
-                                    sequenceSaved[sequence] += 1
-        
-                                    if (sequenceSaved[sequence] > 4) {                                
-                                        if(!pgClass.livestream_ended){
-                                            this.emit("livestream_ended")
-                                            pgClass.livestream_ended = true
-                                        }
-                                    }
-                                }
-                            }*/
                         }
 
                         if ((req.method() == "GET" || isVideo) && (status < 300 || status > 399)) {

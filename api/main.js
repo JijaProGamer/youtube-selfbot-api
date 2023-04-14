@@ -146,16 +146,16 @@ module.exports = class {
                     webgl_renderer: (e) => true,
                     userAgent: (e) => e.includes("Windows NT 10.0"),
                     language: "en-US,en",
-                    //viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
-                    viewport: {height: 900, width: 1440},
-                    cpus: (e) => e >= 32,
-                    memory: (e) => e <= 64,
-                    compatibleMediaMimes: (e) => {return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0},
-                    canvas: {chance: 95, shift: 0},
-                  },
-                  staticFingerprint: this.#extra.fingerprint,
+                    viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
+                    cpus: (e) => e >= 4,
+                    memory: (e) => e <= 8,
+                    compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
+                    canvas: () => true,
+                },
+                staticFingerprint: this.#extra.fingerprint,
             })
 
+            StealthPlugin.enabledEvasions.delete('navigator.plugins');
             puppeteer.use(StealthPlugin)
 
             puppeteer.launch(this.#opts)
@@ -175,25 +175,21 @@ module.exports = class {
             const Fingerprinter = await import('puppeteer-extra-plugin-fingerprinter')
             const StealthPlugin = Fingerprinter.createFingerprinterInterface({
                 generator_style: "per_browser",
-                proxy: this.#extra.proxy,
-                proxy_priority: 10,
                 fingerprint_generator: {
                     webgl_vendor: (e) => true,
                     webgl_renderer: (e) => true,
                     userAgent: (e) => e.includes("Windows NT 10.0"),
-                    language: () => "en-US,en",
+                    language: "en-US,en",
                     viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
-                    cpus: (e) => e >= 32,
-                    memory: (e) => e <= 64,
-                    compatibleMediaMimes: (e) => {return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0},
-                    canvas: {chance: 95, shift: 0},
-                  },
-                  staticFingerprint: this.#extra.fingerprint,
+                    cpus: (e) => e >= 4,
+                    memory: (e) => e <= 8,
+                    compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
+                    canvas: () => true,
+                },
+                staticFingerprint: this.#extra.fingerprint,
             })
 
-            StealthPlugin.enabledEvasions.delete('iframe.contentWindow');
-            StealthPlugin.enabledEvasions.delete('navigator.plugins');
-
+            Fingerprinter.enabledEvasions.delete('navigator.plugins');
             puppeteer.use(StealthPlugin)
 
             puppeteer.connect({ ...this.#opts, browserWSEndpoint: wsEndpoint })
@@ -245,7 +241,7 @@ module.exports = class {
                 }).catch(reject)
             }
 
-            if(!info) return;
+            if (!info) return;
 
             let vFormat = info.formats
                 .filter((v) => v.width && v.height)

@@ -21,9 +21,13 @@ I am working over 30 hours a week on this project, all for free
 so I will be thankfull for any donation
 
 paypal: https://www.paypal.me/bloxxywashere
+
 patreon: https://www.patreon.com/Bloxxy213/membership
+
 bitcoin: bc1qqnv3wsfhlr4vmyqew34rkcdrll2p82hgyynq3k
+
 monero: 456JAvFCKFsHMThex4nqgjQpJE8LHaBtuSTFSGRgbZqwhA6giCt4DzGVxBbL3nrgAD7cdLBckMm75C8pg3nc3Yxr18HKPE1
+
 etherum: 0x422fB1E7d4201fBD77f493fAB7F4BAE6f5f7a093
 
 # Requirements

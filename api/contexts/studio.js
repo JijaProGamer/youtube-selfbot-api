@@ -154,9 +154,10 @@ module.exports = class {
                 }
 
                 await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[5]/div[3]/ytcp-form-language-input/ytcp-form-select/ytcp-select/ytcp-text-dropdown-trigger`).catch(reject)
+                await sleep(500);
                 await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[5]/div[3]/ytcp-form-language-input/ytcp-form-select/ytcp-select/ytcp-text-dropdown-trigger`).catch(reject)
 
-                const langButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.language.toLowerCase()}')]`, { timeout: 5000 }).catch(reject)
+                const langButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.language.toLowerCase()}')]`).catch(reject)
 
                 if (!langButton) return reject(new Error(`Invalid language`))
                 await this.#page.evaluate((el) => el.click(), langButton)
@@ -165,7 +166,7 @@ module.exports = class {
 
                 if (categoryFrame) {
                     await categoryFrame.click().catch(reject)
-                    const categoryButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.category.toLowerCase()}')]`, { timeout: 5000 }).catch(reject)
+                    const categoryButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.category.toLowerCase()}')]`).catch(reject)
 
                     if (!categoryButton) return reject(new Error(`Invalid category`))
                     await this.#page.evaluate((el) => el.click(), categoryButton)
@@ -235,7 +236,9 @@ module.exports = class {
                     }
                 }
 
-                let idElement = await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[3]/ytcp-video-info/div/div[2]/div[1]/div[2]/span/a`, { visible: true }).catch(reject)
+
+                let idElement = await this.#page.waitForSelector(`a.ytcp-video-info`, { visible: true }).catch(reject)
+                
                 let id = await idElement.evaluate(e => e.textContent.split("/").pop().trim()).catch(reject)
                 
                 if (opts.skipProcessing) {
