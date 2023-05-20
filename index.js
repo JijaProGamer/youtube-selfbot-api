@@ -242,6 +242,10 @@ module.exports = class selfbot {
     }
 
     getVideoInfo(id, proxy, cookies) {
-        getVideoInfo(id, proxy, cookies)
+        return new Promise((resolve, reject) => {
+            getVideoInfo(id, proxy, cookies)
+            .then(resolve)
+            .catch(reject)
+        })
     }
 }
