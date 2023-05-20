@@ -148,10 +148,24 @@ module.exports = class {
 
                     await Promise.race([
                         this.#page.waitForSelector(`button[jsname="bySMBb"]`),
+                        this.#page.waitForSelector(`[data-challengetype="12"]`),
                         this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForXPath(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
                         this.#page.waitForXPath(`//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`),
                     ]).catch(reject)
+
+                    if(await this.#page.$(`[data-challengetype="12"]`)){
+                        await Promise.all([
+                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.click(`[data-challengetype="12"]`)
+                        ]);
+
+                        await sleep(1500);
+                        await this.#page.type(`#knowledge-preregistered-email-response`, accountInfo.recovery, { delay: 75 }).catch(reject)
+                        await this.#page.click(`button`)
+                        
+                        await sleep(1000);
+                    }
 
                     let pInc = await this.#page.$x(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`).catch(reject)
                     if (pInc[0]) {

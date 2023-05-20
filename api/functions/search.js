@@ -46,8 +46,6 @@ let filter_paths = {
     },
 }
 
-let sleep = (ms) => new Promise(r => setTimeout(r, ms))
-
 module.exports = (pageContainer, options) => {
     return new Promise(async (resolve, reject) => {
         try {
