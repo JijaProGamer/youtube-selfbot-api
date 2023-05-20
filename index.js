@@ -23,8 +23,8 @@ async function requestInterceptor(page, request, noProxy, useProxy, abort) {
     let bannedResourceTypes = ["image", "font", "other", "media"]
     let ACCEPTED_COOKIES = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
-    let page_url = await page.url()
-    let url = await request.url()
+    let page_url = page.url()
+    let url = request.url()
     let currentCookies = await page.cookies()
     let type = request.resourceType()
     let isLoggedIn = false
@@ -53,7 +53,7 @@ async function requestInterceptor(page, request, noProxy, useProxy, abort) {
         if (isDocument) return noProxy()
     }
        
-    useProxy()
+    return useProxy()
 }
 
 module.exports = class selfbot {
