@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "3.3.9",
+  "version": "3.4.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "better-ytdl-core": "^1.0.1",
     "proxy-agent-v2": "^1.0.3",
     "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-fingerprinter": "^1.1.1",
+    "puppeteer-extra-plugin-fingerprinter": "^1.1.3",
     "uuid": "^9.0.0"
   }
 }

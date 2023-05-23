@@ -21,7 +21,7 @@ async function generateFingerprint(){
 
 async function requestInterceptor(page, request, noProxy, useProxy, abort) {
     let bannedResourceTypes = ["image", "font", "other", "media"]
-    let ACCEPTED_COOKIES = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
+    let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
     let page_url = page.url()
     let url = request.url()
@@ -30,7 +30,7 @@ async function requestInterceptor(page, request, noProxy, useProxy, abort) {
     let isLoggedIn = false
 
     for (let cookie of currentCookies) {
-        if (ACCEPTED_COOKIES.includes(cookie.name)) {
+        if (acceptedCookies.includes(cookie.name)) {
             isLoggedIn = true
             break
         }
