@@ -1,5 +1,5 @@
 const ProxyAgent = require("proxy-agent-v2")
-const ytdl = require("better-ytdl-core")
+const ytdl = require("ytdl-core")
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -9,7 +9,7 @@ function getVideoInfo(id, proxy, cookies) {
             let info
 
             if (proxy == "direct://" || !proxy || proxy == "direct") {
-                info = await ytdl.getInfo(id, {
+                info = await ytdl.getBasicInfo(id, {
                     requestOptions: {
                         headers: {
                             cookie: cookies || ""
@@ -18,7 +18,7 @@ function getVideoInfo(id, proxy, cookies) {
                 })
             } else {
                 let agent = new ProxyAgent(proxy)
-                info = await ytdl.getInfo(id, {
+                info = await ytdl.getBasicInfo(id, {
                     requestOptions: {
                         agent,
                         headers: {
