@@ -92,7 +92,6 @@ module.exports = class {
                 let pgClass = new pageClass(page, this.#extra, this)
                 pgClass.CDPSession = await page.target().createCDPSession().catch(reject)
 
-                await page.setRequestInterception(true).catch(reject)
                 await page.setBypassCSP(true).catch(reject)
 
                 await pgClass.CDPSession.send("Page.enable").catch(reject)
@@ -147,6 +146,9 @@ module.exports = class {
                             }
 
                             let length = parseInt(headers["content-length"]) || (buffer && Buffer.byteLength(buffer) || 0)
+                            length += JSON.stringify(headers).length
+                            length += `CONNECT ${url}:443`.length
+
                             this.emit("bandwith", pgClass.id, rType, length)
                         }
                     }
@@ -167,7 +169,7 @@ module.exports = class {
                 await pgClass.CDPSession.send("Network.setCacheDisabled", { cacheDisabled: false }).catch(reject)
                 await page.setBypassCSP(true).catch(reject)
 
-                setTimeout(() => resolve(pgClass), 250)
+                resolve(pgClass)
             } catch (err) {
                 reject(new Error(err))
             }

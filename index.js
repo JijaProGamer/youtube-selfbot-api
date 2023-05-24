@@ -39,16 +39,12 @@ async function requestInterceptor(page, request, noProxy, useProxy, abort) {
     if (url.startsWith("data:image")) return noProxy()
     if (url.includes("gstatic")) return noProxy()
 
-    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/"))
-        return abort()
-
+    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return abort()
     let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
 
     if (request.method() == "GET") {
         if (bannedResourceTypes.includes(type)) return abort()
-
         if (url.includes("fonts.")) return abort()
-
         if (isDocument && type == "document") return useProxy()
         if (isDocument) return noProxy()
     }
