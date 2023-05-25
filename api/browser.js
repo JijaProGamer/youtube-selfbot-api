@@ -92,7 +92,7 @@ module.exports = class {
                 let pgClass = new pageClass(page, this.#extra, this)
                 pgClass.CDPSession = await page.target().createCDPSession().catch(reject)
 
-                await page.setBypassCSP(true).catch(reject)
+                /*await page.setBypassCSP(true).catch(reject)
 
                 await pgClass.CDPSession.send("Page.enable").catch(reject)
                 await pgClass.CDPSession.send("Page.setWebLifecycleState", { state: "active" }).catch(reject)
@@ -167,7 +167,7 @@ module.exports = class {
 
                 await page.setCacheEnabled(true).catch(reject)
                 await pgClass.CDPSession.send("Network.setCacheDisabled", { cacheDisabled: false }).catch(reject)
-                await page.setBypassCSP(true).catch(reject)
+                await page.setBypassCSP(true).catch(reject)*/
 
                 resolve(pgClass)
             } catch (err) {

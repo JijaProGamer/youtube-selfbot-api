@@ -20,42 +20,38 @@ async function generateFingerprint(){
 }
 
 async function requestInterceptor(page, request, noProxy, useProxy, abort) {
-    try {
-        let bannedResourceTypes = ["image", "font", "other", "media"]
-        let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
-    
-        let page_url = page.url()
-        let url = request.url()
-        let currentCookies = await page.cookies()
-        let type = request.resourceType()
-        let isLoggedIn = false
-    
-        for (let cookie of currentCookies) {
-            if (acceptedCookies.includes(cookie.name)) {
-                isLoggedIn = true
-                break
-            }
-        }
-    
-        if (url.startsWith("data:image")) return noProxy()
-        if (url.includes("gstatic")) return noProxy()
-    
-        if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return abort()
-        let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
-    
-        if (request.method() == "GET") {
-            if (bannedResourceTypes.includes(type)) return abort()
-            if (url.includes("fonts.")) return abort()
-            if (isDocument && type == "document") return useProxy()
-            if (isDocument) return noProxy()
-        }
-           
-        return useProxy()
-    } catch(err) {
-        if(!err.toString().includes("handled")){
-            throw new Error(err)
+    let bannedResourceTypes = ["image", "font", "other", "media"]
+    let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
+
+    let page_url = page.url()
+    let url = request.url()
+    let currentCookies = await page.cookies()
+    let type = request.resourceType()
+    let isLoggedIn = false
+
+    for (let cookie of currentCookies) {
+        if (acceptedCookies.includes(cookie.name)) {
+            isLoggedIn = true
+            break
         }
     }
+
+    if (url.startsWith("data:image")) return "direct"
+    if (url.includes("gstatic")) return "direct"
+
+    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return "abort"
+
+    if (request.method() == "GET") {
+        let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
+
+        if (bannedResourceTypes.includes(type)) return "abort"
+        if (url.includes("fonts.")) return "abort"
+
+        if (isDocument && type == "document") return "proxy"
+        if (isDocument) return "direct"
+    }
+
+    return "proxy"
 }
 
 module.exports = class selfbot {
@@ -182,9 +178,8 @@ module.exports = class selfbot {
             fingerprint.proxy = this.#extra.proxy
 
             const StealthPlugin = Fingerprinter.createFingerprinterInterface({
-                generator_style: "per_browser",
                 staticFingerprint: fingerprint,
-                requestInterceptor
+                requestInterceptor,
             })
 
             //StealthPlugin.enabledEvasions.delete('navigator.plugins');
