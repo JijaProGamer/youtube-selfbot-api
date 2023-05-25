@@ -75,7 +75,15 @@ module.exports = class {
                     lastState = videoStates[newState - 1]
                 }
 
-                await this.#page.exposeFunction("videoStateChanged", videoStateChanged).catch(reject)
+                const hasVideoStateChanged = await this.#page.evaluate(() => window.videoStateChanged);
+                if (!hasVideoStateChanged) {
+                    await this.#page.exposeFunction("videoStateChanged", videoStateChanged).catch(reject)
+                } else {
+                    await playerElement.evaluate(p => {
+                        p.removeEventListener('onStateChange', videoStateChanged)
+                    }).catch(reject)
+                }
+
                 await playerElement.evaluate(p => {
                     p.addEventListener('onStateChange', videoStateChanged)
                 }).catch(reject)
