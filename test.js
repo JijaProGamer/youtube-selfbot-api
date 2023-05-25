@@ -3,7 +3,6 @@ let bot = new selfbot("C:\\Program Files\\Google\\Chrome\\Application\\chrome.ex
 
 bot.launch().then(async (browser) => {
     let page = await browser.newPage()
-    console.log(await page.gotoVideo("direct", "1f42c4nNzs4"))
+    await page.gotoVideo("direct", "1f42c4nNzs4")
 
-    console.log(page)
 })
