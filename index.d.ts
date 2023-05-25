@@ -2,7 +2,7 @@ import { Fingerprint } from "puppeteer-extra-plugin-fingerprinter";
 
 declare global {
     interface Window {
-        videoStateChanged: () => void
+        videoStateChanged: (newState: number) => void
     }
 }
 
@@ -26,6 +26,6 @@ export class selfbot {
     connect(ws_url: string): Promise<Browser>;
     launch(): Promise<Browser>;
     getID(url: string): string | null;
-    
+
     constructor(browserPath: string, opts: selfbotOptions, browser_args: string[], extensions: string[]);
 }
