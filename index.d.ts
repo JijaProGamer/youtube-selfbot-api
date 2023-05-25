@@ -1,5 +1,11 @@
 import { Fingerprint } from "puppeteer-extra-plugin-fingerprinter";
 
+declare global {
+    interface Window {
+        videoStateChanged: () => void
+    }
+}
+
 
 interface Browser {
 
