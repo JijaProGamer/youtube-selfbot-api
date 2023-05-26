@@ -2,11 +2,13 @@ const fs = require("fs")
 const path = require("path")
 
 let pageClass = require("./page.js");
+const puppeeer = require("puppeteer");
 let extensions = fs.readdirSync(path.join(__dirname, "/defaultExtensions"))
     .map((v) => v = path.join(__dirname, "/defaultExtensions/", v))
     .map((v) => v = require(v))
 
-module.exports = class {
+
+module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
     #opts = {}
     #eventStore = {}
     #browser = {}
@@ -15,6 +17,8 @@ module.exports = class {
     setTimezone = false
 
     constructor(browser, opts, extra) {
+        super()
+        
         this.#browser = browser
         this.#opts = opts
         this.#extra = extra
@@ -92,7 +96,7 @@ module.exports = class {
                 let pgClass = new pageClass(page, this.#extra, this)
                 pgClass.CDPSession = await page.target().createCDPSession().catch(reject)
 
-                /*await page.setBypassCSP(true).catch(reject)
+                await page.setBypassCSP(true).catch(reject)
 
                 await pgClass.CDPSession.send("Page.enable").catch(reject)
                 await pgClass.CDPSession.send("Page.setWebLifecycleState", { state: "active" }).catch(reject)
@@ -167,7 +171,7 @@ module.exports = class {
 
                 await page.setCacheEnabled(true).catch(reject)
                 await pgClass.CDPSession.send("Network.setCacheDisabled", { cacheDisabled: false }).catch(reject)
-                await page.setBypassCSP(true).catch(reject)*/
+                await page.setBypassCSP(true).catch(reject)
 
                 resolve(pgClass)
             } catch (err) {

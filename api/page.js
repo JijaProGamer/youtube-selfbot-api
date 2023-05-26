@@ -5,6 +5,7 @@ let studio = require("./contexts/studio.js")
 const uuid = require("uuid")
 const to = require("await-to-js").default
 const getVideoInfo = require("./getVideoInfo")
+const puppeteer = require("puppeteer")
 
 let methodFunctions = {
     search: require("./functions/search.js"),
@@ -12,7 +13,7 @@ let methodFunctions = {
     suggestions: require("./functions/suggestions.js"),
 }
 
-module.exports = class {
+module.exports = class YoutubeSelfPage extends puppeteer.Page {
     page = {}
     #extra = {}
     #browser = {}
@@ -24,6 +25,8 @@ module.exports = class {
     last_video_request = Date.now()
 
     constructor(page, extra, browser) {
+        super()
+        
         this.page = page
         this.#extra = extra
         this.#browser = browser
