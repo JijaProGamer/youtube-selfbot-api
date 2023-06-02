@@ -13,28 +13,106 @@ let methodFunctions = {
     suggestions: require("./functions/suggestions.js"),
 }
 
-module.exports = class YoutubeSelfPage extends puppeteer.Page {
+module.exports = class YoutubeSelfPage {
     page = {}
-    #extra = {}
-    #browser = {}
+    extra = {}
+    browser = {}
     videoInfo = {}
-    CDPSession = {}
+    CDPSession = null
     id = uuid.v4();
     cookies = ""
     __ignore_video_requests = true
     last_video_request = Date.now()
 
     constructor(page, extra, browser) {
-        super()
-        
         this.page = page
-        this.#extra = extra
-        this.#browser = browser
+        this.extra = extra
+        this.browser = browser
+    }
+
+    $() { return this.page.$(...arguments) }
+    $eval() { return this.page.$eval(...arguments) }
+    $$() { return this.page.$$(...arguments) }
+    $$eval() { return this.page.$$eval(...arguments) }
+    $x() { return this.page.$x(...arguments) }
+    addScriptTag() { return this.page.addScriptTag(...arguments) }
+    addStyleTag() { return this.page.addStyleTag(...arguments) }
+    authenticate() { return this.page.authenticate(...arguments) }
+    bringToFront() { return this.page.bringToFront(...arguments) }
+    browser() { return this.page.browser(...arguments) }
+    browserContext() { return this.page.browserContext(...arguments) }
+    click() { return this.page.click(...arguments) }
+    close() { return this.page.close(...arguments) }
+    content() { return this.page.content(...arguments) }
+    createPDFStream() { return this.page.createPDFStream(...arguments) }
+    emulate() { return this.page.emulate(...arguments) }
+    emulateCPUThrottling() { return this.page.emulateCPUThrottling(...arguments) }
+    emulateIdleState() { return this.page.emulateIdleState(...arguments) }
+    emulateMediaType() { return this.page.emulateMediaType(...arguments) }
+    emulateNetworkConditions() { return this.page.emulateNetworkConditions(...arguments) }
+    emulateTimezone() { return this.page.emulateTimezone(...arguments) }
+    emulateVisionDeficiency() { return this.page.emulateVisionDeficiency(...arguments) }
+    evaluateHandle() { return this.page.evaluateHandle(...arguments) }
+    evaluate() { return this.page.evaluate(...arguments) }
+    evaluateOnNewDocument() { return this.page.evaluateOnNewDocument(...arguments) }
+    exposeFunction() { return this.page.exposeFunction(...arguments) }
+    focus() { return this.page.focus(...arguments) }
+    frames() { return this.page.frames(...arguments) }
+    getDefaultTimeout() { return this.page.getDefaultTimeout(...arguments) }
+    goBack() { return this.page.goBack(...arguments) }
+    goForward() { return this.page.goForward(...arguments) }
+    goto() { return this.page.goto(...arguments) }
+    hover() { return this.page.hover(...arguments) }
+    isClosed() { return this.page.isClosed(...arguments) }
+    isDragInterceptionEnabled() { return this.page.isDragInterceptionEnabled(...arguments) }
+    isJavaScriptEnabled() { return this.page.isJavaScriptEnabled(...arguments) }
+    isServiceWorkerBypassed() { return this.page.isServiceWorkerBypassed(...arguments) }
+    mainFrame() { return this.page.mainFrame(...arguments) }
+    metrics() { return this.page.metrics(...arguments) }
+    off() { return this.page.off(...arguments) }
+    on() { return this.page.on(...arguments) }
+    once() { return this.page.once(...arguments) }
+    pdf() { return this.page.pdf(...arguments) }
+    queryObjects() { return this.page.queryObjects(...arguments) }
+    reload() { return this.page.reload(...arguments) }
+    removeScriptToEvaluateOnNewDocument() { return this.page.removeScriptToEvaluateOnNewDocument(...arguments) }
+    screenshot() { return this.page.screenshot(...arguments) }
+    select() { return this.page.select(...arguments) }
+    setBypassServiceWorker() { return this.page.setBypassServiceWorker(...arguments) }
+    setContent() { return this.page.setContent(...arguments) }
+    setDragInterception() { return this.page.setDragInterception(...arguments) }
+    setExtraHTTPHeaders() { return this.page.setExtraHTTPHeaders(...arguments) }
+    setJavaScriptEnabled() { return this.page.setJavaScriptEnabled(...arguments) }
+    setOfflineMode() { return this.page.setOfflineMode(...arguments) }
+    tap() { return this.page.tap(...arguments) }
+    target() { return this.page.target(...arguments) }
+    title() { return this.page.title(...arguments) }
+    url() { return this.page.url(...arguments) }
+    viewport() { return this.page.viewport(...arguments) }
+    waitForDevicePrompt() { return this.page.waitForDevicePrompt(...arguments) }
+    waitForFileChooser() { return this.page.waitForFileChooser(...arguments) }
+    waitForFrame() { return this.page.waitForFrame(...arguments) }
+    waitForFunction() { return this.page.waitForFunction(...arguments) }
+    waitForNetworkIdle() { return this.page.waitForNetworkIdle(...arguments) }
+    waitForNavigation() { return this.page.waitForNavigation(...arguments) }
+    waitForRequest() { return this.page.waitForRequest(...arguments) }
+    waitForResponse() { return this.page.waitForResponse(...arguments) }
+    waitForSelector() { return this.page.waitForSelector(...arguments) }
+    waitForTimeout() { return this.page.waitForTimeout(...arguments) }
+    waitForXPath() { return this.page.waitForXPath(...arguments) }
+    workers() { return this.page.workers(...arguments) }
+
+    createCDPSession() {
+        return new Promise(async (resolve, reject) => {
+            this.CDPSession = await this.page.target().createCDPSession().catch(reject)
+
+            resolve()
+        })
     }
 
     gotoVideo(method = "direct", id, options = {}) {
         return new Promise(async (resolve, reject) => {
-            this.videoInfo = await getVideoInfo(id, this.#extra.proxy, await this.getFormattedCookies())
+            this.videoInfo = await getVideoInfo(id, this.extra.proxy, await this.getFormattedCookies())
 
             let methods = []
 
@@ -86,7 +164,7 @@ module.exports = class YoutubeSelfPage extends puppeteer.Page {
                 success = true
             }
 
-            this.#browser.emit("newVideoContext", this.id, good, id)
+            this.browser.emit("newVideoContext", this.id, good, id)
 
             let watcherContext = this.createWatcherContext()
             watcherContext.setup().then(() => {
@@ -115,24 +193,18 @@ module.exports = class YoutubeSelfPage extends puppeteer.Page {
     }
 
     createStudioContext() {
-        let context = new studio(this.page, this, this.#extra, this.#browser)
+        let context = new studio(this.page, this, this.extra, this.browser)
         return context
     }
 
     createWatcherContext() {
-        let context = new watcher(this.page, this, this.#extra, this.#browser)
+        let context = new watcher(this.page, this, this.extra, this.browser)
         return context
     }
 
     createGoogleContext() {
-        let context = new google(this.page, this, this.#extra, this.#browser)
+        let context = new google(this.page, this, this.extra, this.browser)
         return context
-    }
-
-    close() {
-        return new Promise(async (resolve, reject) => {
-            this.page.close().catch(reject).then(resolve)
-        })
     }
 
     getCookies() {
@@ -191,6 +263,7 @@ module.exports = class YoutubeSelfPage extends puppeteer.Page {
                         let parts = cookie.split("=")
                         let name = parts.shift()
                         let value = parts.join("=")
+
                         res.push({
                             name,
                             value,
@@ -212,7 +285,6 @@ module.exports = class YoutubeSelfPage extends puppeteer.Page {
                     cookies = res
                 }
             }
-
 
             this.cookies = await this.getFormattedCookies(cookies).catch(reject)
             await this.CDPSession.send("Network.setCookies", { cookies: cookies }).catch(reject)

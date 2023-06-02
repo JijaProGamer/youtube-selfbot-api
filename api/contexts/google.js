@@ -147,7 +147,8 @@ module.exports = class {
                     await this.#page.click(`#passwordNext`).catch(reject)
 
                     await Promise.race([
-                        this.#page.waitForSelector(`button[jsname="bySMBb"]`),
+                        this.#page.waitForSelector(`div[jsname="bySMBb"]`),
+                        this.#page.waitForSelector(`div[jsname="B34EJ"]`),
                         this.#page.waitForSelector(`[data-challengetype="12"]`),
                         this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForXPath(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
@@ -168,9 +169,10 @@ module.exports = class {
                     }
 
                     let pInc = await this.#page.$x(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`).catch(reject)
-                    if (pInc[0]) {
+                    let pInc2 = await this.#page.$$(`div[jsname="B34EJ"]`).catch(reject)
+                    if (pInc[0] || pInc2[0]) {
                         await sleep(500)
-                        let instructions = await text(pInc[0])
+                        let instructions = await text(pInc[0] || pInc2[0])
 
                         this.#browser.emit("loginFailed", this.#parent.id, {
                             header: "wrong password",
@@ -218,6 +220,13 @@ module.exports = class {
                         await Promise.all([
                             this.#page.waitForNavigation({waitUntil: "networkidle2"}),
                             this.#page.click(`button[jsname="bySMBb"]`)
+                        ])
+                    }
+
+                    if(await this.#page.$(`#yDmH0d > c-wiz > div > div > div > div.L5MEH.Bokche.ypEC4c > div.lq3Znf > div:nth-child(1) > button`)){
+                        await Promise.all([
+                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.click(`#yDmH0d > c-wiz > div > div > div > div.L5MEH.Bokche.ypEC4c > div.lq3Znf > div:nth-child(1) > button`)
                         ])
                     }
 

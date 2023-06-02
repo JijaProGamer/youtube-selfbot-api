@@ -159,7 +159,7 @@ module.exports = class selfbot {
         if (opts.no_visuals) browserArgs.push(`--disable-gl-drawing-for-tests`);
 
         this.#opts = {
-            headless: opts.headless ? "new" : false,
+            headless: opts.headless,
             executablePath: browserPath,
             timeout: this.#extra.timeout,
             ignoreHTTPSErrors: true,

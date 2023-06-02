@@ -188,7 +188,7 @@ module.exports = class {
     async like() {
         return new Promise(async (resolve, reject) => {
             let em = await Promise.race([
-                this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer:nth-child(1) > div:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
+                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > yt-smartimation > div ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
                 this.#page.waitForSelector(`ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(3) > ytd-like-button-renderer:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > label:nth-child(1)`),
             ]).catch(reject)
 
@@ -201,7 +201,7 @@ module.exports = class {
     async dislike() {
         return new Promise(async (resolve, reject) => {
             let em = await Promise.race([
-                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > div:nth-child(2) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
+                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > yt-smartimation:nth-child(1) > div:nth-child(1) > div:nth-child(2) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
                 this.#page.waitForSelector(`ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(3) > ytd-like-button-renderer:nth-child(1) > ytd-toggle-button-renderer:nth-child(2) > yt-button-shape:nth-child(1) > label:nth-child(1) > button:nth-child(1)`),
             ]).catch(reject)
 
@@ -215,7 +215,7 @@ module.exports = class {
         return new Promise(async (resolve, reject) => {
             try {
                 if (this.#parent.videoInfo.isShort) {
-                    let comments = await this.#page.waitForSelector(`ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(4) > ytd-button-renderer:nth-child(1) > yt-button-shape:nth-child(1)`).catch(reject)
+                    let comments = await this.#page.waitForSelector(`div:nth-child(3) > ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(4) > ytd-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > label:nth-child(1) > button:nth-child(1)`).catch(reject)
                     await comments.click().catch(reject)
 
                     let em = await this.#page.waitForSelector(`#placeholder-area`).catch(reject)

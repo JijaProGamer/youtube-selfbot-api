@@ -8,21 +8,33 @@ let extensions = fs.readdirSync(path.join(__dirname, "/defaultExtensions"))
     .map((v) => v = require(v))
 
 
-module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
-    #opts = {}
-    #eventStore = {}
-    #browser = {}
-    #extra = {}
+module.exports = class YoutubeSelfbotBrowser {
+    opts = {}
+    eventStore = {}
+    internal_browser = {}
+    extra = {}
     ipInfo = {}
     setTimezone = false
 
-    constructor(browser, opts, extra) {
-        super()
-        
-        this.#browser = browser
-        this.#opts = opts
-        this.#extra = extra
+    constructor(browser, opts, extra) {        
+        this.internal_browser = browser
+        this.opts = opts
+        this.extra = extra
     }
+
+    browserContexts(){ return this.internal_browser.browserContexts(...arguments) }
+    createIncognitoBrowserContext(){ return this.internal_browser.createIncognitoBrowserContext(...arguments) }
+    defaultBrowserContext(){ return this.internal_browser.defaultBrowserContext(...arguments) }
+    disconnect(){ return this.internal_browser.disconnect(...arguments) }
+    isConnected(){ return this.internal_browser.isConnected(...arguments) }
+    pages(){ return this.internal_browser.browserContexts(...arguments) }
+    process(){ return this.internal_browser.process(...arguments) }
+    target(){ return this.internal_browser.target(...arguments) }
+    targets(){ return this.internal_browser.targets(...arguments) }
+    userAgent(){ return this.internal_browser.userAgent(...arguments) }
+    version(){ return this.internal_browser.version(...arguments) }
+    waitForTarget(){ return this.internal_browser.waitForTarget(...arguments) }
+    wsEndpoint(){ return this.internal_browser.wsEndpoint(...arguments) }
 
     async setup() {
         return new Promise(async (resolve, reject) => {
@@ -48,7 +60,7 @@ module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
 
     clearStorage() {
         return new Promise(async (resolve, reject) => {
-            let page = await this.#browser.newPage().catch(reject)
+            let page = await this.internal_browser.newPage().catch(reject)
             const client = await page.target().createCDPSession().catch(reject)
 
             await client.send('Network.clearBrowserCookies').catch(reject)
@@ -64,7 +76,7 @@ module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
 
     async close() {
         return new Promise(async (resolve, reject) => {
-            let browser = this.#browser
+            let browser = this.internal_browser
             let pages = await browser.pages().catch(reject)
 
             pages.map(async (page) => await page.close().catch(reject))
@@ -75,14 +87,14 @@ module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
     }
 
     on(name, event) {
-        this.#eventStore[name] = event
+        this.eventStore[name] = event
     }
 
     emit() {
         let args = Object.values(arguments)
 
         let name = args.shift()
-        let event = this.#eventStore[name]
+        let event = this.eventStore[name]
 
         if (event) {
             event(...args)
@@ -92,20 +104,20 @@ module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
     async newPage() {
         return new Promise(async (resolve, reject) => {
             try {
-                let page = await this.#browser.newPage().catch(reject)
-                let pgClass = new pageClass(page, this.#extra, this)
-                pgClass.CDPSession = await page.target().createCDPSession().catch(reject)
+                let page = await this.internal_browser.newPage().catch(reject)
+                let pgClass = new pageClass(page, this.extra, this)
+                await pgClass.createCDPSession()
 
                 await page.setBypassCSP(true).catch(reject)
 
                 await pgClass.CDPSession.send("Page.enable").catch(reject)
                 await pgClass.CDPSession.send("Page.setWebLifecycleState", { state: "active" }).catch(reject)
 
-                await page.setDefaultTimeout(this.#extra.timeout)
-                await page.setDefaultNavigationTimeout(this.#extra.timeout)
+                await page.setDefaultTimeout(this.extra.timeout)
+                await page.setDefaultNavigationTimeout(this.extra.timeout)
 
                 for (let extension of extensions) {
-                    if (await extension.verify(page, this.#extra)) {
+                    if (await extension.verify(page, this.extra)) {
                         await page.evaluateOnNewDocument(extension.code).catch(reject)
                     }
                 }
@@ -175,6 +187,7 @@ module.exports = class YoutubeSelfbotBrowser extends puppeeer.Browser {
 
                 resolve(pgClass)
             } catch (err) {
+                console.log(err)
                 reject(new Error(err))
             }
         })
