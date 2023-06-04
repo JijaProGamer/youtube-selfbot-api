@@ -35,6 +35,7 @@ module.exports = class YoutubeSelfbotBrowser {
     version(){ return this.internal_browser.version(...arguments) }
     waitForTarget(){ return this.internal_browser.waitForTarget(...arguments) }
     wsEndpoint(){ return this.internal_browser.wsEndpoint(...arguments) }
+    close() { return this.internal_browser.close(...arguments) }
 
     async setup() {
         return new Promise(async (resolve, reject) => {
@@ -69,18 +70,6 @@ module.exports = class YoutubeSelfbotBrowser {
             await page.evaluate(() => localStorage.clear()).catch(reject)
 
             await page.close().catch(reject)
-
-            resolve()
-        })
-    }
-
-    async close() {
-        return new Promise(async (resolve, reject) => {
-            let browser = this.internal_browser
-            let pages = await browser.pages().catch(reject)
-
-            pages.map(async (page) => await page.close().catch(reject))
-            await browser.close().catch(reject)
 
             resolve()
         })
