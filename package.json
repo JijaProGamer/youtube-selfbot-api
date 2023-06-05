@@ -1,8 +1,9 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "3.4.9",
+  "version": "3.5.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "fast_CI": "node ./CI/fast.js",

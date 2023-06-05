@@ -11,7 +11,7 @@ const typeOnKeyboard = async (page, inputText) => {
     })
 };
 
-module.exports = class {
+class studioContext {
     #page = {}
     #parent = {}
     #extra = {}
@@ -326,3 +326,5 @@ module.exports = class {
         })
     }
 }
+
+export default studioContext

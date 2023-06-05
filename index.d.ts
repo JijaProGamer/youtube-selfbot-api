@@ -30,7 +30,7 @@ interface studioContext {
     uploadSubtitles(id: string, language: string, type: string, sub: string): Promise<undefined>
 }
 
-interface YoutubeSelfPage {
+interface YoutubeSelfbotPage {
     videoInfo: videoInfo
 
     gotoVideo(method: string, id: string, options: any): Promise<watcherContext>

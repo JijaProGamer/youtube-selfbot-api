@@ -10,7 +10,7 @@ let ACCEPTED_COOKIES = [
     "GPS",
 ]
 
-module.exports = class {
+class watcherContext {
     #page = {}
     #parent = {}
     #extra = {}
@@ -403,3 +403,5 @@ module.exports = class {
         })
     }
 }
+
+export default watcherContext;

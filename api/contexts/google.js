@@ -4,7 +4,7 @@ async function text(el) {
     return await el.evaluate(e => e.innerText.trim())
 }
 
-module.exports = class {
+class googleContext {
     #page = {}
     #parent = {}
     #extra = {}
@@ -270,3 +270,5 @@ module.exports = class {
         return this.currentAccount
     }
 }
+
+export default googleContext

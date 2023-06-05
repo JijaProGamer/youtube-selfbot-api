@@ -1,5 +1,5 @@
-const ProxyAgent = require("proxy-agent-v2")
-const ytdl = require("ytdl-core")
+import ProxyAgent from "proxy-agent-v2"
+import ytdl from "ytdl-core"
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -71,4 +71,4 @@ function getVideoInfo(id, proxy, cookies) {
     })
 }
 
-module.exports = getVideoInfo
+export default getVideoInfo

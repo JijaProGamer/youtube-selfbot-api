@@ -1,14 +1,21 @@
-const fs = require("fs")
-const path = require("path")
+import * as fs from "fs"
+import * as path from "path"
 
-let pageClass = require("./page.js");
-const puppeeer = require("puppeteer");
+import pageClass from "./page.js"
+
+import { dirname } from 'path';
+import { createRequire } from 'module';
+
+import { fileURLToPath } from 'url';
+
+let __dirname = dirname(fileURLToPath(import.meta.url));
+let require = createRequire(import.meta.url);
+
 let extensions = fs.readdirSync(path.join(__dirname, "/defaultExtensions"))
     .map((v) => v = path.join(__dirname, "/defaultExtensions/", v))
     .map((v) => v = require(v))
 
-
-module.exports = class YoutubeSelfbotBrowser {
+ class YoutubeSelfbotBrowser {
     opts = {}
     eventStore = {}
     internal_browser = {}
@@ -182,3 +189,5 @@ module.exports = class YoutubeSelfbotBrowser {
         })
     }
 }
+
+export default YoutubeSelfbotBrowser;

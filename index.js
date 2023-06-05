@@ -1,12 +1,35 @@
-const getVideoInfo = require("./api/getVideoInfo")
-const os = require("os")
+//import * as puppeteer from "puppeteer-extra"
+import { generateFingerprint, createFingerprinterInterface } from "puppeteer-extra-plugin-fingerprinter"
+let {default: puppeteer} = await import("puppeteer-extra")
 
-const browserClass = require("./api/browser.js");
+let currentProxy
 
-async function generateFingerprint(){
-    const Fingerprinter = await import('puppeteer-extra-plugin-fingerprinter')
+const StealthPlugin = createFingerprinterInterface({
+    generator_style: "per_browser",
 
-    return Fingerprinter.generateFingerprint({
+    fingerprint_generator: {
+        webgl_vendor: (e) => true,
+        webgl_renderer: (e) => true,
+        userAgent: (e) => e.includes("Windows NT 10.0"),
+        language: "en-US,en",
+        viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
+        cpus: (e) => e >= 4,
+        memory: (e) => e <= 32,
+        compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
+        canvas: () => true,
+        //proxy: () => currentProxy
+    },
+    requestInterceptor,
+})
+
+puppeteer.use(StealthPlugin)
+
+import * as getVideoInfo from "./api/getVideoInfo.js"
+import browserClass from "./api/browser.js"
+import * as os from "os"
+
+/*function generateYoutubeFingerprint(){
+    return generateFingerprint({
         webgl_vendor: (e) => true,
         webgl_renderer: (e) => true,
         userAgent: (e) => e.includes("Windows NT 10.0"),
@@ -17,9 +40,9 @@ async function generateFingerprint(){
         compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
         canvas: () => true,
     })
-}
+}*/
 
-async function requestInterceptor(page, request, noProxy, useProxy, abort) {
+async function requestInterceptor(page, request) {
     let bannedResourceTypes = ["image", "font", "other", "media"]
     let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
@@ -54,7 +77,7 @@ async function requestInterceptor(page, request, noProxy, useProxy, abort) {
     return "proxy"
 }
 
-module.exports = class selfbot {
+class selfbot {
     #opts = {}
     #extra = {}
 
@@ -159,7 +182,7 @@ module.exports = class selfbot {
         if (opts.no_visuals) browserArgs.push(`--disable-gl-drawing-for-tests`);
 
         this.#opts = {
-            headless: opts.headless,
+            headless: opts.headless ? true : false,
             executablePath: browserPath,
             timeout: this.#extra.timeout,
             ignoreHTTPSErrors: true,
@@ -171,19 +194,18 @@ module.exports = class selfbot {
 
     launch() {
         return new Promise(async (resolve, reject) => {
-            const puppeteer = require("puppeteer-extra")
-            const Fingerprinter = await import('puppeteer-extra-plugin-fingerprinter')
-
-            let fingerprint = this.#extra.fingerprint || await generateFingerprint()
+            /*let fingerprint = this.#extra.fingerprint || generateYoutubeFingerprint()
             fingerprint.proxy = this.#extra.proxy
 
-            const StealthPlugin = Fingerprinter.createFingerprinterInterface({
+            const StealthPlugin = createFingerprinterInterface({
                 staticFingerprint: fingerprint,
                 requestInterceptor,
             })
 
             //StealthPlugin.enabledEvasions.delete('navigator.plugins');
-            puppeteer.use(StealthPlugin)
+            puppeteer.use(StealthPlugin)*/
+
+            currentProxy = this.#extra.proxy
 
             puppeteer.launch(this.#opts)
                 .then(async (browser) => {
@@ -198,20 +220,19 @@ module.exports = class selfbot {
 
     connect(wsEndpoint) {
         return new Promise(async (resolve, reject) => {
-            const puppeteer = require("puppeteer-extra")
-            const Fingerprinter = await import('puppeteer-extra-plugin-fingerprinter')
-
-            let fingerprint = this.#extra.fingerprint || await generateFingerprint()
+            /*let fingerprint = this.#extra.fingerprint || generateYoutubeFingerprint()
             fingerprint.proxy = this.#extra.proxy
 
-            const StealthPlugin = Fingerprinter.createFingerprinterInterface({
+            const StealthPlugin = createFingerprinterInterface({
                 generator_style: "per_browser",
                 staticFingerprint: fingerprint,
                 requestInterceptor
             })
 
             //StealthPlugin.enabledEvasions.delete('navigator.plugins');
-            puppeteer.use(StealthPlugin)
+            puppeteer.use(StealthPlugin)*/
+
+            currentProxy = this.#extra.proxy
 
             puppeteer.connect({ ...this.#opts, browserWSEndpoint: wsEndpoint })
                 .then((browser) => {
@@ -246,3 +267,6 @@ module.exports = class selfbot {
         })
     }
 }
+
+export {selfbot}
+export default selfbot;

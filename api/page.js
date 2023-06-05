@@ -1,19 +1,29 @@
-let watcher = require("./contexts/watcher.js")
-let google = require("./contexts/google.js")
-let studio = require("./contexts/studio.js")
+import { dirname } from 'path';
+import { createRequire } from 'module';
 
-const uuid = require("uuid")
-const to = require("await-to-js").default
-const getVideoInfo = require("./getVideoInfo")
-const puppeteer = require("puppeteer")
+import { fileURLToPath } from 'url';
+
+let __dirname = dirname(fileURLToPath(import.meta.url));
+let require = createRequire(import.meta.url);
+
+
+import watcher from "./contexts/watcher.js"
+import google from "./contexts/google.js"
+import studio from "./contexts/studio.js"
+
+import * as path from "path"
+import * as uuid from "uuid"
+import to from "await-to-js"
+
+import getVideoInfo from "./getVideoInfo.js"
 
 let methodFunctions = {
-    search: require("./functions/search.js"),
-    subscribers: require("./functions/subscribers.js"),
-    suggestions: require("./functions/suggestions.js"),
+    search: require(path.join(__dirname, "/functions/search.cjs")),
+    subscribers: require(path.join(__dirname, "/functions/subscribers.cjs")),
+    suggestions: require(path.join(__dirname, "/functions/suggestions.cjs")),
 }
 
-module.exports = class YoutubeSelfPage {
+class YoutubeSelfbotPage {
     page = {}
     extra = {}
     browser = {}
@@ -300,3 +310,5 @@ module.exports = class YoutubeSelfPage {
         })
     }
 }
+
+export default YoutubeSelfbotPage;

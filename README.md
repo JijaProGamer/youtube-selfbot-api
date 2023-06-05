@@ -15,13 +15,16 @@ socks4/socks5/http/https proxy support
 
 only proxies video and API requests, don't proxy document requests (Saves bandwidth)
 
+# Comprehensive Tutorial and Extensive Documentation
+
+<a href="https://www.bloxxy.net/projects/2">Explore the documentation page</a>
+
 # Supporting me
 
 I am working over 30 hours a week on this project, all for free
 so I will be thankfull for any donation
 
 paypal: https://www.paypal.me/bloxxywashere
-
 patreon: https://www.patreon.com/Bloxxy213/membership
 
 # Requirements
@@ -43,13 +46,8 @@ patreon: https://www.patreon.com/Bloxxy213/membership
 
 # Contacting me
 
-Do not contact me until you've read all the wiki.
+Do not contact me until you've read the entire documentation.
 
 You can contact me on my discord: Bloxxy213#8826
 
 You can get help faster by joining our discord server: https://discord.gg/E7Kb2c9euw
-# Topics
- * [Proxies](https://github.com/JijaProGamer/youtube-selfbot-api/wiki/Proxies)
- * [Setting up the API](https://github.com/JijaProGamer/youtube-selfbot-api/wiki/Setting-up)
- * [browser API](https://github.com/JijaProGamer/youtube-selfbot-api/wiki/Browser-instance)
- * [page API](https://github.com/JijaProGamer/youtube-selfbot-api/wiki/Page-instance)
