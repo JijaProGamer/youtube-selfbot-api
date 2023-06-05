@@ -2,7 +2,7 @@ import selfbot from "./index.js"
 import { readFileSync } from "fs"
 
 let opts = JSON.parse(readFileSync("./env.json"))
-let proxy = "socks5://Bloxxy213:Victor0nokia_session-8juyfnih_lifetime-20m_streaming-1@geo.iproyal.com:32325"
+let proxy = 
 
 async function run(){
     let bot = new selfbot("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", {autoSkipAds: true, proxy})

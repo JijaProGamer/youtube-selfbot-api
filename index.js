@@ -1,6 +1,5 @@
-//import * as puppeteer from "puppeteer-extra"
 import { generateFingerprint, createFingerprinterInterface } from "puppeteer-extra-plugin-fingerprinter"
-let {default: puppeteer} = await import("puppeteer-extra")
+import puppeteer from "puppeteer-extra"
 
 let currentProxy
 
@@ -17,14 +16,14 @@ const StealthPlugin = createFingerprinterInterface({
         memory: (e) => e <= 32,
         compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
         canvas: () => true,
-        //proxy: () => currentProxy
+        proxy: () => currentProxy
     },
     requestInterceptor,
 })
 
 puppeteer.use(StealthPlugin)
 
-import * as getVideoInfo from "./api/getVideoInfo.js"
+import getVideoInfo from "./api/getVideoInfo.js"
 import browserClass from "./api/browser.js"
 import * as os from "os"
 
