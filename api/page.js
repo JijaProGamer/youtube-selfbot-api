@@ -13,8 +13,7 @@ import studio from "./contexts/studio.js"
 
 import * as path from "path"
 import * as uuid from "uuid"
-import to from "await-to-js"
-
+import { to } from "await-to-js";
 import getVideoInfo from "./getVideoInfo.js"
 
 let methodFunctions = {
