@@ -5,7 +5,7 @@ let opts = JSON.parse(readFileSync("./env.json"))
 let proxy = "direct://"
 
 async function run(){
-    let bot = new selfbot("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", {autoSkipAds: true, proxy})
+    let bot = new selfbot("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", {autoSkipAds: true, proxy, headless: true})
     let browser = await bot.launch()
     let page = await browser.newPage()
     //let googleContext = await page.setupGoogle();
@@ -16,5 +16,5 @@ async function run(){
 }
 
 run()
-run()
+//run()
 //run()

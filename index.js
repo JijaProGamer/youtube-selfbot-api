@@ -5,7 +5,6 @@ let currentProxy
 
 const StealthPlugin = createFingerprinterInterface({
     generator_style: "per_browser",
-
     fingerprint_generator: {
         webgl_vendor: (e) => true,
         webgl_renderer: (e) => true,
@@ -179,9 +178,10 @@ class selfbot {
         if (opts.userDataDir) browserArgs.push(`--user-data-dir=${opts.userDataDir}`)
         if (!opts.dont_mute_audio) browserArgs.push(`--mute-audio`)
         if (opts.no_visuals) browserArgs.push(`--disable-gl-drawing-for-tests`);
+        if(opts.headless)  browserArgs.push(`--headless=new`);
 
         this.#opts = {
-            headless: opts.headless ? true : false,
+            headless: false, // opts.headless ? "new" : false
             executablePath: browserPath,
             timeout: this.#extra.timeout,
             ignoreHTTPSErrors: true,
@@ -205,6 +205,8 @@ class selfbot {
             puppeteer.use(StealthPlugin)*/
 
             currentProxy = this.#extra.proxy
+
+            console.log(this.#opts)
 
             puppeteer.launch(this.#opts)
                 .then(async (browser) => {
