@@ -5,14 +5,16 @@ let opts = JSON.parse(readFileSync("./env.json"))
 let proxy = "direct://"
 
 async function run(){
-    let bot = new selfbot("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", {autoSkipAds: true, proxy, headless: true})
+    let bot = new selfbot({autoSkipAds: true, proxy, headless: false})
     let browser = await bot.launch()
     let page = await browser.newPage()
     //let googleContext = await page.setupGoogle();
     //await googleContext.login(opts)
 
-    let watcherContext = await page.gotoVideo("search", "1f42c4nNzs4")
+    let watcherContext = await page.gotoVideo("direct", "1f42c4nNzs4")
     //watcherContext.like()
+
+    console.log("done")
 }
 
 run()

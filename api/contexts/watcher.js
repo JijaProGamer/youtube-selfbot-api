@@ -35,7 +35,7 @@ class watcherContext {
 
                 let isShort = !!(await this.#page.$("#comments-button").catch(reject)) && !this.#parent.videoInfo.isLive
 
-                let currentCookies = await this.#page.cookies().catch(reject)
+                let currentCookies = await this.#browser.context.cookies().catch(reject)
                 let isLoggedIn = false
 
                 if (!currentCookies) return;
@@ -49,7 +49,7 @@ class watcherContext {
                 if (!isLoggedIn) {
                     let rejectCookies = await Promise.race([
                         this.#page.waitForSelector("#content > div.body.style-scope.ytd-consent-bump-v2-lightbox > div.eom-buttons.style-scope.ytd-consent-bump-v2-lightbox > div:nth-child(1) > ytd-button-renderer:last-child > yt-button-shape > button"),
-                        this.#page.waitForXPath("/html/body/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/form[2]/div/div/button/div[1]"),
+                        this.#parent.waitForXPath("/html/body/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/form[2]/div/div/button/div[1]"),
                     ]).catch(reject)
                     if (!rejectCookies) return;
 

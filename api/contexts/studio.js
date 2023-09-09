@@ -84,12 +84,12 @@ class studioContext {
                 }
 
                 await this.#page.click(`#toggle-button`).catch(reject)
-                await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[1]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
+                await this.#parent.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[1]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
 
                 if (opts.paidPromotion) await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[1]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
 
                 if (opts.tags.length > 0) {
-                    await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[4]/ytcp-form-input-container/div[1]/div/ytcp-free-text-chip-bar/ytcp-chip-bar/div/input`)
+                    await this.#parent.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[4]/ytcp-form-input-container/div[1]/div/ytcp-free-text-chip-bar/ytcp-chip-bar/div/input`)
                     await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[4]/ytcp-form-input-container/div[1]/div/ytcp-free-text-chip-bar/ytcp-chip-bar/div/input`).catch(reject)
                     await sleep(500)
 
@@ -123,12 +123,12 @@ class studioContext {
                     await sleep(500)
 
                     for (let playlist of remainingPlaylists) {
-                        let newElement = await this.#page.waitForXPath(`/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-button/div`).catch(reject)
+                        let newElement = await this.#parent.waitForXPath(`/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-button/div`).catch(reject)
                         await this.#page.evaluate(e => e.click(), newElement)
 
                         let newPlaylist = await Promise.race([
-                            this.#page.waitForXPath(`/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-text-menu/tp-yt-paper-dialog/tp-yt-paper-listbox/tp-yt-paper-item[1]/ytcp-ve/div/div/yt-formatted-string`),
-                            this.#page.waitForXPath(`/html/body/ytcp-playlist-creation-dialog/ytcp-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-playlist-metadata-editor/div/div[1]/ytcp-social-suggestions-textbox/ytcp-form-input-container/div[1]/div[2]/div/ytcp-social-suggestion-input/div`),
+                            this.#parent.waitForXPath(`/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-text-menu/tp-yt-paper-dialog/tp-yt-paper-listbox/tp-yt-paper-item[1]/ytcp-ve/div/div/yt-formatted-string`),
+                            this.#parent.waitForXPath(`/html/body/ytcp-playlist-creation-dialog/ytcp-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-playlist-metadata-editor/div/div[1]/ytcp-social-suggestions-textbox/ytcp-form-input-container/div[1]/div[2]/div/ytcp-social-suggestion-input/div`),
                         ]).catch(reject)
 
                         if (await this.#page.$x(`/html/body/ytcp-playlist-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-text-menu/tp-yt-paper-dialog/tp-yt-paper-listbox/tp-yt-paper-item[1]/ytcp-ve/div/div/yt-formatted-string`).catch(reject)) {
@@ -137,7 +137,7 @@ class studioContext {
 
                         await sleep(500)
 
-                        let titleButton = await this.#page.waitForXPath(`/html/body/ytcp-playlist-creation-dialog/ytcp-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-playlist-metadata-editor/div/div[1]/ytcp-social-suggestions-textbox/ytcp-form-input-container/div[1]/div[2]/div/ytcp-social-suggestion-input/div`).catch(reject)
+                        let titleButton = await this.#parent.waitForXPath(`/html/body/ytcp-playlist-creation-dialog/ytcp-dialog/tp-yt-paper-dialog/div[2]/div/ytcp-playlist-metadata-editor/div/div[1]/ytcp-social-suggestions-textbox/ytcp-form-input-container/div[1]/div[2]/div/ytcp-social-suggestion-input/div`).catch(reject)
                         await titleButton.click().catch(reject)
 
                         await sleep(500)
@@ -153,11 +153,11 @@ class studioContext {
                     await this.#page.click(`#dialog > div.action-buttons.style-scope.ytcp-playlist-dialog > ytcp-button.done-button.action-button.style-scope.ytcp-playlist-dialog`).catch(reject)
                 }
 
-                await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[5]/div[3]/ytcp-form-language-input/ytcp-form-select/ytcp-select/ytcp-text-dropdown-trigger`).catch(reject)
+                await this.#parent.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[5]/div[3]/ytcp-form-language-input/ytcp-form-select/ytcp-select/ytcp-text-dropdown-trigger`).catch(reject)
                 await sleep(500);
                 await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-ve/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[5]/div[3]/ytcp-form-language-input/ytcp-form-select/ytcp-select/ytcp-text-dropdown-trigger`).catch(reject)
 
-                const langButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.language.toLowerCase()}')]`).catch(reject)
+                const langButton = await this.#parent.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.language.toLowerCase()}')]`).catch(reject)
 
                 if (!langButton) return reject(new Error(`Invalid language`))
                 await this.#page.evaluate((el) => el.click(), langButton)
@@ -166,7 +166,7 @@ class studioContext {
 
                 if (categoryFrame) {
                     await categoryFrame.click().catch(reject)
-                    const categoryButton = await this.#page.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.category.toLowerCase()}')]`).catch(reject)
+                    const categoryButton = await this.#parent.waitForXPath(`//*[starts-with(translate(text(),"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), '${opts.category.toLowerCase()}')]`).catch(reject)
 
                     if (!categoryButton) return reject(new Error(`Invalid category`))
                     await this.#page.evaluate((el) => el.click(), categoryButton)
@@ -201,7 +201,7 @@ class studioContext {
 
                     await sleep(500)
 
-                    let dateElement = await this.#page.waitForXPath(`/html/body/ytcp-date-picker/tp-yt-paper-dialog/div/form/tp-yt-paper-input/tp-yt-paper-input-container/div[2]/div/iron-input/input`).catch(reject)
+                    let dateElement = await this.#parent.waitForXPath(`/html/body/ytcp-date-picker/tp-yt-paper-dialog/div/form/tp-yt-paper-input/tp-yt-paper-input-container/div[2]/div/iron-input/input`).catch(reject)
                     await dateElement.click({ clickCount: 3 }).catch(reject)
                     await typeOnKeyboard(this.#page, scheduleDate).catch(reject)
                     await this.#page.keyboard.press("Enter").catch(reject)
@@ -223,7 +223,7 @@ class studioContext {
                             await this.#page.click(`tp-yt-paper-radio-button[name="PUBLIC"]`).catch(reject)
 
                             if (opts.premiere) {
-                                await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/div[2]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
+                                await this.#parent.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/div[2]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
                                 await this.#page.click(`xpath//html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-uploads-review/div[2]/div[1]/ytcp-video-visibility-select/div[2]/tp-yt-paper-radio-group/div[2]/ytcp-checkbox-lit/div[1]/div`).catch(reject)
                             }
                             break;
@@ -248,7 +248,7 @@ class studioContext {
                     await sleep(7500)
                     resolve(id)
                 } else {
-                    await this.#page.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress/span`).catch(reject)
+                    await this.#parent.waitForXPath(`/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress/span`).catch(reject)
 
                     await this.#page.evaluate(() => {
                         return new Promise((resolve, reject) => {

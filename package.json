@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "3.5.3",
+  "version": "4.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -14,11 +14,12 @@
   "license": "MIT",
   "dependencies": {
     "await-to-js": "^3.0.0",
+    "country-locale-map": "^1.8.15",
+    "got": "^13.0.0",
+    "playwright": "^1.37.1",
     "proxy-agent-v2": "^1.0.3",
-    "puppeteer": "^20.5.0",
-    "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-fingerprinter": "^1.1.7",
     "uuid": "^9.0.0",
-    "ytdl-core": "^4.11.4"
+    "ytdl-core": "^4.11.5"
   }
 }

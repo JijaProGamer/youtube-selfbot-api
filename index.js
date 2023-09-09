@@ -1,44 +1,10 @@
-import { generateFingerprint, createFingerprinterInterface } from "puppeteer-extra-plugin-fingerprinter"
-import puppeteer from "puppeteer-extra"
-
-let currentProxy
-
-const StealthPlugin = createFingerprinterInterface({
-    generator_style: "per_browser",
-    fingerprint_generator: {
-        webgl_vendor: (e) => true,
-        webgl_renderer: (e) => true,
-        userAgent: (e) => e.includes("Windows NT 10.0"),
-        language: "en-US,en",
-        viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
-        cpus: (e) => e >= 4,
-        memory: (e) => e <= 32,
-        compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
-        canvas: () => true,
-        proxy: () => currentProxy
-    },
-    requestInterceptor,
-})
-
-puppeteer.use(StealthPlugin)
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import crypto from 'crypto';
 
 import getVideoInfo from "./api/getVideoInfo.js"
 import browserClass from "./api/browser.js"
-import * as os from "os"
-
-/*function generateYoutubeFingerprint(){
-    return generateFingerprint({
-        webgl_vendor: (e) => true,
-        webgl_renderer: (e) => true,
-        userAgent: (e) => e.includes("Windows NT 10.0"),
-        language: "en-US,en",
-        viewport: (e) => e.width > 800 && e.width < 2000 && e.height > 800 && e.height < 1600,
-        cpus: (e) => e >= 4,
-        memory: (e) => e <= 32,
-        compatibleMediaMimes: (e) => { return e.audio.includes("aac"), e.video["mp4"] && e.video.mp4.length > 0 },
-        canvas: () => true,
-    })
-}*/
 
 async function requestInterceptor(page, request) {
     let bannedResourceTypes = ["image", "font", "other", "media"]
@@ -79,38 +45,30 @@ class selfbot {
     #opts = {}
     #extra = {}
 
-    constructor(browserPath, opts = {}, args = [], extensions = []) {
-        let exts = []
-
-        for (let extension of extensions) {
-            exts.push(`--load-extension=${extension}`, `--disable-extensions-except=${extension}`)
-        }
-
-        let proxy = opts.proxy
-
-        if (proxy && proxy !== "direct://" && proxy !== "direct") {
-            if (typeof proxy !== "string") {
+    constructor(opts = {}) {
+        if (opts.proxy && opts.proxy !== "direct://" && opts.proxy !== "direct") {
+            if (typeof opts.proxy !== "string") {
                 throw new Error("proxy must be a string")
             }
 
             try {
-                let protocol = proxy.split("://")
+                let protocol = opts.proxy.split("://")
                 if (protocol[1]) {
-                    proxy = protocol[1]
+                    opts.proxy = protocol[1]
                     protocol = protocol.shift()
                 } else {
-                    proxy = protocol[0]
+                    opts.proxy = protocol[0]
                     protocol = "http"
                 }
 
-                if (proxy.includes("@")) {
-                    proxy = `${protocol}://${proxy}`
+                if (opts.proxy.includes("@")) {
+                    opts.proxy = `${protocol}://${opts.proxy}`
                 } else {
-                    let points = proxy.split(":")
+                    let points = opts.proxy.split(":")
                     if (points.length == 4) {
-                        proxy = `${protocol}://${points[2]}:${points[3]}@${points[0]}:${points[1]}`
+                        opts.proxy = `${protocol}://${points[2]}:${points[3]}@${points[0]}:${points[1]}`
                     } else {
-                        proxy = `${protocol}://${points[0]}:${points[1]}`
+                        opts.proxy = `${protocol}://${points[0]}:${points[1]}`
                     }
                 }
             } catch (err) {
@@ -118,130 +76,45 @@ class selfbot {
             }
         }
 
+        if (!opts.userDataDir || !fs.existsSync(opts.userDataDir)) {
+            const timestamp = Date.now()
+            const randomString = crypto.randomBytes(4).toString('hex')
+            const tempFolderName = `temp_${timestamp}_${randomString}`
+
+            const tempDir = os.tmpdir()
+            const tempFolderPath = path.join(tempDir, tempFolderName)
+            opts.userDataDir = tempFolderPath
+
+            try {
+                fs.mkdirSync(tempFolderPath);
+            } catch (err) {
+                throw new Error(`Error creating temporary folder: ${err}`);
+            }
+        }
+
         this.#extra = {
-            proxy: proxy || "direct",
+            proxy: opts.proxy || "direct",
             timeout: typeof opts.timeout == "number" ? opts.timeout : 30000,
             autoSkipAds: opts.autoSkipAds,
-            fingerprint: opts.fingerprint
+            fingerprint: opts.fingerprint,
+            userDataDir: opts.userDataDir
         }
-
-        let browserArgs = [...args, ...exts,
-            //"--disable-accelerated-2d-canvas",
-            "--no-sandbox",
-            "--start-maximized",
-            "--ignore-certificate-errors",
-            "--disable-sync",
-
-            '--allow-pre-commit-input',
-            '--disable-background-networking',
-            '--disable-background-timer-throttling',
-            '--disable-backgrounding-occluded-windows',
-            '--disable-breakpad',
-            '--disable-client-side-phishing-detection',
-            '--disable-component-extensions-with-background-pages',
-            '--disable-component-update',
-            '--disable-default-apps',
-            '--disable-dev-shm-usage',
-            '--disable-features=Translate,BackForwardCache,AcceptCHFrame,MediaRouter,OptimizationHints',
-            '--disable-hang-monitor',
-            '--disable-ipc-flooding-protection',
-            '--disable-popup-blocking',
-            '--disable-prompt-on-repost',
-            '--disable-renderer-backgrounding',
-            '--disable-sync',
-            //'--enable-automation',
-            '--enable-blink-features=IdleDetection',
-            '--enable-features=NetworkServiceInProcess2',
-            '--export-tagged-pdf',
-            '--force-color-profile=srgb',
-            '--metrics-recording-only',
-            '--no-first-run',
-            '--password-store=basic',
-            '--use-mock-keychain',
-            '--hide-scrollbars',
-
-            "--in-process-gpu",
-            "--enable-low-res-tiling",
-            "--enable-low-end-device-mode",
-            "--disable-site-isolation-trials",
-            "--renderer-process-limit=1"
-        ]
-
-        if (os.platform() !== "win32") {
-            browserArgs.push(`--no-zygote`, `--disable-setuid-sandbox`);
-            //browserArgs.push(`--single-process`);
-        }
-
-        //if(opts.cacheDir) browserArgs.push(`--disk-cache-dir=${opts.cacheDir}`)
-
-       // if (exts.length < 0) browserArgs.push(`--disable-extensions`)
-        if (opts.userDataDir) browserArgs.push(`--user-data-dir=${opts.userDataDir}`)
-        if (!opts.dont_mute_audio) browserArgs.push(`--mute-audio`)
-        if (opts.no_visuals) browserArgs.push(`--disable-gl-drawing-for-tests`);
-        if(opts.headless)  browserArgs.push(`--headless=new`);
 
         this.#opts = {
-            headless: false, // opts.headless ? "new" : false
-            executablePath: browserPath,
+            headless: opts.headless,
             timeout: this.#extra.timeout,
-            ignoreHTTPSErrors: true,
-            ignoreDefaultArgs: true,
-            defaultViewport: null,
-            args: browserArgs,
+            viewport: null
         }
     }
 
     launch() {
         return new Promise(async (resolve, reject) => {
-            /*let fingerprint = this.#extra.fingerprint || generateYoutubeFingerprint()
-            fingerprint.proxy = this.#extra.proxy
 
-            const StealthPlugin = createFingerprinterInterface({
-                staticFingerprint: fingerprint,
-                requestInterceptor,
-            })
-
-            //StealthPlugin.enabledEvasions.delete('navigator.plugins');
-            puppeteer.use(StealthPlugin)*/
-
-            currentProxy = this.#extra.proxy
-
-            console.log(this.#opts)
-
-            puppeteer.launch(this.#opts)
-                .then(async (browser) => {
-                    let cs = new browserClass(browser, this.#opts, this.#extra)
+                    let cs = new browserClass(this.#opts, this.#extra)
 
                     cs.setup().then(() => {
                         resolve(cs)
                     }).catch(reject)
-                }).catch(reject)
-        })
-    }
-
-    connect(wsEndpoint) {
-        return new Promise(async (resolve, reject) => {
-            /*let fingerprint = this.#extra.fingerprint || generateYoutubeFingerprint()
-            fingerprint.proxy = this.#extra.proxy
-
-            const StealthPlugin = createFingerprinterInterface({
-                generator_style: "per_browser",
-                staticFingerprint: fingerprint,
-                requestInterceptor
-            })
-
-            //StealthPlugin.enabledEvasions.delete('navigator.plugins');
-            puppeteer.use(StealthPlugin)*/
-
-            currentProxy = this.#extra.proxy
-
-            puppeteer.connect({ ...this.#opts, browserWSEndpoint: wsEndpoint })
-                .then((browser) => {
-                    let cs = new browserClass(browser, this.#opts, this.#extra)
-                    cs.setup().then(() => {
-                        resolve(cs)
-                    }).catch(reject)
-                }).catch(reject)
         })
     }
 
@@ -263,11 +136,11 @@ class selfbot {
     getVideoInfo(id, proxy, cookies) {
         return new Promise((resolve, reject) => {
             getVideoInfo(id, proxy, cookies)
-            .then(resolve)
-            .catch(reject)
+                .then(resolve)
+                .catch(reject)
         })
     }
 }
 
-export {selfbot}
+export { selfbot }
 export default selfbot;

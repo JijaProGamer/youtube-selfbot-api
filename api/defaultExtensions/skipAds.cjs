@@ -59,5 +59,5 @@ module.exports = {
             }
         }, 500);
     },
-    verify: (page, extra) => extra.autoSkipAds
+    verify: (extra) => extra.autoSkipAds
 }

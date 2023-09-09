@@ -27,7 +27,6 @@ class YoutubeSelfbotPage {
     extra = {}
     browser = {}
     videoInfo = {}
-    CDPSession = null
     id = uuid.v4();
     cookies = ""
     __ignore_video_requests = true
@@ -48,8 +47,7 @@ class YoutubeSelfbotPage {
     addStyleTag() { return this.page.addStyleTag(...arguments) }
     authenticate() { return this.page.authenticate(...arguments) }
     bringToFront() { return this.page.bringToFront(...arguments) }
-    browser() { return this.page.browser(...arguments) }
-    browserContext() { return this.page.browserContext(...arguments) }
+    browserContext() { return this.browser.context }
     click() { return this.page.click(...arguments) }
     close() { return this.page.close(...arguments) }
     content() { return this.page.content(...arguments) }
@@ -108,16 +106,8 @@ class YoutubeSelfbotPage {
     waitForResponse() { return this.page.waitForResponse(...arguments) }
     waitForSelector() { return this.page.waitForSelector(...arguments) }
     waitForTimeout() { return this.page.waitForTimeout(...arguments) }
-    waitForXPath() { return this.page.waitForXPath(...arguments) }
+    waitForXPath(arg) { return this.page.waitForSelector(`xpath=${arg}`) }
     workers() { return this.page.workers(...arguments) }
-
-    createCDPSession() {
-        return new Promise(async (resolve, reject) => {
-            this.CDPSession = await this.page.target().createCDPSession().catch(reject)
-
-            resolve()
-        })
-    }
 
     gotoVideo(method = "direct", id, options = {}) {
         return new Promise(async (resolve, reject) => {
@@ -143,7 +133,9 @@ class YoutubeSelfbotPage {
             for (let method of methods) {
                 switch (method) {
                     case "direct":
+                        console.log(1)
                         await this.page.goto(this.videoInfo.url).catch(reject)
+                        console.log(2)
                         break
                     case "search":
                         var [err, wasFound] = await to(methodFunctions.search(this, options))
@@ -218,10 +210,7 @@ class YoutubeSelfbotPage {
 
     getCookies() {
         return new Promise(async (resolve, reject) => {
-            let raw_cookies_full = (await this.CDPSession.send('Network.getAllCookies').catch(reject)).cookies
-            let raw_cookies = await this.page.cookies().catch(reject)
-            let cookies = raw_cookies
-            //let cookies = [...raw_cookies, ...raw_cookies_full]
+            let cookies = await this.browser.context.cookies().catch(reject)
 
             let result = []
             let blacklist = [
@@ -276,7 +265,7 @@ class YoutubeSelfbotPage {
                         res.push({
                             name,
                             value,
-                            domain: ".google.com",
+                            domain: ".youtube.com",
                             path: "/",
                             expires: Date.now() + 657000000,
                             size: name.length + value.length,
@@ -296,7 +285,7 @@ class YoutubeSelfbotPage {
             }
 
             this.cookies = await this.getFormattedCookies(cookies).catch(reject)
-            await this.CDPSession.send("Network.setCookies", { cookies: cookies }).catch(reject)
+            await this.page.addCookies(cookies).catch(reject)
 
             resolve()
         })
@@ -304,7 +293,7 @@ class YoutubeSelfbotPage {
 
     async clearCookies() {
         return new Promise(async (resolve, reject) => {
-            await this.CDPSession.send('Network.clearBrowserCookies').catch(reject)
+            await this.page.clearCookies().catch(reject)
             resolve()
         })
     }
