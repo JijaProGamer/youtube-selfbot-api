@@ -54,7 +54,7 @@ class watcherContext {
                     if (!rejectCookies) return;
 
                     await Promise.all([
-                        this.#page.waitForNavigation(),
+                        this.#page.waitForNavigation({waitUntil: "load"}),
                         rejectCookies.click(),
                     ]).catch(reject)
                 }

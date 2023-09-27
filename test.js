@@ -3,13 +3,28 @@ import { readFileSync } from "fs"
 
 let opts = JSON.parse(readFileSync("./env.json"))
 let proxy = "direct://"
+//let proxy = `socks5://Bloxxy213:VictorESmeker_session-2ld5hlcv_lifetime-24h_streaming-1@geo.iproyal.com:32325`
+
+let used = 0;
 
 async function run(){
-    let bot = new selfbot({autoSkipAds: true, proxy, headless: false})
+    let bot = new selfbot({
+        autoSkipAds: true, 
+        
+        proxy,
+        headless: false,
+    })
+
     let browser = await bot.launch()
     let page = await browser.newPage()
     //let googleContext = await page.setupGoogle();
     //await googleContext.login(opts)
+
+    browser.on("bandwith", (_, id, bandwidth) => {
+        used += bandwidth
+
+        //console.log(used / (1024 * 1024))
+    })
 
     let watcherContext = await page.gotoVideo("direct", "1f42c4nNzs4")
     //watcherContext.like()

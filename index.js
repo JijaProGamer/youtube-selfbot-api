@@ -6,41 +6,6 @@ import crypto from 'crypto';
 import getVideoInfo from "./api/getVideoInfo.js"
 import browserClass from "./api/browser.js"
 
-async function requestInterceptor(page, request) {
-    let bannedResourceTypes = ["image", "font", "other", "media"]
-    let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
-
-    let page_url = page.url()
-    let url = request.url()
-    let currentCookies = await page.cookies()
-    let type = request.resourceType()
-    let isLoggedIn = false
-
-    for (let cookie of currentCookies) {
-        if (acceptedCookies.includes(cookie.name)) {
-            isLoggedIn = true
-            break
-        }
-    }
-
-    if (url.startsWith("data:image")) return "direct"
-    if (url.includes("gstatic")) return "direct"
-
-    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return "abort"
-
-    if (request.method() == "GET") {
-        let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
-
-        if (bannedResourceTypes.includes(type)) return "abort"
-        if (url.includes("fonts.")) return "abort"
-
-        if (isDocument && type == "document") return "proxy"
-        if (isDocument) return "direct"
-    }
-
-    return "proxy"
-}
-
 class selfbot {
     #opts = {}
     #extra = {}
@@ -92,8 +57,14 @@ class selfbot {
             }
         }
 
+        let proxy
+
+        if (opts.proxy !== "direct" && opts.proxy !== "direct://" && typeof (opts.proxy) == "string" && opts.proxy.trim().length > 0) {
+            proxy = opts.proxy
+        }
+
         this.#extra = {
-            proxy: opts.proxy || "direct",
+            proxy,
             timeout: typeof opts.timeout == "number" ? opts.timeout : 30000,
             autoSkipAds: opts.autoSkipAds,
             fingerprint: opts.fingerprint,
@@ -109,12 +80,11 @@ class selfbot {
 
     launch() {
         return new Promise(async (resolve, reject) => {
+            let cs = new browserClass(this.#opts, this.#extra)
 
-                    let cs = new browserClass(this.#opts, this.#extra)
-
-                    cs.setup().then(() => {
-                        resolve(cs)
-                    }).catch(reject)
+            cs.setup().then(() => {
+                resolve(cs)
+            }).catch(reject)
         })
     }
 

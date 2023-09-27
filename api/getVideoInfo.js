@@ -1,32 +1,35 @@
-import ProxyAgent from "proxy-agent-v2"
+import { SocksProxyAgent } from "socks-proxy-agent";
+import { HttpProxyAgent } from "http-proxy-agent";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import ytdl from "ytdl-core"
+
+const setAgent = (proxy) => {
+    if (proxy.startsWith("socks")) {
+        return new SocksProxyAgent(proxy)
+    }
+
+    if (proxy.startsWith("https")) {
+        return new HttpsProxyAgent(proxy)
+    }
+
+    return new HttpProxyAgent(proxy)
+};
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 function getVideoInfo(id, proxy, cookies) {
     return new Promise(async (resolve, reject) => {
         try {
-            let info
+            let agent = proxy ? setAgent(proxy) : undefined
 
-            if (proxy == "direct://" || !proxy || proxy == "direct") {
-                info = await ytdl.getBasicInfo(id, {
-                    requestOptions: {
-                        headers: {
-                            cookie: cookies || ""
-                        }
+            let info = await ytdl.getBasicInfo(id, {
+                requestOptions: {
+                    agent,
+                    headers: {
+                        cookie: cookies || ""
                     }
-                })
-            } else {
-                let agent = new ProxyAgent(proxy)
-                info = await ytdl.getBasicInfo(id, {
-                    requestOptions: {
-                        agent,
-                        headers: {
-                            cookie: cookies || ""
-                        }
-                    }
-                })
-            }
+                }
+            })
 
             let vFormat = info.formats
                 .filter((v) => v.width && v.height)

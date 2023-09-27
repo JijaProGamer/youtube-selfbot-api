@@ -133,9 +133,7 @@ class YoutubeSelfbotPage {
             for (let method of methods) {
                 switch (method) {
                     case "direct":
-                        console.log(1)
                         await this.page.goto(this.videoInfo.url).catch(reject)
-                        console.log(2)
                         break
                     case "search":
                         var [err, wasFound] = await to(methodFunctions.search(this, options))
