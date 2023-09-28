@@ -291,7 +291,7 @@ class YoutubeSelfbotPage {
 
     async clearCookies() {
         return new Promise(async (resolve, reject) => {
-            await this.page.clearCookies().catch(reject)
+            await this.browser.context.clearCookies().catch(reject)
             resolve()
         })
     }

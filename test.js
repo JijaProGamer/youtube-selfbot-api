@@ -3,7 +3,6 @@ import { readFileSync } from "fs"
 
 let opts = JSON.parse(readFileSync("./env.json"))
 let proxy = "direct://"
-//let proxy = `socks5://Bloxxy213:VictorESmeker_session-2ld5hlcv_lifetime-24h_streaming-1@geo.iproyal.com:32325`
 
 let used = 0;
 
@@ -19,6 +18,8 @@ async function run(){
     let page = await browser.newPage()
     //let googleContext = await page.setupGoogle();
     //await googleContext.login(opts)
+
+    await page.clearCookies()
 
     browser.on("bandwith", (_, id, bandwidth) => {
         used += bandwidth

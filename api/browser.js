@@ -53,13 +53,15 @@ function fingerprintGenerator() {
     })
 }
 
-async function requestInterceptor(page, request) {
+async function requestInterceptor(page, requestData, route) {
+    let request = route.request()
+
     let bannedResourceTypes = ["image", "font", "other", "media"]
     let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
     let page_url = page.url()
     let url = request.url()
-    let currentCookies = await page.cookies()
+    let currentCookies = await page.context().cookies()
     let type = request.resourceType()
     let isLoggedIn = false
 
