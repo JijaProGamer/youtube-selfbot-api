@@ -109,6 +109,7 @@ class YoutubeSelfbotBrowser {
     context = {}
     extra = {}
     ipInfo = {}
+    #firstPageCreated = false
 
     constructor(opts, extra) {
         this.opts = opts
@@ -207,6 +208,11 @@ class YoutubeSelfbotBrowser {
                     this.context.waitForEvent('page'),
                     (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
                 ]);
+
+                if(!this.#firstPageCreated){
+                    this.#firstPageCreated = true;
+                    (await this.context.pages())[0].close()
+                }
 
                 let pgClass = new pageClass(page, this.extra, this)
                 let fingerprint = this.extra.fingerprint || {

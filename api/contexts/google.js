@@ -22,11 +22,11 @@ class googleContext {
         return new Promise(async (resolve) => {
             await this.#page.goto(`https://myaccount.google.com/email`)
             let el = await Promise.race([
-                this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
+                this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                 this.#page.waitForSelector(`#identifierId`),
             ])
 
-            let emailBox = (await this.#page.$$(`#identifierId`))[0]
+            let emailBox = await this.#page.$(`#identifierId`)
             let currentEmail
 
             if (!emailBox) {
@@ -62,7 +62,7 @@ class googleContext {
             try {
                 await this.#page.goto(`https://myaccount.google.com/email`).catch(reject)
                 let el = await Promise.race([
-                    this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
+                    this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                     this.#page.waitForSelector(`#identifierId`),
                 ]).catch(reject)
 
@@ -72,7 +72,7 @@ class googleContext {
                     await this.#page.goto(`https://myaccount.google.com/email`).catch(reject)
 
                     el = await Promise.race([
-                        this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
+                        this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForSelector(`#identifierId`),
                     ]).catch(reject)
                 }
@@ -111,12 +111,12 @@ class googleContext {
                     await this.#page.click(`#identifierNext`).catch(reject)
 
                     await Promise.race([
-                        this.#page.waitForXPath(`//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`),
+                        this.#page.waitForSelector(`xpath=//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`),
                         this.#page.waitForSelector(`#password`),
                     ]).catch(reject)
 
-                    let pel = await this.#page.$x(`//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`).catch(reject)
-                    if (pel[0]) {
+                    let pel = await this.#page.$(`xpath=//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`).catch(reject)
+                    if (pel) {
                         await sleep(500)
 
                         let hEl = await this.#page.$(`#headingText > span`).catch(reject)
@@ -150,9 +150,9 @@ class googleContext {
                         this.#page.waitForSelector(`div[jsname="bySMBb"]`),
                         this.#page.waitForSelector(`div[jsname="B34EJ"]`),
                         this.#page.waitForSelector(`[data-challengetype="12"]`),
-                        this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
-                        this.#page.waitForXPath(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
-                        this.#page.waitForXPath(`//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`),
+                        this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
+                        this.#page.waitForSelector(`xpath=//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
+                        this.#page.waitForSelector(`xpath=//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`),
                     ]).catch(reject)
 
                     if(await this.#page.$(`[data-challengetype="12"]`)){
@@ -168,9 +168,9 @@ class googleContext {
                         await sleep(1000);
                     }
 
-                    let pInc = await this.#page.$x(`//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`).catch(reject)
-                    let pInc2 = await this.#page.$$(`div[jsname="B34EJ"]`).catch(reject)
-                    if (pInc[0] || pInc2[0]) {
+                    let pInc = await this.#page.$(`xpath=//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`).catch(reject)
+                    let pInc2 = await this.#page.$(`div[jsname="B34EJ"]`).catch(reject)
+                    if (pInc || pInc2) {
                         await sleep(500)
                         let instructions = await text(pInc[0] || pInc2[0])
 
@@ -182,9 +182,9 @@ class googleContext {
                         return reject("wrong password")
                     }
 
-                    let code = await this.#page.$x(`//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`).catch(reject)
+                    let code = await this.#page.$(`xpath=//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`).catch(reject)
 
-                    if (code[0]) {
+                    if (code) {
                         await sleep(500)
                         code = parseInt(await text(code[0]))
                         let handling = false
@@ -230,7 +230,7 @@ class googleContext {
                         ])
                     }
 
-                    await this.#page.waitForXPath(`/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`).catch(reject)
+                    await this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`).catch(reject)
 
                     this.currentAccount = {
                         ...accountInfo,

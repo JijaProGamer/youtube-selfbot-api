@@ -42,7 +42,7 @@ class YoutubeSelfbotPage {
     $eval() { return this.page.$eval(...arguments) }
     $$() { return this.page.$$(...arguments) }
     $$eval() { return this.page.$$eval(...arguments) }
-    $x() { return this.page.$x(...arguments) }
+    $x(a, b) { return this.page.$$(`xpath=${a}`,b) }
     addScriptTag() { return this.page.addScriptTag(...arguments) }
     addStyleTag() { return this.page.addStyleTag(...arguments) }
     authenticate() { return this.page.authenticate(...arguments) }
