@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "4.0.1s",
+  "version": "4.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -20,7 +20,7 @@
     "https-proxy-agent": "^7.0.2",
     "lru-cache": "^10.0.1",
     "playwright": "^1.37.1",
-    "playwright-anti-fingerprinter": "^1.0.0",
+    "playwright-anti-fingerprinter": "^1.0.1",
     "puppeteer-bandwidth-calculator": "^1.0.0",
     "socks-proxy-agent": "^8.0.2",
     "uuid": "^9.0.0",

@@ -53,16 +53,18 @@ function fingerprintGenerator() {
     })
 }
 
-async function requestInterceptor(page, requestData, route) {
-    let request = route.request()
-
-    let bannedResourceTypes = ["image", "font", "other", "media"]
+let bannedResourceTypes = ["image", "font", "other", "media"]
+async function shouldProxyRequest(page, request){
     let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
     let page_url = page.url()
     let url = request.url()
     let currentCookies = await page.context().cookies()
     let type = request.resourceType()
+    
+    if (url.startsWith("data:image")) return 1
+    if (url.includes("gstatic")) return 1
+
     let isLoggedIn = false
 
     for (let cookie of currentCookies) {
@@ -72,22 +74,33 @@ async function requestInterceptor(page, requestData, route) {
         }
     }
 
-    if (url.startsWith("data:image")) return "direct"
-    if (url.includes("gstatic")) return "direct"
-
-    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return "abort"
+    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return 3
 
     if (request.method() == "GET") {
         let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
 
-        if (bannedResourceTypes.includes(type)) return "abort"
-        if (url.includes("fonts.")) return "abort"
+        //if (bannedResourceTypes.includes(type)) return 3
+        //if (url.includes("fonts.")) return 3
 
-        if (isDocument && type == "document") return "proxy"
-        if (isDocument) return "direct"
+        if (isDocument && type == "document") return 2
+        if (isDocument) return 1
     }
 
-    return "proxy"
+    return 2
+}
+
+async function requestInterceptor(page, requestData, route) {
+    let request = route.request()
+    let shouldProxy = await shouldProxyRequest(page, request)
+
+    switch(shouldProxy){
+        case 3:
+            return "abort"
+        case 2:
+            return "proxy"
+        case 1:
+            return "direct"
+    }
 }
 
 class YoutubeSelfbotBrowser {
@@ -161,7 +174,7 @@ class YoutubeSelfbotBrowser {
         return new Promise(async (resolve, reject) => {
             let page = await this.context.newPage().catch(reject)
 
-            await page.clearCookies().catch(reject)
+            await page.context().clearCookies().catch(reject)
 
             await page.goto("https://www.youtube.com").catch(reject)
             await page.evaluate(() => localStorage.clear()).catch(reject)
@@ -220,8 +233,12 @@ class YoutubeSelfbotBrowser {
                         }
                     }
 
-                    this.emit("bandwith", pgClass.id, "download", await calculateRequestSize(req))
-                    this.emit("bandwith", pgClass.id, "upload", await calculateResponseSize(res))
+                    let shouldCalculateRequestSize = await shouldProxyRequest(page, req) == 2
+
+                    if(shouldCalculateRequestSize){
+                        this.emit("bandwith", pgClass.id, "download", await calculateRequestSize(req))
+                        this.emit("bandwith", pgClass.id, "upload", await calculateResponseSize(res))
+                    }
                 })
 
                 resolve(pgClass)

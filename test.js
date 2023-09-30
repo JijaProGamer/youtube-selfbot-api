@@ -24,7 +24,7 @@ async function run(){
     browser.on("bandwith", (_, id, bandwidth) => {
         used += bandwidth
 
-        //console.log(used / (1024 * 1024))
+        console.log(used / (1024 * 1024))
     })
 
     let watcherContext = await page.gotoVideo("direct", "1f42c4nNzs4")
