@@ -55,38 +55,43 @@ function fingerprintGenerator() {
 
 let bannedResourceTypes = ["image", "font", "other", "media"]
 async function shouldProxyRequest(page, request){
-    let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
+    try {
+        let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
-    let page_url = page.url()
-    let url = request.url()
-    let currentCookies = await page.context().cookies()
-    let type = request.resourceType()
+        let page_url = page.url()
+        let url = request.url()
+        let currentCookies = await page.context().cookies()
+        let type = request.resourceType()
+        
+        if (url.startsWith("data:image")) return 1
+        if (url.includes("gstatic")) return 1
     
-    if (url.startsWith("data:image")) return 1
-    if (url.includes("gstatic")) return 1
-
-    let isLoggedIn = false
-
-    for (let cookie of currentCookies) {
-        if (acceptedCookies.includes(cookie.name)) {
-            isLoggedIn = true
-            break
+        let isLoggedIn = false
+    
+        for (let cookie of currentCookies) {
+            if (acceptedCookies.includes(cookie.name)) {
+                isLoggedIn = true
+                break
+            }
         }
+    
+        if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return 3
+    
+        if (request.method() == "GET") {
+            let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
+    
+            //if (bannedResourceTypes.includes(type)) return 3
+            //if (url.includes("fonts.")) return 3
+    
+            if (isDocument && type == "document") return 2
+            if (isDocument) return 1
+        }
+    
+        return 2
+    } catch (err) {
+        console.error(err)
+        return 3
     }
-
-    if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return 3
-
-    if (request.method() == "GET") {
-        let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
-
-        //if (bannedResourceTypes.includes(type)) return 3
-        //if (url.includes("fonts.")) return 3
-
-        if (isDocument && type == "document") return 2
-        if (isDocument) return 1
-    }
-
-    return 2
 }
 
 async function requestInterceptor(page, requestData, route) {
