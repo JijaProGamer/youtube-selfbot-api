@@ -178,16 +178,19 @@ class YoutubeSelfbotBrowser {
 
     clearStorage() {
         return new Promise(async (resolve, reject) => {
-            let page = await this.context.newPage().catch(reject)
+            try {
+                let page = await this.newPage();
+                await page.context().clearCookies();
 
-            await page.context().clearCookies().catch(reject)
-
-            await page.goto("https://www.youtube.com").catch(reject)
-            await page.evaluate(() => localStorage.clear()).catch(reject)
-
-            await page.close().catch(reject)
-
-            resolve()
+                await page.goto("https://www.youtube.com");
+                await page.evaluate(() => localStorage.clear());
+                
+                await page.close();
+        
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
         })
     }
 

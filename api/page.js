@@ -111,7 +111,7 @@ class YoutubeSelfbotPage {
 
     gotoVideo(method = "direct", id, options = {}) {
         return new Promise(async (resolve, reject) => {
-            this.videoInfo = await getVideoInfo(id, this.extra.proxy, await this.getFormattedCookies())
+            this.videoInfo = await getVideoInfo(id, this.extra.proxy, await this.getCookies())
 
             let methods = []
 
