@@ -2,8 +2,7 @@ import selfbot from "./index.js"
 import { readFileSync } from "fs"
 
 let opts = JSON.parse(readFileSync("./env.json"))
-//let proxy = "direct://"
-let proxy = "http://Bloxxy213:VictorESmeker_session-Dl4NjuTh_lifetime-3h_streaming-1@geo.iproyal.com:12321"
+let proxy = "direct://"
 
 let used = 0;
 
@@ -27,6 +26,8 @@ async function run(){
 
         //console.log(used / (1024 * 1024))
     })
+
+    await browser.clearStorage()
 
     let watcherContext = await page.gotoVideo("suggestions", "1f42c4nNzs4", {forceFind: true})
     //console.log(page.videoInfo)
