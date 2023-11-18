@@ -9,6 +9,7 @@ let used = 0;
 async function run(){
     let bot = new selfbot({
         autoSkipAds: true, 
+        timeout: 0,
         
         proxy,
         headless: false,
@@ -29,7 +30,7 @@ async function run(){
 
     await browser.clearStorage()
 
-    let watcherContext = await page.gotoVideo("suggestions", "1f42c4nNzs4", {forceFind: true})
+    let watcherContext = await page.gotoVideo("direct", "1f42c4nNzs4")
     //console.log(page.videoInfo)
     //watcherContext.like()
 

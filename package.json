@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "4.0.9-s",
+  "version": "4.1.0-s",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -13,7 +13,7 @@
   "author": "JijaProGamer",
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.13.2",
+    "@distube/ytdl-core": "^4.13.3",
     "await-to-js": "^3.0.0",
     "country-locale-map": "^1.8.15",
     "got": "^13.0.0",

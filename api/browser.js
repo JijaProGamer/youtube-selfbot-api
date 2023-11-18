@@ -54,7 +54,8 @@ function fingerprintGenerator() {
 }
 
 let bannedResourceTypes = ["image", "font", "other", "media"]
-async function shouldProxyRequest(page, request){
+async function shouldProxyRequest(page, request) {
+    return 2;
     try {
         let acceptedCookies = ["DEVICE_INFO", "VISITOR_INFO1_LIVE", "GPS"]
 
@@ -62,31 +63,31 @@ async function shouldProxyRequest(page, request){
         let url = request.url()
         let currentCookies = await page.context().cookies()
         let type = request.resourceType()
-        
+
         if (url.startsWith("data:image")) return 1
         if (url.includes("gstatic")) return 1
-    
+
         let isLoggedIn = false
-    
+
         for (let cookie of currentCookies) {
             if (acceptedCookies.includes(cookie.name)) {
                 isLoggedIn = true
                 break
             }
         }
-    
+
         if (!isLoggedIn && url.includes("googlevideo.com") && !page_url.includes("/shorts/")) return 3
-    
+
         if (request.method() == "GET") {
             let isDocument = type == "document" || type == "script" || type == "manifest" || type == "stylesheet"
-    
+
             //if (bannedResourceTypes.includes(type)) return 3
             //if (url.includes("fonts.")) return 3
-    
+
             if (isDocument && type == "document") return 2
             if (isDocument) return 1
         }
-    
+
         return 2
     } catch (err) {
         console.error(err)
@@ -98,7 +99,7 @@ async function requestInterceptor(page, requestData, route) {
     let request = route.request()
     let shouldProxy = await shouldProxyRequest(page, request)
 
-    switch(shouldProxy){
+    switch (shouldProxy) {
         case 3:
             return "abort"
         case 2:
@@ -179,14 +180,17 @@ class YoutubeSelfbotBrowser {
     clearStorage() {
         return new Promise(async (resolve, reject) => {
             try {
-                let { page } = await this.newPage();
+                const [page] = await Promise.all([
+                    this.context.waitForEvent('page'),
+                    (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
+                ]);
                 await page.context().clearCookies();
 
                 await page.goto("https://www.youtube.com");
                 await page.evaluate(() => localStorage.clear());
-                
+
                 await page.close();
-        
+
                 resolve();
             } catch (err) {
                 reject(err);
@@ -217,7 +221,7 @@ class YoutubeSelfbotBrowser {
                     (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
                 ]);
 
-                if(!this.#firstPageCreated){
+                if (!this.#firstPageCreated) {
                     this.#firstPageCreated = true;
                     (await this.context.pages())[0].close()
                 }
@@ -249,7 +253,7 @@ class YoutubeSelfbotBrowser {
 
                     let shouldCalculateRequestSize = await shouldProxyRequest(page, req) == 2
 
-                    if(shouldCalculateRequestSize){
+                    if (shouldCalculateRequestSize) {
                         this.emit("bandwith", pgClass.id, "download", await calculateRequestSize(req))
                         this.emit("bandwith", pgClass.id, "upload", await calculateResponseSize(res))
                     }
