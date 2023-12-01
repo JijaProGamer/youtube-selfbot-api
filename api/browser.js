@@ -132,6 +132,7 @@ class YoutubeSelfbotBrowser {
     waitForTarget() { return this.context.waitForTarget(...arguments) }
     wsEndpoint() { return this.context.wsEndpoint(...arguments) }
     close() { return this.context.close(...arguments) }
+    addCookies() { return this.context.addCookies(...arguments) }
 
     async setup() {
         return new Promise(async (resolve, reject) => {

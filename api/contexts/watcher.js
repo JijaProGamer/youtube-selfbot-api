@@ -8,6 +8,7 @@ let ACCEPTED_COOKIES = [
     "DEVICE_INFO",
     "VISITOR_INFO1_LIVE",
     "GPS",
+    "SSID", "HSID"
 ]
 
 class watcherContext {
@@ -45,19 +46,19 @@ class watcherContext {
                     if (!rejectCookies) return;
 
                     await Promise.all([
-                        this.#page.waitForNavigation({waitUntil: "load"}),
+                        this.#page.waitForNavigation({ waitUntil: "load" }),
                         rejectCookies.click(),
                     ]).catch(reject)
                 }
 
-                if (!this.#parent.videoInfo.isLive) {
-                    await Promise.race([
-                        this.#page.waitForSelector(`.YtSegmentedLikeDislikeButtonViewModelHost`),
-                        this.#page.waitForSelector(`#segmented-buttons-wrapper`),
-                        this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer`),
-                        this.#page.waitForSelector(`#comments-button`),
-                    ]).catch(reject)
-                }
+                //if (!this.#parent.videoInfo.isLive) {
+                await Promise.race([
+                    this.#page.waitForSelector(`.YtSegmentedLikeDislikeButtonViewModelHost`),
+                    this.#page.waitForSelector(`#segmented-buttons-wrapper`),
+                    this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer`),
+                    this.#page.waitForSelector(`#comments-button`),
+                ]).catch(reject)
+                //}
 
                 let isShort = !!(await this.#page.$("#comments-button").catch(reject)) && !this.#parent.videoInfo.isLive
                 let playerSelector = isShort ? `#shorts-player` : `#movie_player`
@@ -212,8 +213,22 @@ class watcherContext {
         })
     }
 
+    async areCommentsLocked() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                resolve(false)
+            } catch (err) {
+                reject(new Error(err))
+            }
+        })
+    }
+
     async comment(message) {
         return new Promise(async (resolve, reject) => {
+            if(await this.areCommentsLocked().catch(reject)){
+                return reject(new Error("Unable to make comment because video has comments locked."))
+            }
+
             try {
                 if (this.#parent.videoInfo.isShort) {
                     let comments = await this.#page.waitForSelector(`div:nth-child(3) > ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(4) > ytd-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > label:nth-child(1) > button:nth-child(1)`).catch(reject)
@@ -230,14 +245,17 @@ class watcherContext {
                     let background = await this.#page.waitForSelector(`#visibility-button > ytd-button-renderer > yt-button-shape > button`).catch(reject)
                     await background.click().catch(reject)
                 } else if (this.#parent.videoInfo.isLive) {
-                    let chatFrame = await this.#page.frames().find(f => f.url().includes("live_chat")).catch(reject)
+                    let chatFrame = this.#page.frames().find(f => f.url().includes("live_chat"))
+                    if (!chatFrame) {
+                        reject(new Error("Unable to find livestream chat"))
+                    }
 
                     let em = await chatFrame.waitForSelector(`yt-live-chat-text-input-field-renderer.style-scope`).catch(reject)
                     await em.click().catch(reject)
 
                     await this.#page.keyboard.type(message, 25).catch(reject)
 
-                    let submit = await chatFrame.waitForSelector(`yt-icon-button.style-default`).catch(reject)
+                    let submit = await chatFrame.waitForSelector(`#message-buttons > #send-button > yt-button-renderer > yt-button-shape > button`).catch(reject)
                     await submit.click().catch(reject)
                 } else {
                     let em = await this.#page.waitForSelector(`#placeholder-area`).catch(reject)

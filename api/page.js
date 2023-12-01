@@ -283,7 +283,7 @@ class YoutubeSelfbotPage {
             }
 
             this.cookies = await this.getFormattedCookies(cookies).catch(reject)
-            await this.page.addCookies(cookies).catch(reject)
+            await this.browser.addCookies(cookies).catch(reject)
 
             resolve()
         })

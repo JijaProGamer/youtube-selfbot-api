@@ -60,24 +60,24 @@ class googleContext {
     async login(accountInfo = {}, cookies) {
         return new Promise(async (resolve, reject) => {
             try {
-                await this.#page.goto(`https://myaccount.google.com/email`).catch(reject)
+                await this.#page.goto(`https://myaccount.google.com/email`)
                 let el = await Promise.race([
                     this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                     this.#page.waitForSelector(`#identifierId`),
-                ]).catch(reject)
+                ])
 
                 if (typeof cookies == "string" || typeof cookies == "object") {
-                    await this.#parent.clearCookies().catch(reject)
-                    await this.#parent.setCookies(cookies).catch(reject)
-                    await this.#page.goto(`https://myaccount.google.com/email`).catch(reject)
+                    await this.#parent.clearCookies()
+                    await this.#parent.setCookies(cookies)
+                    await this.#page.goto(`https://myaccount.google.com/email`)
 
                     el = await Promise.race([
                         this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForSelector(`#identifierId`),
-                    ]).catch(reject)
+                    ])
                 }
 
-                let emailBox = (await this.#page.$$(`#identifierId`).catch(reject))[0]
+                let emailBox = (await this.#page.$$(`#identifierId`))[0]
                 let currentEmail
 
                 if (!emailBox) {
@@ -95,34 +95,34 @@ class googleContext {
                     }
 
                     if (currentEmail !== accountInfo.email && currentEmail && accountInfo.email && accountInfo.email.length > 1) {
-                        await this.#parent.clearCookies().catch(reject)
-                        await this.#page.goto(`https://myaccount.google.com/email`).catch(reject)
-                        await this.#page.waitForSelector(`#identifierId`).catch(reject)
+                        await this.#parent.clearCookies()
+                        await this.#page.goto(`https://myaccount.google.com/email`)
+                        await this.#page.waitForSelector(`#identifierId`)
                     }
 
                     // email
 
-                    await this.#page.click(`#identifierId`).catch(reject)
+                    await this.#page.click(`#identifierId`)
                     await sleep(1000)
-                    await this.#page.type(`#identifierId`, accountInfo.email, { delay: 75 }).catch(reject)
+                    await this.#page.type(`#identifierId`, accountInfo.email, { delay: 75 })
 
                     // continue
-                    await this.#page.waitForSelector(`#identifierNext`, { visible: true }).catch(reject)
-                    await this.#page.click(`#identifierNext`).catch(reject)
+                    await this.#page.waitForSelector(`#identifierNext`, { visible: true })
+                    await this.#page.click(`#identifierNext`)
 
                     await Promise.race([
                         this.#page.waitForSelector(`xpath=//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`),
                         this.#page.waitForSelector(`#password`),
-                    ]).catch(reject)
+                    ])
 
-                    let pel = await this.#page.$(`xpath=//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`).catch(reject)
+                    let pel = await this.#page.$(`xpath=//*[@id="yDmH0d"]/c-wiz/div[2]/div[2]/div/div[1]/div/form/span/section/div/div/div/div[2]`)
                     if (pel) {
                         await sleep(500)
 
-                        let hEl = await this.#page.$(`#headingText > span`).catch(reject)
+                        let hEl = await this.#page.$(`#headingText > span`)
 
                         let header = await text(hEl)
-                        let instructions = await text(pel[0]).catch(reject)
+                        let instructions = await text(pel[0])
 
                         this.#browser.emit("loginFailed", this.#parent.id, {
                             header,
@@ -136,15 +136,15 @@ class googleContext {
 
                     // password
 
-                    let selector = await this.#page.waitForSelector(`#password`, { visible: true }).catch(reject)
-                    await selector.click().catch(reject)
+                    let selector = await this.#page.waitForSelector(`#password`, { visible: true })
+                    await selector.click()
                     await sleep(1000)
-                    await this.#page.type(`#password`, accountInfo.password, { delay: 75 }).catch(reject)
+                    await this.#page.type(`#password`, accountInfo.password, { delay: 75 })
 
                     // continue
 
-                    await this.#page.waitForSelector(`#passwordNext`, { visible: true }).catch(reject)
-                    await this.#page.click(`#passwordNext`).catch(reject)
+                    await this.#page.waitForSelector(`#passwordNext`, { visible: true })
+                    await this.#page.click(`#passwordNext`)
 
                     await Promise.race([
                         this.#page.waitForSelector(`div[jsname="bySMBb"]`),
@@ -153,24 +153,25 @@ class googleContext {
                         this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`),
                         this.#page.waitForSelector(`xpath=//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`),
                         this.#page.waitForSelector(`xpath=//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`),
-                    ]).catch(reject)
+                    ])
 
-                    if(await this.#page.$(`[data-challengetype="12"]`)){
+                    if (await this.#page.$(`[data-challengetype="12"]`)) {
                         await Promise.all([
-                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.waitForNavigation({ waitUntil: "networkidle2" }),
                             this.#page.click(`[data-challengetype="12"]`)
                         ]);
 
                         await sleep(1500);
-                        await this.#page.type(`#knowledge-preregistered-email-response`, accountInfo.recovery, { delay: 75 }).catch(reject)
+                        await this.#page.type(`#knowledge-preregistered-email-response`, accountInfo.recovery, { delay: 75 })
                         await this.#page.click(`button`)
-                        
+
                         await sleep(1000);
                     }
 
-                    let pInc = await this.#page.$(`xpath=//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`).catch(reject)
-                    let pInc2 = await this.#page.$(`div[jsname="B34EJ"]`).catch(reject)
-                    if (pInc || pInc2) {
+                    let pInc = await this.#page.$$(`xpath=//*[@id="yDmH0d"]/c-wiz/div/div[2]/div/div[1]/div/form/span/div[1]/div[2]/div[2]/span`)
+                    let pInc2 = await this.#page.$$(`div[jsname="B34EJ"]`)
+
+                    if (pInc[0] || pInc2[0]) {
                         await sleep(500)
                         let instructions = await text(pInc[0] || pInc2[0])
 
@@ -182,7 +183,7 @@ class googleContext {
                         return reject("wrong password")
                     }
 
-                    let code = await this.#page.$(`xpath=//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`).catch(reject)
+                    let code = await this.#page.$(`xpath=//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/span/figure/samp`)
 
                     if (code) {
                         await sleep(500)
@@ -216,26 +217,26 @@ class googleContext {
                         })
                     }
 
-                    if(await this.#page.$(`button[jsname="bySMBb"]`)){
+                    if (await this.#page.$(`button[jsname="bySMBb"]`)) {
                         await Promise.all([
-                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.waitForNavigation({ waitUntil: "networkidle2" }),
                             this.#page.click(`button[jsname="bySMBb"]`)
                         ])
                     }
 
-                    if(await this.#page.$(`#yDmH0d > c-wiz > div > div > div > div.L5MEH.Bokche.ypEC4c > div.lq3Znf > div:nth-child(1) > button`)){
+                    if (await this.#page.$(`#yDmH0d > c-wiz > div > div > div > div.L5MEH.Bokche.ypEC4c > div.lq3Znf > div:nth-child(1) > button`)) {
                         await Promise.all([
-                            this.#page.waitForNavigation({waitUntil: "networkidle2"}),
+                            this.#page.waitForNavigation({ waitUntil: "networkidle2" }),
                             this.#page.click(`#yDmH0d > c-wiz > div > div > div > div.L5MEH.Bokche.ypEC4c > div.lq3Znf > div:nth-child(1) > button`)
                         ])
                     }
 
-                    await this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`).catch(reject)
+                    await this.#page.waitForSelector(`xpath=/html/body/c-wiz/div/div[2]/div[2]/c-wiz/div/div[4]/article/div/div/ul/li/div/div/div`)
 
                     this.currentAccount = {
                         ...accountInfo,
-                        cookies: await this.#parent.getCookies().catch(reject),
-                        formatted_cookies: await this.#parent.getFormattedCookies().catch(reject),
+                        cookies: await this.#parent.getCookies(),
+                        formatted_cookies: await this.#parent.getFormattedCookies(),
                         loggedIn: true,
                     }
 
@@ -244,21 +245,21 @@ class googleContext {
                     this.currentAccount = {
                         email: currentEmail,
                         password: "",
-                        cookies: await this.#parent.getCookies().catch(reject),
-                        formatted_cookies: await this.#parent.getFormattedCookies().catch(reject),
+                        cookies: await this.#parent.getCookies(),
+                        formatted_cookies: await this.#parent.getFormattedCookies(),
                         loggedIn: true,
                     }
                 }
 
                 resolve(this.currentAccount)
             } catch (err) {
-                reject(new Error(err))
+                reject(err)
             }
         })
     }
 
     async logout() {
-        await this.#parent.clearCookies().catch(reject)
+        await this.#parent.clearCookies()
         this.currentAccount = {
             email: "",
             password: "",
