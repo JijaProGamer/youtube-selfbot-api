@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "4.1.0-s",
+  "version": "4.1.1",
   "description": "",
   "main": "index.js",
   "type": "module",

@@ -30,11 +30,16 @@ async function run(){
 
     await browser.clearStorage()
 
-    let watcherContext = await page.gotoVideo("direct", "1f42c4nNzs4")
+    let watcherContext = await page.gotoVideo("direct", "efpwEe6CvtI")
     //console.log(page.videoInfo)
     //watcherContext.like()
 
     console.log("done")
+
+    setInterval(async () => {
+        console.log(await watcherContext.time(), await watcherContext.duration(), await watcherContext.time() / await watcherContext.duration())
+
+    }, 500)
 }
 
 run()

@@ -26,15 +26,6 @@ class watcherContext {
     setup() {
         return new Promise(async (resolve, reject) => {
             try {
-                if (!this.#parent.videoInfo.isLive) {
-                    await Promise.race([
-                        this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer`),
-                        this.#page.waitForSelector(`#comments-button`),
-                    ]).catch(reject)
-                }
-
-                let isShort = !!(await this.#page.$("#comments-button").catch(reject)) && !this.#parent.videoInfo.isLive
-
                 let currentCookies = await this.#browser.context.cookies().catch(reject)
                 let isLoggedIn = false
 
@@ -59,6 +50,16 @@ class watcherContext {
                     ]).catch(reject)
                 }
 
+                if (!this.#parent.videoInfo.isLive) {
+                    await Promise.race([
+                        this.#page.waitForSelector(`.YtSegmentedLikeDislikeButtonViewModelHost`),
+                        this.#page.waitForSelector(`#segmented-buttons-wrapper`),
+                        this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer`),
+                        this.#page.waitForSelector(`#comments-button`),
+                    ]).catch(reject)
+                }
+
+                let isShort = !!(await this.#page.$("#comments-button").catch(reject)) && !this.#parent.videoInfo.isLive
                 let playerSelector = isShort ? `#shorts-player` : `#movie_player`
                 let videoStates = isShort ? videoStates_shorts : videoStates_normal
                 let playerElement = await this.#page.waitForSelector(playerSelector).catch(reject)
