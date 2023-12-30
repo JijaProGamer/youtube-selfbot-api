@@ -190,8 +190,7 @@ class watcherContext {
     async like() {
         return new Promise(async (resolve, reject) => {
             let em = await Promise.race([
-                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > yt-smartimation > div ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
-                this.#page.waitForSelector(`ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(3) > ytd-like-button-renderer:nth-child(1) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > label:nth-child(1)`),
+                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > segmented-like-dislike-button-view-model:nth-child(1) > yt-smartimation:nth-child(1) > div:nth-child(1) > div:nth-child(1) > like-button-view-model:nth-child(1) > toggle-button-view-model:nth-child(1) > button:nth-child(1) > yt-touch-feedback-shape:nth-child(3) > div:nth-child(1) > div:nth-child(2)`),
             ]).catch(reject)
 
             if (em) await em.click().catch(reject)
@@ -203,8 +202,19 @@ class watcherContext {
     async dislike() {
         return new Promise(async (resolve, reject) => {
             let em = await Promise.race([
-                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > ytd-segmented-like-dislike-button-renderer:nth-child(1) > yt-smartimation:nth-child(1) > div:nth-child(1) > div:nth-child(2) > ytd-toggle-button-renderer:nth-child(1) > yt-button-shape:nth-child(1) > button:nth-child(1)`),
-                this.#page.waitForSelector(`ytd-reel-player-overlay-renderer:nth-child(1) > div:nth-child(2) > div:nth-child(3) > ytd-like-button-renderer:nth-child(1) > ytd-toggle-button-renderer:nth-child(2) > yt-button-shape:nth-child(1) > label:nth-child(1) > button:nth-child(1)`),
+                this.#page.waitForSelector(`ytd-menu-renderer.ytd-watch-metadata > div:nth-child(1) > segmented-like-dislike-button-view-model:nth-child(1) > yt-smartimation:nth-child(1) > div:nth-child(1) > div:nth-child(1) > dislike-button-view-model:nth-child(2) > toggle-button-view-model:nth-child(1) > button:nth-child(1) > yt-touch-feedback-shape:nth-child(2) > div:nth-child(1) > div:nth-child(2)`),
+            ]).catch(reject)
+
+            if (em) await em.click().catch(reject)
+
+            resolve(!!em)
+        })
+    }
+
+    async subscribe() {
+        return new Promise(async (resolve, reject) => {
+            let em = await Promise.race([
+                this.#page.waitForSelector(`#subscribe-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill`),
             ]).catch(reject)
 
             if (em) await em.click().catch(reject)
