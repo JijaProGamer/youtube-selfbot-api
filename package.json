@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -13,7 +13,7 @@
   "author": "JijaProGamer",
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.14.3",
+    "@distube/ytdl-core": "^4.14.4",
     "await-to-js": "^3.0.0",
     "playwright-anti-fingerprinter": "^1.1.7",
     "puppeteer-bandwidth-calculator": "^1.0.0",
