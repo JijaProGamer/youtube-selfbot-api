@@ -361,10 +361,18 @@ class YoutubeSelfbotPage {
 
                     cookies = res
                 }
+            } 
+
+            for(let i = 0; i < cookies.length; i++){
+                if(!cookies[i].sameSite){
+                    cookies[i].sameSite = "None";
+                }
+
+                cookies[i].expires = Math.round(cookies[i].expires);
             }
 
             this.cookies = await this.getFormattedCookies(cookies).catch(reject)
-            await this.browser.addCookies(cookies).catch(reject)
+            await this.browser.context.addCookies(cookies).catch(reject)
 
             resolve()
         })

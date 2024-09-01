@@ -110,10 +110,17 @@ class YoutubeSelfbotBrowser {
 
             this.fingerprint = fingerprint;
 
+            const firefoxUserPrefs = {};
+
+            if(this.extra.muteAudio){
+                firefoxUserPrefs["media.volume_scale"] = "0";
+            }
+
             let opts = {
                 ...this.opts,
                 serviceWorkers: "block",
                 bypassCSP: true,
+                firefoxUserPrefs: firefoxUserPrefs
             }
 
 
@@ -134,12 +141,25 @@ class YoutubeSelfbotBrowser {
                 }
             }
 
-            await this.context.addInitScript(() => {
-                let DateNow = Date.now()
+            let DateNow = Date.now()
+
+            let audioVolume = Math.sqrt(Math.random());
+            if(audioVolume < 0.2){
+                audioVolume = 0;
+            }
+
+            await this.context.addInitScript(([extra, DateNow, audioVolume]) => {
                 let DateYear = DateNow + 31536000000
+
+                audioVolume = Math.round(audioVolume * 100 / 5) * 5;
+
                 localStorage.setItem('yt-player-quality', `{\"data\":\"{\\\"quality\\\":144,\\\"previousQuality\\\":240}\",\"expiration\":${DateYear},\"creation\":${DateNow}}`);
-                localStorage.setItem('yt-player-volume', `{"data":"{\\"volume\\":0,\\"muted\\":false}","expiration":${DateYear},"creation":${DateNow}}`);
-            }).catch(reject)
+                localStorage.setItem('yt-player-volume', `{\"data\":\"{\\\"volume\\\":${audioVolume},\\\"muted\\\":${audioVolume == 0}}\",\"expiration\":${DateYear},\"creation\":${DateNow}}`)
+
+                if(extra.useAV1){
+                    localStorage.setItem('yt-player-av1-pref', `8192`);
+                }
+            }, [this.extra, DateNow, audioVolume]).catch(reject)
 
             resolve()
         })

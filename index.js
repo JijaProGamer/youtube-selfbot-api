@@ -69,6 +69,8 @@ class selfbot {
             autoSkipAds: opts.autoSkipAds,
             fingerprint: opts.fingerprint,
             ignorePluginsStealth: opts.ignorePluginsStealth,
+            useAV1: opts.useAV1,
+            muteAudio: opts.muteAudio,
         }
 
         this.#opts = {

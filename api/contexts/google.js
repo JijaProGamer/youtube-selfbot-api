@@ -67,7 +67,7 @@ class googleContext {
                 ])
 
                 if (typeof cookies == "string" || typeof cookies == "object") {
-                    await this.#parent.clearCookies()
+                    //await this.#parent.clearCookies()
                     await this.#parent.setCookies(cookies)
                     await this.#page.goto(`https://myaccount.google.com/email`)
 
