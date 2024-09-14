@@ -41,7 +41,7 @@ let filter_paths = {
 }
 
 async function gotoVideo(page, title) {
-    await page.goto(`https://www.youtube.com/results?search_query=${title}`, { waitUntil: "networkidle" });
+    await page.goto(`https://www.youtube.com/results?search_query=${title}`, { waitUntil: "networkidle", referer: "https://www.youtube.com" });
     await page.waitForSelector(`#contents`);
 }
 
@@ -100,7 +100,7 @@ async function applyFilter(page, filterName, filterValue) {
         if (!filterButton) return;
 
         await Promise.all([
-            new Promise((resolve) => {
+            new Promise((resolve, reject) => {
                 page.evaluate(() => {
                     return new Promise((resolve, reject) => {
                         let interval = setInterval(() => {
