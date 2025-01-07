@@ -50,10 +50,11 @@ class watcherContext {
 
                 //if (!this.#parent.videoInfo.isLive) {
                 await Promise.race([
-                    this.#page.waitForSelector(`.YtSegmentedLikeDislikeButtonViewModelHost`),
                     this.#page.waitForSelector(`#segmented-buttons-wrapper`),
                     this.#page.waitForSelector(`ytd-segmented-like-dislike-button-renderer`),
                     this.#page.waitForSelector(`#comments-button`),
+                    this.#page.waitForSelector(`.ytSegmentedLikeDislikeButtonViewModelHost`),
+                    this.#page.waitForSelector(`#title`),
                 ]).catch(reject)
                 //}
 
@@ -62,7 +63,10 @@ class watcherContext {
                 let videoStates = isShort ? videoStates_shorts : videoStates_normal
                 let playerElement = await this.#page.waitForSelector(playerSelector).catch(reject)
 
-                await this.#page.waitForSelector("video").catch(reject)
+                await Promise.race([
+                    this.#page.waitForSelector(".html5-video-container > video"),
+                    this.#page.waitForSelector("#shorts-player > div.html5-video-container > video")
+                ]).catch(reject)
 
                 this.#parent.videoInfo.isShort = isShort && !this.#parent.videoInfo.isLive
                 this.#parent.last_video_request = Date.now()
@@ -150,37 +154,37 @@ class watcherContext {
 
     async play() {
         return new Promise(async (resolve, reject) => {
-            this.#page.evaluate(() => {
-                let video = Array.from(document.querySelectorAll("video")).pop()
+            this.#page.evaluate((isShorts) => {
+                let video = isShorts ? document.querySelector("#shorts-player > div.html5-video-container > video") : document.querySelector(".html5-video-container > video")
                 video.play()
-            }).catch(reject).then(resolve)
+            }, this.#parent.videoInfo.isShort).catch(reject).then(resolve)
         })
     }
 
     async seek(time) {
         return new Promise(async (resolve, reject) => {
-            this.#page.evaluate((time) => {
-                let video = Array.from(document.querySelectorAll("video")).pop()
+            this.#page.evaluate(([time, isShorts]) => {
+                let video = isShorts ? document.querySelector("#shorts-player > div.html5-video-container > video") : document.querySelector(".html5-video-container > video")
                 video.currentTime = time
-            }, time).catch(reject).then(resolve)
+            }, [time, this.#parent.videoInfo.isShort]).catch(reject).then(resolve)
         })
     }
 
     async time() {
         return new Promise(async (resolve, reject) => {
-            this.#page.evaluate(() => {
-                let video = Array.from(document.querySelectorAll("video")).pop()
+            this.#page.evaluate((isShorts) => {
+                let video = isShorts ? document.querySelector("#shorts-player > div.html5-video-container > video") : document.querySelector(".html5-video-container > video")
                 return video.currentTime
-            }).catch(reject).then(resolve)
+            }, this.#parent.videoInfo.isShort).catch(reject).then(resolve)
         })
     }
 
     async duration() {
         return new Promise(async (resolve, reject) => {
-            this.#page.evaluate(() => {
-                let video = Array.from(document.querySelectorAll("video")).pop()
+            this.#page.evaluate((isShorts) => {
+                let video = isShorts ? document.querySelector("#shorts-player > div.html5-video-container > video") : document.querySelector(".html5-video-container > video")
                 return video.duration
-            }).catch(reject).then(resolve)
+            }, this.#parent.videoInfo.isShort).catch(reject).then(resolve)
         })
     }
 
@@ -337,6 +341,7 @@ class watcherContext {
                         }
                     }
                 }
+                
 
                 for (let i = 0; i < DirectBlockElements.length; i++) {
                     let currentElementToBlock = document.querySelector(DirectBlockElements[i]);
