@@ -1,0 +1,22 @@
+{
+  "name": "youtube-selfbot-api",
+  "version": "4.3.6",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fast_CI": "node ./CI/fast.js",
+    "slow_CI": "node ./CI/slow.js"
+  },
+  "keywords": [],
+  "author": "JijaProGamer",
+  "license": "MIT",
+  "dependencies": {
+    "@distube/ytdl-core": "^4.16.5",
+    "await-to-js": "^3.0.0",
+    "playwright-anti-fingerprinter": "^1.1.9",
+    "puppeteer-bandwidth-calculator": "^1.0.0",
+    "uuid": "^9.0.0"
+  }
+}
