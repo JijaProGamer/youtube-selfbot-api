@@ -346,16 +346,25 @@ class YoutubeSelfbotPage {
                             value,
                             domain: ".youtube.com",
                             path: "/",
-                            expires: Date.now() + 657000000,
-                            size: name.length + value.length,
+                            expires: (Date.now() + 31556952000) / 1000,
 
                             httpOnly: false,
                             secure: true,
                             sesion: false,
                             sameSite: "None",
-                            sameParty: false,
-                            sourceScheme: "Secure",
-                            sourcePort: 443,
+                        })
+
+                        res.push({
+                            name,
+                            value,
+                            domain: ".google.com",
+                            path: "/",
+                            expires: (Date.now() + 31556952000) / 1000,
+
+                            httpOnly: false,
+                            secure: true,
+                            sesion: false,
+                            sameSite: "None",
                         })
                     }
 
@@ -363,13 +372,15 @@ class YoutubeSelfbotPage {
                 }
             } 
 
-            for(let i = 0; i < cookies.length; i++){
-                if(!cookies[i].sameSite){
-                    cookies[i].sameSite = "None";
-                }
+            const currentDate = new Date()
 
-                cookies[i].expires = Math.round(cookies[i].expires);
-            }
+            cookies = cookies.map(obj => {
+                return {
+                    ...obj,
+                    expires: Math.round(obj.expirationDate || obj.expires || (new Date(currentDate.setFullYear(currentDate.getFullYear() + 1))) / 1000),
+                    sameSite: ['Strict', 'Lax', 'None'].includes(obj.sameSite) ? obj.sameSite : 'Lax'
+                };
+            });
 
             this.cookies = await this.getFormattedCookies(cookies).catch(reject)
             await this.browser.context.addCookies(cookies).catch(reject)

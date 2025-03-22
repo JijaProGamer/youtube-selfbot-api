@@ -4,6 +4,21 @@ let videoStates_normal = ["PLAYING", "PAUSED", "BUFFERING"]
 
 videoStates_normal[-1] = "FINISHED"
 
+function parseNumber(str) {
+    const match = str.match(/^([\d.]+)([KMB]?)$/i);
+    if (!match) return NaN;
+
+    let [_, num, suffix] = match;
+    num = parseFloat(num);
+
+    switch (suffix.toUpperCase()) {
+        case "K": return num * 1_000;
+        case "M": return num * 1_000_000;
+        case "B": return num * 1_000_000_000;
+        default: return num;
+    }
+}
+
 class watcherContext {
     #page = {}
     #parent = {}
@@ -234,6 +249,105 @@ class watcherContext {
         })
     }
 
+    async reply(text, container) {
+        return new Promise(async (resolve, reject) => {
+            const reply_first_button = await container.$(
+                'ytd-comment-view-model > #body > #main > #action-buttons > #toolbar > #reply-button-end > yt-button-shape > button'
+            ).catch(reject)
+            await reply_first_button.click()
+
+
+            const textRootSelector = 'ytd-comment-view-model > #body > #main > #action-buttons > #reply-dialog > ytd-comment-reply-dialog-renderer > #commentbox > #thumbnail-input-row > #main > #creation-box > tp-yt-paper-input-container > .input-wrapper > #labelAndInputContainer .ytd-commentbox > .ytd-commentbox > .ytd-commentbox > .ytd-commentbox > #contenteditable-root';
+            await this.#page.waitForSelector(textRootSelector, { state: 'attached' });
+            const textRoot = await container.$(textRootSelector).catch(reject);
+
+            await textRoot.scrollIntoViewIfNeeded()
+            await textRoot.waitForElementState('visible')
+            await textRoot.type(text, { delay: 100 })
+
+
+            const reply_button = await container.$(
+                'ytd-comment-view-model > #body > #main > #action-buttons > #reply-dialog > ytd-comment-reply-dialog-renderer > #commentbox > #thumbnail-input-row > #main > #footer > #buttons > #submit-button > yt-button-shape > button'
+            ).catch(reject)
+            await reply_button.click()
+        })
+    }
+
+    async listComments(num, timeout){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const viewport = await this.#page.viewportSize()
+                const x = viewport.width / 2
+                const y = viewport.height * 0.9
+            
+                const started = Date.now()
+                while(true){
+                    let loadedComments = await this.#getLoadedComments()
+                    
+                    if(loadedComments.length >= num){
+                        await this.#page.mouse.wheel(0, -5000000)
+                        return resolve(loadedComments.slice(0, num))
+                    }
+
+                    if (Date.now() - started >= timeout) {
+                        await this.#page.mouse.wheel(0, -5000000)
+                        return resolve(loadedComments)
+                    }
+
+                    await this.#page.mouse.move(x, y);
+                    await this.#page.waitForTimeout(500);
+                    await this.#page.mouse.wheel(0, 5000);
+                }
+            } catch (err) {
+                reject(new Error(err))
+            }
+        })
+    }
+
+    async #getLoadedComments(){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const commentContainers = await this.#page.$$('#comments > ytd-item-section-renderer > #contents > ytd-comment-thread-renderer');
+
+                let comments = [];
+
+                for (const container of commentContainers) {
+                    const commentText = await container.$$eval(
+                        'ytd-comment-view-model > #body > #main > #expander > #content > #content-text > span',
+                        spans => spans.map(span => span.innerText.trim()).join(' ')
+                    ).catch(reject);
+
+                    const author = await container.$eval(
+                        'ytd-comment-view-model > #body > #main > #header > #header-author > h3 > a > span',
+                        span => span.innerText.trim()
+                    ).catch(reject);
+
+                    const likes = await container.$eval(
+                        'ytd-comment-view-model > #body > #main > #action-buttons > #toolbar > #vote-count-middle',
+                        span => span.innerText.trim()
+                    ).catch(reject);
+
+                    const replies = await container.$eval(
+                        '#replies > ytd-comment-replies-renderer > #expander > .expander-header > .more-button > ytd-button-renderer > yt-button-shape > button > .yt-spec-button-shape-next__button-text-content > span',
+                        span => span.innerText.trim()
+                    ).catch(() => '0');
+
+                    comments.push({ 
+                        text: commentText, 
+                        author: author, 
+                        likes: parseNumber(likes), 
+                        replies: parseInt(replies), 
+                        container: container,
+                    });
+                }
+
+                resolve(comments)
+            } catch (err) {
+                reject(new Error(err))
+            }
+        })
+    }
+
     async comment(message) {
         return new Promise(async (resolve, reject) => {
             if(await this.areCommentsLocked().catch(reject)){
@@ -404,7 +518,7 @@ class watcherContext {
                     }
                 }
 
-                let adskipBtn = document.querySelector(`.ytp-ad-skip-button-container`) || document.querySelector(".ytp-skip-ad-button") || document.querySelector(".ytp-skip-ad-button-modern.ytp-button")
+                let adskipBtn = document.querySelector(`.ytp-ad-skip-button-container`) || document.querySelector(".ytp-skip-ad-button") || document.querySelector(".ytp-skip-ad-button-modern.ytp-button") || document.querySelector(`.ytp-ad-skip-button-text`)
                 if (adskipBtn) {
                     adskipBtn.click()
                     skipped = true

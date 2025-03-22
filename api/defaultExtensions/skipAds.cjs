@@ -47,7 +47,7 @@ module.exports = {
             let videoAdFound = document.querySelector(`.html5-video-player.ad-showing`)
 
             if (videoAdFound) {
-                let adskipBtn = document.querySelector(`.ytp-ad-skip-button-container`)
+                let adskipBtn = document.querySelector(`.ytp-ad-skip-button-container`) || document.querySelector(".ytp-skip-ad-button") || document.querySelector(".ytp-skip-ad-button-modern.ytp-button") || document.querySelector(`.ytp-ad-skip-button-text`)
                 if (adskipBtn) {
                     adskipBtn.click()
                 } else {

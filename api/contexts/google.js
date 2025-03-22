@@ -68,6 +68,7 @@ class googleContext {
 
                 if (typeof cookies == "string" || typeof cookies == "object") {
                     //await this.#parent.clearCookies()
+
                     await this.#parent.setCookies(cookies)
                     await this.#page.goto(`https://myaccount.google.com/email`)
 
@@ -84,7 +85,7 @@ class googleContext {
                     currentEmail = await text(el)
                 }
 
-                if (emailBox || currentEmail !== accountInfo.email) {
+                if (emailBox) {
                     if (!accountInfo.email || !accountInfo.password) {
                         this.#browser.emit("loginFailed", this.#parent.id, {
                             header: "No account information given",
