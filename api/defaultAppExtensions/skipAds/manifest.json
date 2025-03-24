@@ -1,0 +1,32 @@
+{
+   "action": {
+      "default_icon": {
+         "19": "images/icon-19.png",
+         "38": "images/icon-38.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Adblock for Youtube™"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "contentscript.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_start"
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_extension_description__",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "images/icon-128.png",
+      "16": "images/icon-16.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/WmzFe8hcRH9QeTBEDo8cH/4IYaw4DpiYlK6lUlXUPmEX8kkFfugsFMjlqVqHJN44Vhhz0gEWpyxWDYMfMPaJo1lXVGp/PBkf22QjvSvfAeWTGzhCo9020ysg3FeEEztm7yK50qkSNCgqsdRSdZKgy8dqF6YSouJRcYB6y5CZhwIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_extension_name__",
+   "permissions": [ "tabs", "storage", "unlimitedStorage", "scripting", "alarms", "declarativeNetRequest", "webNavigation", "webRequest" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "7.0.2"
+}

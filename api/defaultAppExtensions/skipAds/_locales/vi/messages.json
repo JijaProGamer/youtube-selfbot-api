@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "làm sạch bằng Adblock cho Youtube™"
+   },
+   "disable": {
+      "message": "vô hiệu hóa"
+   },
+   "disabled": {
+      "message": "người khuyết tật"
+   },
+   "enable": {
+      "message": "cho phép"
+   },
+   "enable_non_video_ads": {
+      "message": "Cho phép quảng cáo bình thường"
+   },
+   "enable_video_ads": {
+      "message": "Cho phép Quảng cáo Video"
+   },
+   "extension_description": {
+      "message": "Loại bỏ quảng cáo trên Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock cho Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Đánh giá chúng tôi trên Facebook"
+   },
+   "options": {
+      "message": "AdBlock cho Youtube chỉnh ™"
+   },
+   "options_short": {
+      "message": "thiết lập"
+   },
+   "page_action_title": {
+      "message": "Các quảng cáo sẽ được tự động bỏ qua"
+   },
+   "rate_this_extension": {
+      "message": "Đánh giá chúng tôi trên Google"
+   }
+}

@@ -1,0 +1,84 @@
+{
+  "extension_name": {
+    "message": "Adblock for Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Removes ads from Youtube™."
+  },
+  "page_action_title": {
+    "message": "Settings - Adblock for Youtube™"
+  },
+  "disabled": {
+    "message": "Disabled"
+  },
+  "disable": {
+    "message": "Disable"
+  },
+  "enable": {
+    "message": "Enable"
+  },
+  "rate_this_extension": {
+    "message": "Rate us"
+  },
+  "like_on_facebook": {
+    "message": "Share us on Facebook"
+  },
+  "ads": {
+    "message": "Ad blocking"
+  },
+  "annotations": {
+    "message": "Annotations blocking"
+  },
+  "branding": {
+    "message": "cleaned by Adblock for Youtube™"
+  },
+  "options": {
+    "message": "AdBlock for Youtube™ Settings"
+  },
+  "options_short": {
+    "message": "Settings"
+  },
+  "enable_video_ads": {
+    "message": "Enable Video Ads"
+  },
+  "enable_non_video_ads": {
+    "message": "Enable Normal Ads"
+  },
+
+  "installed_page_title": {
+    "message": "Installed Adblock for Youtube™"
+  },
+
+  "installed": {
+    "message": "Installed",
+    "description": "badge for install page"
+  },
+
+  "abyt_has_been_installed": {
+    "message": "Adblock for Youtube™ installation successful"
+  },
+
+  "ads_will_be_blocked_on_yt": {
+    "message": "Enjoy Youtube without ads!"
+  },
+
+  "support_us": {
+    "message": "Support our project"
+  },
+
+  "recommend": {
+    "message": "Tell your friends"
+  },
+
+  "share_text": {
+    "message": "I enjoy Youtube without ads thanks to Adblock for Youtube™ ",
+    "description": "This text will be shown on share links (e.g. Twitter)"
+  },
+  "reviewNow": {
+    "message": "Please support it with a review!",
+    "description": "This text will be shown on share links (e.g. Twitter)"
+  }
+}

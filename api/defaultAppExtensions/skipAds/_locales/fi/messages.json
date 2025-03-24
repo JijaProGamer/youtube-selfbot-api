@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "puhdistaa Adblock Youtube™"
+   },
+   "disable": {
+      "message": "poistaa"
+   },
+   "disabled": {
+      "message": "vammaiset"
+   },
+   "enable": {
+      "message": "mahdollistaa"
+   },
+   "enable_non_video_ads": {
+      "message": "Ota Normaali mainokset"
+   },
+   "enable_video_ads": {
+      "message": "Ota Videomainosten"
+   },
+   "extension_description": {
+      "message": "Poistaa mainokset Youtube-palvelusta."
+   },
+   "extension_name": {
+      "message": "Adblock for Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Äänestä meitä Facebookissa"
+   },
+   "options": {
+      "message": "AdBlock Youtube™ Asetukset"
+   },
+   "options_short": {
+      "message": "Asetukset"
+   },
+   "page_action_title": {
+      "message": "Mainokset ohitetaan automaattisesti"
+   },
+   "rate_this_extension": {
+      "message": "Äänestä meitä Google"
+   }
+}

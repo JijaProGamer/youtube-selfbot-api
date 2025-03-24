@@ -1,2 +1,7 @@
 node_modules
 env.json
+cookies.json
+test.js
+account.json
+*data_dir*
+*data/*

@@ -1,0 +1,77 @@
+{
+  "extension_name": {
+    "message": "Adblock für Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Entfernt Werbung auf Youtube."
+  },
+  "page_action_title": {
+    "message": "Einstellungen - Adblock für Youtube™"
+  },
+  "disabled": {
+    "message": "Adblock for Youtube ist Pausiert"
+  },
+  "disable": {
+    "message": "Deaktivieren"
+  },
+  "enable": {
+    "message": "Aktivieren"
+  },
+  "ads": {
+    "message": "Werbung blockieren"
+  },
+  "annotations": {
+    "message": "Anmerkungen blockieren"
+  },
+  "rate_this_extension": {
+    "message": "Bewerte uns im Webstore"
+  },
+  "like_on_facebook": {
+    "message": "Bewerte uns auf Facebook"
+  },
+  "branding": {
+    "message": "cleaned by Adblock for Youtube™"
+  },
+
+  "options": {
+    "message": "AdBlock for Youtube™ Optionen"
+  },
+  "options_short": {
+    "message": "Optionen"
+  },
+  "enable_video_ads": {
+    "message": "Aktiviere Werbung in Videos"
+  },
+  "enable_non_video_ads": {
+    "message": "Aktiviere normale Werbung"
+  },
+
+  "installed_page_title": {
+    "message": "Installation Adblock für Youtube™"
+  },
+
+  "installed": {
+    "message": "Installiert",
+    "description": "badge for install page"
+  },
+
+  "abyt_has_been_installed": {
+    "message": "Adblock für Youtube™ Installation erfolgreich!"
+  },
+
+  "ads_will_be_blocked_on_yt": {
+    "message": "Genieße Youtube werbefrei!"
+  },
+
+  "support_us": {
+    "message": "Unterstützen Sie unser Projekt"
+  },
+
+  "recommend": {
+    "message": "Weiterempfehlen"
+  }
+
+}

@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "تنظيفها بواسطة ادبلوك ل يوتيوب ™"
+   },
+   "disable": {
+      "message": "تعطيل"
+   },
+   "disabled": {
+      "message": "معاق"
+   },
+   "enable": {
+      "message": "تمكين"
+   },
+   "enable_non_video_ads": {
+      "message": "تمكين عادي الإعلانات"
+   },
+   "enable_video_ads": {
+      "message": "تمكين إعلانات الفيديو"
+   },
+   "extension_description": {
+      "message": "يزيل الإعلانات من يوتيوب ™."
+   },
+   "extension_name": {
+      "message": "ادبلوك ل يوتيوب ™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "تقيم لنا في الفيسبوك"
+   },
+   "options": {
+      "message": "عن adblock ل إعدادات يوتيوب ™"
+   },
+   "options_short": {
+      "message": "إعدادات"
+   },
+   "page_action_title": {
+      "message": "يتم تخطي الإعلانات تلقائيا"
+   },
+   "rate_this_extension": {
+      "message": "تقيم لنا على جوجل"
+   }
+}

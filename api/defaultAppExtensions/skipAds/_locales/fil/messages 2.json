@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock para sa Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Tinatanggal ang video advertising at iba pang mga ad sa banner sa Youtube."
+  },
+  "page_action_title": {
+    "message": "Ang mga ad ay awtomatikong nilaktawan"
+  },
+  "disabled": {
+    "message": "Nahinto"
+  },
+  "disable": {
+    "message": "Huwag paganahin ang"
+  },
+  "enable": {
+    "message": "paganahin ang"
+  },
+  "rate_this_extension": {
+    "message": "I-rate sa amin sa Google"
+  },
+  "like_on_facebook": {
+    "message": "I-rate sa amin sa Facebook"
+  },
+  "branding": {
+    "message": "nalinis sa pamamagitan ng adblock para sa Youtube™"
+  },
+  "options": {
+    "message": "Adblock para sa Youtube Setting ™"
+  },
+  "options_short": {
+    "message": "Mga Setting"
+  },
+  "enable_video_ads": {
+    "message": "Paganahin ang Video na Ad"
+  },
+  "enable_non_video_ads": {
+    "message": "Paganahin ang Normal na Ads"
+  }
+}

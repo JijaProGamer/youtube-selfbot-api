@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "यूट्यूब ™ के लिए Adblock द्वारा साफ"
+   },
+   "disable": {
+      "message": "असमर्थ"
+   },
+   "disabled": {
+      "message": "विकलांग"
+   },
+   "enable": {
+      "message": "सक्षम"
+   },
+   "enable_non_video_ads": {
+      "message": "सामान्य विज्ञापन सक्षम"
+   },
+   "enable_video_ads": {
+      "message": "वीडियो विज्ञापन सक्षम"
+   },
+   "extension_description": {
+      "message": "यूट्यूब ™ से विज्ञापन हटाता है।"
+   },
+   "extension_name": {
+      "message": "यूट्यूब ™ के लिए Adblock"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "फेसबुक पर हमारे दर"
+   },
+   "options": {
+      "message": "यूट्यूब ™ सेटिंग्स के लिए AdBlock"
+   },
+   "options_short": {
+      "message": "सेटिंग्स"
+   },
+   "page_action_title": {
+      "message": "विज्ञापन स्वतः छोड़ रहे हैं"
+   },
+   "rate_this_extension": {
+      "message": "गूगल पर हमारे दर"
+   }
+}

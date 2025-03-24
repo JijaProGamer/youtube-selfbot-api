@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "유튜브 ™ 를위한 애드 블록 에 의해 청소"
+   },
+   "disable": {
+      "message": "사용 안 함"
+   },
+   "disabled": {
+      "message": "장애인"
+   },
+   "enable": {
+      "message": "사용"
+   },
+   "enable_non_video_ads": {
+      "message": "일반 광고 사용"
+   },
+   "enable_video_ads": {
+      "message": "동영상 광고 활성화"
+   },
+   "extension_description": {
+      "message": "Youtube ™에서 광고를 삭제합니다."
+   },
+   "extension_name": {
+      "message": "유튜브 ™ 용 애드 블록"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "페이스 북에서 저희를 평가"
+   },
+   "options": {
+      "message": "유튜브 ™ 설정 을위한 AdBlock을"
+   },
+   "options_short": {
+      "message": "설정"
+   },
+   "page_action_title": {
+      "message": "광고 가 자동으로 건너 뜁니다"
+   },
+   "rate_this_extension": {
+      "message": "구글 에서 우리를 평가하기"
+   }
+}

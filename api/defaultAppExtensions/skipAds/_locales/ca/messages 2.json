@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock per a Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Elimina anuncis de Youtube™."
+  },
+  "page_action_title": {
+    "message": "Els anuncis es salten automàticament"
+  },
+  "disabled": {
+    "message": "discapacitat"
+  },
+  "disable": {
+    "message": "Desactiva"
+  },
+  "enable": {
+    "message": "permetre"
+  },
+  "rate_this_extension": {
+    "message": "Ens classifiquen en Google"
+  },
+  "like_on_facebook": {
+    "message": "Ens Vota a Facebook"
+  },
+  "branding": {
+    "message": "netejat per Adblock de Youtube™"
+  },
+  "options": {
+    "message": "AdBlock per Ajustaments de Youtube™"
+  },
+  "options_short": {
+    "message": "configuració"
+  },
+  "enable_video_ads": {
+    "message": "Habilitar anuncis de vídeo"
+  },
+  "enable_non_video_ads": {
+    "message": "Habilitar normals Anuncis"
+  }
+}

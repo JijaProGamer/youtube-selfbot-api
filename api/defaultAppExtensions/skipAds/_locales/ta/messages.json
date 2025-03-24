@@ -1,0 +1,14 @@
+{
+   "extension_description": {
+      "message": "Youtube இலிருந்து விளம்பரங்களை நீக்குகிறது."
+   },
+   "extension_name": {
+      "message": "Adblock for Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "page_action_title": {
+      "message": "அமைப்புகள்"
+   }
+}

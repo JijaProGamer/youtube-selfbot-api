@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock za Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "यूट्यूब ™ से विज्ञापन हटाता है।"
+  },
+  "page_action_title": {
+    "message": "Oglasi se automatski preskočila"
+  },
+  "disabled": {
+    "message": "onesposobljen"
+  },
+  "disable": {
+    "message": "onesposobiti"
+  },
+  "enable": {
+    "message": "omogućiti"
+  },
+  "rate_this_extension": {
+    "message": "Ocijenite nas na Google"
+  },
+  "like_on_facebook": {
+    "message": "Ocijenite nas na Facebook-u"
+  },
+  "branding": {
+    "message": "čistili Adblock za Youtube™"
+  },
+  "options": {
+    "message": "AdBlock za Youtube™ Settings"
+  },
+  "options_short": {
+    "message": "Postavke"
+  },
+  "enable_video_ads": {
+    "message": "Omogućite Videooglase"
+  },
+  "enable_non_video_ads": {
+    "message": "Omogućite normalni oglasi"
+  }
+}

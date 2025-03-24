@@ -3,6 +3,8 @@ import os from 'os';
 import path from 'path';
 import crypto from 'crypto';
 
+import { plugin } from 'playwright-with-fingerprints';
+
 import getVideoInfo from "./api/getVideoInfo.js"
 import browserClass from "./api/browser.js"
 
@@ -11,6 +13,11 @@ class selfbot {
     #extra = {}
 
     constructor(opts = {}) {
+        plugin.setServiceKey(opts.fingerprinter_service_key || "")
+        if(opts.workingFolder){
+            plugin.setWorkingFolder(opts.workingFolder || "")
+        }
+
         if (opts.proxy && opts.proxy !== "direct://" && opts.proxy !== "direct") {
             if (typeof opts.proxy !== "string") {
                 throw new Error("proxy must be a string")

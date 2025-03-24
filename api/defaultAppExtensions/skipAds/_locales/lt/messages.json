@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "valomi Adblock Youtube™"
+   },
+   "disable": {
+      "message": "sugadinti"
+   },
+   "disabled": {
+      "message": "neįgalusis"
+   },
+   "enable": {
+      "message": "leisti"
+   },
+   "enable_non_video_ads": {
+      "message": "Įjungti Normal Skelbimai"
+   },
+   "enable_video_ads": {
+      "message": "Įjungti vaizdo reklamas"
+   },
+   "extension_description": {
+      "message": "Pašalina vaizdo reklamą ir kitus reklaminius skelbimus YouTube™."
+   },
+   "extension_name": {
+      "message": "Adblock per Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Įvertink mus dėl \\"
+   },
+   "options": {
+      "message": "AdBlock Youtube™ \\"
+   },
+   "options_short": {
+      "message": "Nustatymai"
+   },
+   "page_action_title": {
+      "message": "Skelbimai automatiškai praleidžiami"
+   },
+   "rate_this_extension": {
+      "message": "Įvertink mus \\"
+   }
+}

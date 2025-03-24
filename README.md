@@ -29,9 +29,8 @@ patreon: https://www.patreon.com/Bloxxy213/membership
 
 # Requirements
 
-  * NodeJS 18 (other versions not tested)
+  * NodeJS 18+
   * Connection speed of at 2 megabits/minute per worker
-  * Google chrome 107.0.5304.107 or later (NO OTHER BROWSER SUPPORTED OTHER THAN CHROME/CHROMIUM)
   * Decent computer
 
 # Features
@@ -42,14 +41,16 @@ patreon: https://www.patreon.com/Bloxxy213/membership
   * Uses as little bandwith as possible
   * Supports all kinds of proxies (With and without authentification)
   * You can use it with no proxy you want (If you dont want to bot views)
-  * Spoofs timezone, and randomises fingerprint, useragent, and size
+  * Spoofs fingerprint
+
+## Acknowledgments
+Special thanks to the developers of:
+
+- [Adblocker for Youtube](https://chromewebstore.google.com/detail/adblock-for-youtube/cmedhionkhpnakcndndgjdbohmhepckk?hl=en) - Used for instant ad blocking, when autoSkipAds is set to true.
+- [Bablosoft FingerprintSwitcher](https://fp.bablosoft.com/) - Used for great fingerprint switching.
 
 # Contacting me
 
 Do not contact me until you've read the entire documentation.
 
-You can contact me on my discord: Bloxxy213#8826
-
 You can get help faster by joining our discord server: https://discord.gg/E7Kb2c9euw
-
-Note! The "plugins" playwright-stealth evasion is forcefully disabled, as it's bugged/detected for now.

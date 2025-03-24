@@ -1,8 +1,6 @@
 import { dirname } from 'path';
 import { createRequire } from 'module';
 
-import { ConnectFingerprinter } from "playwright-anti-fingerprinter";
-
 import { fileURLToPath } from 'url';
 
 let __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,7 +16,7 @@ import * as uuid from "uuid"
 import { to } from "await-to-js";
 import getVideoInfo from "./getVideoInfo.js"
 
-let bannedResourceTypes = ["image", "font", "other", "media"]
+/*let bannedResourceTypes = ["image", "font", "other", "media"]
 async function shouldProxyRequest(page, request) {
     return 2;
     try {
@@ -72,7 +70,7 @@ async function requestInterceptor(page, requestData, route) {
         case 1:
             return "direct"
     }
-}
+}*/
 
 let methodFunctions = {
     search: require(path.join(__dirname, "/functions/search.cjs")),
@@ -168,18 +166,6 @@ class YoutubeSelfbotPage {
     workers() { return this.page.workers(...arguments) }
 
     async initPage(){
-        await this.page.unroute("**/**")
-
-        let evasionsIgnored = []
-
-        //if(this.extra.ignorePluginsStealth){
-            evasionsIgnored.push("plugins")
-        //}
-
-        await ConnectFingerprinter("firefox", this.page, {
-            fingerprint: this.browser.fingerprint,
-            requestInterceptor
-        }, evasionsIgnored)
     }
 
     gotoVideo(method = "direct", id, options = {}) {

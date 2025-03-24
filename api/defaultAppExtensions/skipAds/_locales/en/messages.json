@@ -1,0 +1,80 @@
+{
+   "abyt_has_been_installed": {
+      "message": "Adblock for Youtube™ installation successful"
+   },
+   "ads": {
+      "message": "Ad blocking"
+   },
+   "ads_will_be_blocked_on_yt": {
+      "message": "Enjoy Youtube without ads!"
+   },
+   "annotations": {
+      "message": "Annotations blocking"
+   },
+   "branding": {
+      "message": "cleaned by Adblock for Youtube™"
+   },
+   "disable": {
+      "message": "Disable"
+   },
+   "disabled": {
+      "message": "Disabled"
+   },
+   "enable": {
+      "message": "Enable"
+   },
+   "enable_non_video_ads": {
+      "message": "Enable Normal Ads"
+   },
+   "enable_video_ads": {
+      "message": "Enable Video Ads"
+   },
+   "extension_description": {
+      "message": "Removes ads from Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock for Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "installed": {
+      "description": "badge for install page",
+      "message": "Installed"
+   },
+   "installed_page_title": {
+      "message": "Installed Adblock for Youtube™"
+   },
+   "like_on_facebook": {
+      "message": "Share us on Facebook"
+   },
+   "options": {
+      "message": "AdBlock for Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "Settings"
+   },
+   "page_action_title": {
+      "message": "Settings - Adblock for Youtube™"
+   },
+   "rate_this_extension": {
+      "message": "Rate us"
+   },
+   "recommend": {
+      "message": "Tell your friends"
+   },
+   "reviewNow": {
+      "description": "This text will be shown on share links (e.g. Twitter)",
+      "message": "Please support it with a review!"
+   },
+   "share_text": {
+      "description": "This text will be shown on share links (e.g. Twitter)",
+      "message": "I enjoy Youtube without ads thanks to Adblock for Youtube™ "
+   },
+   "support_us": {
+      "message": "Support our project"
+   },
+   "wba": {
+      "message": "Share & Support the developers for feature requests with web browsing activty logging. See \u003Ca target=\"_blank\" href=\"__URL__\">more\u003C/a>."
+   }
+}

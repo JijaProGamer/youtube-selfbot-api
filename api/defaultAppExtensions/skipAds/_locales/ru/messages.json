@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "очищены Блокировка рекламы для Youtube™"
+   },
+   "disable": {
+      "message": "запрещать"
+   },
+   "disabled": {
+      "message": "инвалид"
+   },
+   "enable": {
+      "message": "Включить"
+   },
+   "enable_non_video_ads": {
+      "message": "Включить Normal Реклама"
+   },
+   "enable_video_ads": {
+      "message": "Включить видео Реклама"
+   },
+   "extension_description": {
+      "message": "Удаляет рекламу на Youtube™."
+   },
+   "extension_name": {
+      "message": "Блокировка рекламы для Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Оценить нами на Facebook"
+   },
+   "options": {
+      "message": "Блокировка рекламы для Youtube™"
+   },
+   "options_short": {
+      "message": "настройки"
+   },
+   "page_action_title": {
+      "message": "Объявления автоматически пропускаются"
+   },
+   "rate_this_extension": {
+      "message": "Оценить к нам:"
+   }
+}

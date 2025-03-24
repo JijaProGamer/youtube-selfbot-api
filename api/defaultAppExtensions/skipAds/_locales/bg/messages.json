@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "почистени от Adblock за Youtube™"
+   },
+   "disable": {
+      "message": "правя неспособен"
+   },
+   "disabled": {
+      "message": "Disabled"
+   },
+   "enable": {
+      "message": "Активирайте"
+   },
+   "enable_non_video_ads": {
+      "message": "Активирайте Нормални Ads"
+   },
+   "enable_video_ads": {
+      "message": "Активирайте Видео Обяви"
+   },
+   "extension_description": {
+      "message": "Премахва рекламите в Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock за Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Оцени се към нас във Facebook"
+   },
+   "options": {
+      "message": "AdBlock за Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "Настройки"
+   },
+   "page_action_title": {
+      "message": "Рекламите автоматично се пропускат"
+   },
+   "rate_this_extension": {
+      "message": "Оцени ни в Google"
+   }
+}

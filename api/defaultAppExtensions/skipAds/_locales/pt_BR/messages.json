@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "limpos por Os anúncios bloqueados para Youtube™"
+   },
+   "disable": {
+      "message": "incapacitar"
+   },
+   "disabled": {
+      "message": "inválido"
+   },
+   "enable": {
+      "message": "permitir"
+   },
+   "enable_non_video_ads": {
+      "message": "Ativar normais anúncios"
+   },
+   "enable_video_ads": {
+      "message": "Ativar anúncios em vídeo"
+   },
+   "extension_description": {
+      "message": "Remove publicidade em vídeo e outros banners no Youtube."
+   },
+   "extension_name": {
+      "message": "Os anúncios bloqueados para Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Classifique -nos no Facebook"
+   },
+   "options": {
+      "message": "Configurações Os anúncios bloqueados"
+   },
+   "options_short": {
+      "message": "Configurações"
+   },
+   "page_action_title": {
+      "message": "Os anúncios são automaticamente ignorados"
+   },
+   "rate_this_extension": {
+      "message": "Classifique -nos no Google"
+   }
+}

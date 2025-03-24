@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "dibersihkan oleh Adblock untuk Youtube™"
+   },
+   "disable": {
+      "message": "melumpuhkan"
+   },
+   "disabled": {
+      "message": "cacat"
+   },
+   "enable": {
+      "message": "memungkinkan"
+   },
+   "enable_non_video_ads": {
+      "message": "Aktifkan Iklan normal"
+   },
+   "enable_video_ads": {
+      "message": "Aktifkan Iklan Video"
+   },
+   "extension_description": {
+      "message": "Menghapus iklan dari Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock untuk Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Beri kami di Facebook"
+   },
+   "options": {
+      "message": "AdBlock untuk Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "Pengaturan"
+   },
+   "page_action_title": {
+      "message": "Iklan-iklan tersebut otomatis akan dilewati"
+   },
+   "rate_this_extension": {
+      "message": "Beri kami di Google"
+   }
+}

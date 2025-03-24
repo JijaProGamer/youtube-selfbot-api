@@ -1,6 +1,6 @@
 {
   "name": "youtube-selfbot-api",
-  "version": "4.3.9",
+  "version": "4.4.1",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -15,7 +15,8 @@
   "dependencies": {
     "@distube/ytdl-core": "^4.16.5",
     "await-to-js": "^3.0.0",
-    "playwright-anti-fingerprinter": "^1.2.0",
+    "playwright-core": "^1.51.1",
+    "playwright-with-fingerprints": "^2.1.2",
     "puppeteer-bandwidth-calculator": "^1.0.0",
     "uuid": "^9.0.0"
   }

@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock per Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Pašalina vaizdo reklamą ir kitus reklaminius skelbimus YouTube™."
+  },
+  "page_action_title": {
+    "message": "Skelbimai automatiškai praleidžiami"
+  },
+  "disabled": {
+    "message": "neįgalusis"
+  },
+  "disable": {
+    "message": "sugadinti"
+  },
+  "enable": {
+    "message": "leisti"
+  },
+  "rate_this_extension": {
+    "message": "Įvertink mus \\"
+  },
+  "like_on_facebook": {
+    "message": "Įvertink mus dėl \\"
+  },
+  "branding": {
+    "message": "valomi Adblock Youtube™"
+  },
+  "options": {
+    "message": "AdBlock Youtube™ \\"
+  },
+  "options_short": {
+    "message": "Nustatymai"
+  },
+  "enable_video_ads": {
+    "message": "Įjungti vaizdo reklamas"
+  },
+  "enable_non_video_ads": {
+    "message": "Įjungti Normal Skelbimai"
+  }
+}

@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "tisztítani Adblock a Youtube™"
+   },
+   "disable": {
+      "message": "letiltása"
+   },
+   "disabled": {
+      "message": "rokkant"
+   },
+   "enable": {
+      "message": "engedélyezése"
+   },
+   "enable_non_video_ads": {
+      "message": "Engedélyezése Normal hirdetések"
+   },
+   "enable_video_ads": {
+      "message": "Enable Video Ads"
+   },
+   "extension_description": {
+      "message": "Eltávolítja a YouTube ™ hirdetéseket."
+   },
+   "extension_name": {
+      "message": "Adblock a Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Szavazz minket a Facebook"
+   },
+   "options": {
+      "message": "AdBlock a Youtube™ beállításai"
+   },
+   "options_short": {
+      "message": "Beállítások"
+   },
+   "page_action_title": {
+      "message": "A hirdetések automatikusan átugorja"
+   },
+   "rate_this_extension": {
+      "message": "Szavazz minket a Google"
+   }
+}

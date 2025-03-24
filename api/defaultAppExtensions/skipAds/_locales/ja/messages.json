@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "YouTube™のために自分好みによって清掃"
+   },
+   "disable": {
+      "message": "無効にする"
+   },
+   "disabled": {
+      "message": "使用禁止"
+   },
+   "enable": {
+      "message": "有効にする"
+   },
+   "enable_non_video_ads": {
+      "message": "通常の広告を有効にする"
+   },
+   "enable_video_ads": {
+      "message": "動画広告を有効にする"
+   },
+   "extension_description": {
+      "message": "Youtube™から広告を削除します。"
+   },
+   "extension_name": {
+      "message": "YouTube™のための自分好み"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Facebook上で私たちを評価"
+   },
+   "options": {
+      "message": "YouTube™の設定のAdBlockを"
+   },
+   "options_short": {
+      "message": "[設定]"
+   },
+   "page_action_title": {
+      "message": "広告は自動的にスキップされます"
+   },
+   "rate_this_extension": {
+      "message": "Googleで私たちを評価"
+   }
+}

@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "renset af Adblock til Youtube™"
+   },
+   "disable": {
+      "message": "Deaktiver"
+   },
+   "disabled": {
+      "message": "Handicappede"
+   },
+   "enable": {
+      "message": "Aktiver"
+   },
+   "enable_non_video_ads": {
+      "message": "Aktiver Normale annoncer"
+   },
+   "enable_video_ads": {
+      "message": "Aktiver videoannoncer"
+   },
+   "extension_description": {
+      "message": "Fjerner annoncer på Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock til Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Bedøm os på Facebook"
+   },
+   "options": {
+      "message": "AdBlock til Youtube™ -indstillinger"
+   },
+   "options_short": {
+      "message": "Indstillinger"
+   },
+   "page_action_title": {
+      "message": "Annoncerne bliver automatisk sprunget"
+   },
+   "rate_this_extension": {
+      "message": "Bedøm os på Google"
+   }
+}

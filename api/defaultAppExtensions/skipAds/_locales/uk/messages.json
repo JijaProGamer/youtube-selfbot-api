@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "очищені Adblock для Youtube™"
+   },
+   "disable": {
+      "message": "забороняти"
+   },
+   "disabled": {
+      "message": "інвалід"
+   },
+   "enable": {
+      "message": "включити"
+   },
+   "enable_non_video_ads": {
+      "message": "Включити Normal Реклама"
+   },
+   "enable_video_ads": {
+      "message": "Включити відео Реклама"
+   },
+   "extension_description": {
+      "message": "Видаляє оголошення на Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock для Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Оцінити нами на Facebook"
+   },
+   "options": {
+      "message": "AdBlock для настройки Youtube™"
+   },
+   "options_short": {
+      "message": "налаштування"
+   },
+   "page_action_title": {
+      "message": "Оголошення автоматично пропускаються"
+   },
+   "rate_this_extension": {
+      "message": "Оцінити до нас:"
+   }
+}

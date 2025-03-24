@@ -1,0 +1,50 @@
+{
+   "extension_name": {
+      "message": "Adblock for Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "extension_description": {
+      "message": "Eemaldab reklaamid YouTube'is."
+   },
+   "page_action_title": {
+      "message": "Settings"
+   },
+   "disabled": {
+      "message": "Disabled"
+   },
+   "disable": {
+      "message": "Disable"
+   },
+   "enable": {
+      "message": "Enable"
+   },
+   "rate_this_extension": {
+      "message": "Rate us"
+   },
+   "like_on_facebook": {
+      "message": "Rate us on Facebook"
+   },
+   "ads": {
+      "message": "Ads"
+   },
+   "annotations": {
+      "message": "Annotations"
+   },
+   "branding": {
+      "message": "cleaned by Adblock for Youtube™"
+   },
+   "options": {
+      "message": "AdBlock for Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "Settings"
+   },
+   "enable_video_ads": {
+      "message": "Enable Video Ads"
+   },
+   "enable_non_video_ads": {
+      "message": "Enable Normal Ads"
+   }
+}

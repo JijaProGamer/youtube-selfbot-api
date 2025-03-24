@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock เพื่อ Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "ลบโฆษณาบน Youtube™"
+  },
+  "page_action_title": {
+    "message": "โฆษณาจะมีการ ข้ามไป โดยอัตโนมัติ"
+  },
+  "disabled": {
+    "message": "พิการ"
+  },
+  "disable": {
+    "message": "ปิดการใช้งาน"
+  },
+  "enable": {
+    "message": "การเปิดใช้งาน"
+  },
+  "rate_this_extension": {
+    "message": "ให้คะแนนเรา ใน Google"
+  },
+  "like_on_facebook": {
+    "message": "ให้คะแนนเรา ใน Facebook"
+  },
+  "branding": {
+    "message": "ทำความสะอาดโดย Adblock เพื่อ Youtube™"
+  },
+  "options": {
+    "message": "AdBlock เพื่อ ตั้งค่า Youtube™"
+  },
+  "options_short": {
+    "message": "การตั้งค่า"
+  },
+  "enable_video_ads": {
+    "message": "เปิดใช้งาน โฆษณาแบบวิดีโอ"
+  },
+  "enable_non_video_ads": {
+    "message": "เปิดใช้งานการ โฆษณา ปกติ"
+  }
+}

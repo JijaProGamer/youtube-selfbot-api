@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock par Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Noņem reklāmas no Youtube™."
+  },
+  "page_action_title": {
+    "message": "Reklāmas tiek automātiski izlaisti"
+  },
+  "disabled": {
+    "message": "invalīdiem"
+  },
+  "disable": {
+    "message": "atslēgt"
+  },
+  "enable": {
+    "message": "dot iespēju"
+  },
+  "rate_this_extension": {
+    "message": "Novērtēt mums Google"
+  },
+  "like_on_facebook": {
+    "message": "Novērtēt mums Facebook"
+  },
+  "branding": {
+    "message": "tīrīt ar Adblock Youtube™"
+  },
+  "options": {
+    "message": "AdBlock Youtube™ iestatījumi"
+  },
+  "options_short": {
+    "message": "iestatījumi"
+  },
+  "enable_video_ads": {
+    "message": "Ļautu Video reklāmas"
+  },
+  "enable_non_video_ads": {
+    "message": "Ļautu Normal reklāmas"
+  }
+}

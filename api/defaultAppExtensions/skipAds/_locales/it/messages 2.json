@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock per Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Rimuove gli annunci da Youtube™."
+  },
+  "page_action_title": {
+    "message": "Gli annunci vengono saltati automaticamente"
+  },
+  "disabled": {
+    "message": "disabile"
+  },
+  "disable": {
+    "message": "Disattiva"
+  },
+  "enable": {
+    "message": "permettere"
+  },
+  "rate_this_extension": {
+    "message": "Vota Seguici su Google"
+  },
+  "like_on_facebook": {
+    "message": "Vota us on Facebook"
+  },
+  "branding": {
+    "message": "puliti da Adblock per Youtube™"
+  },
+  "options": {
+    "message": "AdBlock per le impostazioni Youtube™"
+  },
+  "options_short": {
+    "message": "impostazioni"
+  },
+  "enable_video_ads": {
+    "message": "Abilita Video Ads"
+  },
+  "enable_non_video_ads": {
+    "message": "Abilita normali annunci"
+  }
+}

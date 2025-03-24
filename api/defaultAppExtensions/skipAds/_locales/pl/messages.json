@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "czyszczone przez Adblock dla serwisu Youtube™"
+   },
+   "disable": {
+      "message": "Wyłącz"
+   },
+   "disabled": {
+      "message": "niepełnosprawny"
+   },
+   "enable": {
+      "message": "umożliwiać"
+   },
+   "enable_non_video_ads": {
+      "message": "Włącz Normal reklamy"
+   },
+   "enable_video_ads": {
+      "message": "Włącz reklamy wideo"
+   },
+   "extension_description": {
+      "message": "Usuwa reklamy z Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock dla Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Oceń nas na Facebooku"
+   },
+   "options": {
+      "message": "AdBlock dla Youtube Ustawienia ™"
+   },
+   "options_short": {
+      "message": "Ustawienia"
+   },
+   "page_action_title": {
+      "message": "Reklamy są automatycznie pomijane"
+   },
+   "rate_this_extension": {
+      "message": "Oceń nas Google"
+   }
+}

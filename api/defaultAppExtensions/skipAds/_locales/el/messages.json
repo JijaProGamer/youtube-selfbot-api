@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "καθαρίζονται με Adblock για το Youtube™"
+   },
+   "disable": {
+      "message": "Απενεργοποίηση"
+   },
+   "disabled": {
+      "message": "ανάπηρος"
+   },
+   "enable": {
+      "message": "Ενεργοποίηση"
+   },
+   "enable_non_video_ads": {
+      "message": "Ενεργοποίηση Normal Αγγελίες"
+   },
+   "enable_video_ads": {
+      "message": "Ενεργοποίηση Διαφημίσεις βίντεο"
+   },
+   "extension_description": {
+      "message": "Αφαιρεί τις διαφημίσεις στο Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock για το Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Αξιολογήστε μας στο Facebook"
+   },
+   "options": {
+      "message": "AdBlock για το Youtube™ Ρυθμίσεις"
+   },
+   "options_short": {
+      "message": "ρυθμίσεις"
+   },
+   "page_action_title": {
+      "message": "Οι διαφημίσεις παραλείπονται αυτόματα"
+   },
+   "rate_this_extension": {
+      "message": "Αξιολογήστε μας στο Google"
+   }
+}

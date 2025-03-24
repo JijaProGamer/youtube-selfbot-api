@@ -1,11 +1,10 @@
 
 import * as fs from "fs"
 import * as path from "path"
-import got from "got"
+
+import { plugin } from 'playwright-with-fingerprints';
 
 import { calculateRequestSize, calculateResponseSize } from 'puppeteer-bandwidth-calculator';
-
-import { GenerateFingerprint, LaunchBrowser } from "playwright-anti-fingerprinter";
 
 import pageClass from "./page.js"
 
@@ -18,22 +17,36 @@ let __dirname = dirname(fileURLToPath(import.meta.url));
 let require = createRequire(import.meta.url);
 
 let extensions = fs.readdirSync(path.join(__dirname, "/defaultExtensions"))
+    .filter((v) => v.endsWith(".cjs"))
     .map((v) => v = path.join(__dirname, "/defaultExtensions/", v))
     .map((v) => v = require(v))
 
-function fingerprintGenerator() {
-    return GenerateFingerprint("firefox", {
-        webgl_vendor: (e) => e.includes("Google Inc."),
-        webgl_renderer: (e) => true,
-        language: (e) => e.includes("en"),
-        userAgent: (e) => e.includes("Windows"),
-        viewport: (e) => e.width > 1000 && e.height > 800 && e.width < 2000 && e.height < 2000,
-        cpu: (e) => e <= 24 && e >= 4,
-        memory: (e) => true,
-        compatibleMediaMime: (e) => e.audio.includes("aac") && e.video["mp4"] && e.video.mp4.length > 0,
-        canvas: (e) => true,
-    })
+let extensionsApps = fs.readdirSync(path.join(__dirname, "/defaultAppExtensions"))
+    .filter((v) => v.endsWith(".cjs"))
+    .map((v) => v = path.join(__dirname, "/defaultAppExtensions/", v))
+    .map((v) => v = require(v))
+
+
+async function loadFingerprint(hash, folder) {
+    const filePath = path.join(folder, `${hash}.fp`)
+    
+    if (fs.existsSync(filePath)) {
+        const fingerprint = fs.readFileSync(filePath, 'utf8');
+        return fingerprint;
+    }
+    
+    return null;
 }
+
+async function getRandomFingerprint(folder) {
+    const files = fs.readdirSync(folder);
+    const jsonFiles = files.filter(file => file.endsWith('.fp'));
+
+    const randomIndex = Math.floor(Math.random() * jsonFiles.length);
+    const randomFingerprintHash = jsonFiles[randomIndex].replace('.fp', '');
+    return loadFingerprint(randomFingerprintHash, folder);
+}
+
 
 async function shouldProxyRequest(page, request) {
     return 2;
@@ -103,32 +116,50 @@ class YoutubeSelfbotBrowser {
 
     async setup() {
         return new Promise(async (resolve, reject) => {
-            let fingerprint = this.extra.fingerprint || {
-                ...fingerprintGenerator(),
-                proxy: this.extra.proxy
-            }
+            let fingerprint = await getRandomFingerprint(path.join(import.meta.dirname, "../fingerprints"))
 
-            this.fingerprint = fingerprint;
-
-            const firefoxUserPrefs = {};
+            const userPrefs = [];
 
             if(this.extra.muteAudio){
-                firefoxUserPrefs["media.volume_scale"] = "0";
+                userPrefs.push("--mute-audio")
             }
 
-            let opts = {
+
+            const extensionsUsing = []
+
+            for (let extension of extensionsApps) {
+                if (await extension.verify(this.extra)) {
+                    extensionsUsing.push(path.join(path.join(__dirname, "/defaultAppExtensions/", await extension.extension_path())))
+                }
+            }
+
+            if (extensionsUsing.length > 0){
+                const extensionsString = extensionsUsing.join(",")
+                userPrefs.push(`--disable-extensions-except=${extensionsString}`)
+                userPrefs.push(`--load-extension=${extensionsString}`)
+            }
+
+
+            plugin.useProxy(this.extra.proxy, {
+                changeBrowserLanguage: true,
+                changeGeolocation: true,
+                changeWebRTC: "replace", // or "enable"
+                changeTimezone: true,
+                enableQUIC: false // Most proxies dont support UDP
+            })
+            plugin.useFingerprint(fingerprint, {
+                safeElementSize: true,
+            });
+
+            const browser = await plugin.launchPersistentContext(this.opts.userDataDir, {
                 ...this.opts,
-                serviceWorkers: "block",
-                bypassCSP: true,
-                firefoxUserPrefs: firefoxUserPrefs
-            }
-
-
-            const { browser, ipInfo } = await LaunchBrowser("firefox", opts, fingerprint)
+                //serviceWorkers: "block",
+                //bypassCSP: true,
+                args: userPrefs
+            });
 
             this.browser = browser
             this.context = browser
-            this.ipInfo = ipInfo
 
             this.context.setDefaultTimeout(this.extra.timeout)
             this.context.setDefaultNavigationTimeout(this.extra.timeout)

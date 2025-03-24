@@ -1,0 +1,44 @@
+{
+	"extension_name": {
+		"message": "Adblock pre Youtube™"
+	},
+	"extension_short_name": {
+		"message": "VideoAdblock"
+	},
+	"extension_description": {
+		"message": "Odstráni reklamu na Youtube™."
+	},
+	"page_action_title": {
+		"message": "Reklamy sú automaticky preskočené"
+	},
+	"disabled": {
+		"message": "Zakázané"
+	},
+	"disable": {
+		"message": "Zakázať"
+	},
+	"enable": {
+		"message": "Povoliť"
+	},
+	"rate_this_extension": {
+		"message": "Ohodnoťte nás v obchode Google Chrome"
+	},
+	"like_on_facebook": {
+		"message": "Ohodnoťte nás na Facebooku"
+	},
+	"branding": {
+		"message": "reklamu zrušil Adblock pre Youtube"
+	},
+	"options": {
+		"message": "AdBlock pre Youtube™ Nastavenia"
+	},
+	"options_short": {
+		"message": "Nastavenia"
+	},
+	"enable_video_ads": {
+		"message": "Povoliť video reklamy"
+	},
+	"enable_non_video_ads": {
+		"message": "Povoliť normálne reklamy"
+	}
+}

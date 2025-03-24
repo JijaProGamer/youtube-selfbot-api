@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "tīrīt ar Adblock Youtube™"
+   },
+   "disable": {
+      "message": "atslēgt"
+   },
+   "disabled": {
+      "message": "invalīdiem"
+   },
+   "enable": {
+      "message": "dot iespēju"
+   },
+   "enable_non_video_ads": {
+      "message": "Ļautu Normal reklāmas"
+   },
+   "enable_video_ads": {
+      "message": "Ļautu Video reklāmas"
+   },
+   "extension_description": {
+      "message": "Noņem reklāmas no Youtube™."
+   },
+   "extension_name": {
+      "message": "Adblock par Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Novērtēt mums Facebook"
+   },
+   "options": {
+      "message": "AdBlock Youtube™ iestatījumi"
+   },
+   "options_short": {
+      "message": "iestatījumi"
+   },
+   "page_action_title": {
+      "message": "Reklāmas tiek automātiski izlaisti"
+   },
+   "rate_this_extension": {
+      "message": "Novērtēt mums Google"
+   }
+}

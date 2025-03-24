@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "廣告已被 过滤广告 為 Youtube™ 移除"
+   },
+   "disable": {
+      "message": "停用"
+   },
+   "disabled": {
+      "message": "已停用"
+   },
+   "enable": {
+      "message": "啟用"
+   },
+   "enable_non_video_ads": {
+      "message": "啟用一般廣告"
+   },
+   "enable_video_ads": {
+      "message": "啟用影片廣告"
+   },
+   "extension_description": {
+      "message": "從Youtube™中移除視頻廣告。"
+   },
+   "extension_name": {
+      "message": "过滤广告 為 Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "替我們的 Facebook 按讚"
+   },
+   "options": {
+      "message": "过滤广告 為 Youtube™ 設定"
+   },
+   "options_short": {
+      "message": "設定"
+   },
+   "page_action_title": {
+      "message": "廣告會自動跳過"
+   },
+   "rate_this_extension": {
+      "message": "替我們的 Google 按讚"
+   }
+}

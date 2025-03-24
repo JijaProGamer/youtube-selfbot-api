@@ -1,0 +1,50 @@
+{
+   "ads": {
+      "message": "Ads"
+   },
+   "annotations": {
+      "message": "Annotations"
+   },
+   "branding": {
+      "message": "cleaned by Adblock for Youtube™"
+   },
+   "disable": {
+      "message": "Disable"
+   },
+   "disabled": {
+      "message": "Disabled"
+   },
+   "enable": {
+      "message": "Enable"
+   },
+   "enable_non_video_ads": {
+      "message": "Enable Normal Ads"
+   },
+   "enable_video_ads": {
+      "message": "Enable Video Ads"
+   },
+   "extension_description": {
+      "message": "Youtube માંથી જાહેરાતો દૂર કરે છે"
+   },
+   "extension_name": {
+      "message": "યૂટ્યૂબ ™ માટે એડબ્લોક"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Rate us on Facebook"
+   },
+   "options": {
+      "message": "AdBlock for Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "Settings"
+   },
+   "page_action_title": {
+      "message": "Settings"
+   },
+   "rate_this_extension": {
+      "message": "Rate us"
+   }
+}

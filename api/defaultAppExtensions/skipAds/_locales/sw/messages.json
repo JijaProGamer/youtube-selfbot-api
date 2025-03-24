@@ -1,0 +1,29 @@
+{
+   "disable": {
+      "message": "Zima"
+   },
+   "disabled": {
+      "message": "Walemavu"
+   },
+   "enable": {
+      "message": "Wezesha"
+   },
+   "extension_description": {
+      "message": "Inachukua matangazo kutoka Youtube."
+   },
+   "extension_name": {
+      "message": "Adblock kwa Youtube ™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Tathmini yetu kwenye Facebook"
+   },
+   "page_action_title": {
+      "message": "Settings"
+   },
+   "rate_this_extension": {
+      "message": "Kiwango cha sisi"
+   }
+}

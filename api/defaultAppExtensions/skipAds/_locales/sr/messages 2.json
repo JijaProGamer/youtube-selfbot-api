@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Адблоцк за ИоуТубе ™"
+  },
+  "extension_short_name": {
+    "message": "ВидеоАдблоцк"
+  },
+  "extension_description": {
+    "message": "Уклања рекламу на Иоутубе.™"
+  },
+  "page_action_title": {
+    "message": "Огласи се аутоматски прескочене"
+  },
+  "disabled": {
+    "message": "Онемогућен"
+  },
+  "disable": {
+    "message": "онеспособити"
+  },
+  "enable": {
+    "message": "омогућити"
+  },
+  "rate_this_extension": {
+    "message": "Гласај за нас на Гоогле"
+  },
+  "like_on_facebook": {
+    "message": "Гласај за нас на Фацебоок-у"
+  },
+  "branding": {
+    "message": "очишћена од Адблоцк за Иоутубе ™"
+  },
+  "options": {
+    "message": "АдБлоцк за ИоуТубе ™ Сеттингс"
+  },
+  "options_short": {
+    "message": "Подешавања"
+  },
+  "enable_video_ads": {
+    "message": "Омогући видео огласе"
+  },
+  "enable_non_video_ads": {
+    "message": "Омогући Нормал огласе"
+  }
+}

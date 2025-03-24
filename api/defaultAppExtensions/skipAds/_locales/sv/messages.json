@@ -1,0 +1,44 @@
+{
+   "ads": {
+      "message": "Reklam"
+   },
+   "annotations": {
+      "message": "Anmärkningar"
+   },
+   "branding": {
+      "message": "rengöras av Adblock for Youtube™"
+   },
+   "disable": {
+      "message": "inaktivera"
+   },
+   "disabled": {
+      "message": "Inaktiverad"
+   },
+   "enable": {
+      "message": "Gör det möjligt"
+   },
+   "extension_description": {
+      "message": "Tar bort annonser från Youtube."
+   },
+   "extension_name": {
+      "message": "Adblock for Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Betygsätt oss på Facebook"
+   },
+   "options": {
+      "message": "AdBlock for Youtube™ Settings"
+   },
+   "options_short": {
+      "message": "inställningar"
+   },
+   "page_action_title": {
+      "message": "inställningar"
+   },
+   "rate_this_extension": {
+      "message": "Gradera oss"
+   }
+}

@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "z Adblock očiščena Youtube™"
+   },
+   "disable": {
+      "message": "onemogočiti"
+   },
+   "disabled": {
+      "message": "Disabled"
+   },
+   "enable": {
+      "message": "Omogoči"
+   },
+   "enable_non_video_ads": {
+      "message": "Omogoči Normal oglasov"
+   },
+   "enable_video_ads": {
+      "message": "Omogoči video oglasov"
+   },
+   "extension_description": {
+      "message": "Odstrani oglaševanje na Youtube."
+   },
+   "extension_name": {
+      "message": "Adblock za Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Ocenite nas na Facebooku"
+   },
+   "options": {
+      "message": "AdBlock za nastavitev Youtube™"
+   },
+   "options_short": {
+      "message": "Nastavitve"
+   },
+   "page_action_title": {
+      "message": "Oglasi se samodejno preskočena"
+   },
+   "rate_this_extension": {
+      "message": "Ocenite nas na Google"
+   }
+}

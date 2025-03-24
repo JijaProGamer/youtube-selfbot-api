@@ -1,0 +1,44 @@
+{
+   "branding": {
+      "message": "limpo pelo Adblock for Youtube"
+   },
+   "disable": {
+      "message": "Ativar"
+   },
+   "disabled": {
+      "message": "Desabilitado"
+   },
+   "enable": {
+      "message": "Desativar"
+   },
+   "enable_non_video_ads": {
+      "message": "Ativar Normal Ads"
+   },
+   "enable_video_ads": {
+      "message": "Ativar Video Ads"
+   },
+   "extension_description": {
+      "message": "Remove publicidade em vídeo e outros banners no Youtube."
+   },
+   "extension_name": {
+      "message": "Adblock para Youtube™"
+   },
+   "extension_short_name": {
+      "message": "VideoAdblock"
+   },
+   "like_on_facebook": {
+      "message": "Dê a sua opinião via Facebook"
+   },
+   "options": {
+      "message": "AdBlock de Youtube™ Configurações"
+   },
+   "options_short": {
+      "message": "Configurações"
+   },
+   "page_action_title": {
+      "message": "Settings"
+   },
+   "rate_this_extension": {
+      "message": "Dê a sua opinião via google"
+   }
+}

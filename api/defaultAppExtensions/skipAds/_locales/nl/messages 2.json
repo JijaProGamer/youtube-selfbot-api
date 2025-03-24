@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock voor Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Verwijdert advertenties van Youtube™."
+  },
+  "page_action_title": {
+    "message": "De advertenties worden automatisch overgeslagen"
+  },
+  "disabled": {
+    "message": "invalide"
+  },
+  "disable": {
+    "message": "onbruikbaar maken"
+  },
+  "enable": {
+    "message": "in staat stellen"
+  },
+  "rate_this_extension": {
+    "message": "Beoordeel ons op Google"
+  },
+  "like_on_facebook": {
+    "message": "Beoordeel ons op Facebook"
+  },
+  "branding": {
+    "message": "gereinigd door Adblock voor Youtube™"
+  },
+  "options": {
+    "message": "AdBlock voor Youtube™-instellingen"
+  },
+  "options_short": {
+    "message": "instellingen"
+  },
+  "enable_video_ads": {
+    "message": "Enable Video -advertenties"
+  },
+  "enable_non_video_ads": {
+    "message": "Enable Normale advertenties"
+  }
+}

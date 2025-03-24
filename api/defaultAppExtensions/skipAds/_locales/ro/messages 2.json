@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Adblock pentru Youtube™"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Elimină anunțurile video și alte anunțuri banner pe Youtube."
+  },
+  "page_action_title": {
+    "message": "Anunturile sunt ignorate în mod automat"
+  },
+  "disabled": {
+    "message": "invalid"
+  },
+  "disable": {
+    "message": "Dezactivați"
+  },
+  "enable": {
+    "message": "permite"
+  },
+  "rate_this_extension": {
+    "message": "Votează -ne pe Google"
+  },
+  "like_on_facebook": {
+    "message": "Apreciaza -ne pe Facebook"
+  },
+  "branding": {
+    "message": "curățate de Adblock pentru Youtube™"
+  },
+  "options": {
+    "message": "AdBlock pentru Youtube Setări ™"
+  },
+  "options_short": {
+    "message": "setări"
+  },
+  "enable_video_ads": {
+    "message": "Activați Anunțuri video"
+  },
+  "enable_non_video_ads": {
+    "message": "Activați Anunțuri normale"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "extension_name": {
+    "message": "Youtube™ için Adblock"
+  },
+  "extension_short_name": {
+    "message": "VideoAdblock"
+  },
+  "extension_description": {
+    "message": "Youtube'daki Reklamları Kaldırır."
+  },
+  "page_action_title": {
+    "message": "Reklamlar otomatik olarak atlanır"
+  },
+  "disabled": {
+    "message": "özürlü"
+  },
+  "disable": {
+    "message": "devre dışı"
+  },
+  "enable": {
+    "message": "Enable"
+  },
+  "rate_this_extension": {
+    "message": "Google'da bizi oylayın"
+  },
+  "like_on_facebook": {
+    "message": "Bizi Facebook'ta değerlendir"
+  },
+  "branding": {
+    "message": "Youtube™ için Adblock ile temizlenir"
+  },
+  "options": {
+    "message": "Youtube™ Ayarlar için AdBlock"
+  },
+  "options_short": {
+    "message": "Ayarlar"
+  },
+  "enable_video_ads": {
+    "message": "Video Reklamları etkinleştirin"
+  },
+  "enable_non_video_ads": {
+    "message": "Normal Reklamlar etkinleştirin"
+  }
+}
