@@ -139,6 +139,9 @@ class YoutubeSelfbotBrowser {
                 userPrefs.push(`--load-extension=${extensionsString}`)
             }
 
+            //fingerprint = JSON.parse(fingerprint)
+            //fingerprint["attr"]["window.devicePixelRatio"] = Math.random() * (1.25 - 0.5) + 0.5
+            //fingerprint = JSON.stringify(fingerprint)
 
             plugin.useProxy(this.extra.proxy, {
                 changeBrowserLanguage: true,
