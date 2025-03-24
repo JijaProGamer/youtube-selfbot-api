@@ -213,6 +213,7 @@ class YoutubeSelfbotBrowser {
                 }
             }, [this.extra, DateNow, audioVolume]).catch(reject)
 
+            //this.initLoader.then(resolve).catch(reject)
             resolve()
         })
     }
@@ -220,13 +221,83 @@ class YoutubeSelfbotBrowser {
     clearStorage() {
         return new Promise(async (resolve, reject) => {
             try {
-                const page = await this.context.newPage();
-                //const page = await this.context.newPage()
+                const [page] = await Promise.all([
+                    this.context.waitForEvent('page'),
+                    (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
+                ]);
 
-                await page.context().clearCookies();
+                await this.context.clearCookies();
 
                 await page.goto("https://www.youtube.com");
-                await page.evaluate(() => localStorage.clear());
+
+                await this.context.clearCookies();
+                await page.evaluate(() => window.localStorage.clear());
+                await page.evaluate(() => window.sessionStorage.clear());
+
+                await page.close();
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        })
+    }
+
+    initLoader() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const [page] = await Promise.all([
+                    this.context.waitForEvent('page'),
+                    (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
+                ]);
+
+                await page.goto("https://www.youtube.com");
+
+                // Handle cookie selector
+
+                let currentCookies = await this.context.cookies().catch(reject)
+                let isLoggedIn = currentCookies.some((v) => v.name == "SOCS")
+
+                if (!isLoggedIn) {
+                    let declineSelector = "#content > div.body.style-scope.ytd-consent-bump-v2-lightbox > div.eom-buttons.style-scope.ytd-consent-bump-v2-lightbox > div:nth-child(1) > ytd-button-renderer:nth-child(1) > yt-button-shape > button"
+
+                    let rejectCookies = await Promise.race([
+                        page.waitForSelector(declineSelector),
+                        //page.waitForSelector("xpath=/xpath/html/body/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/form[2]/div/div/button/div[1]"),
+                    ]).catch(() => {})
+                    if (rejectCookies){
+                        rejectCookies.click();
+            
+                        await page.waitForSelector(declineSelector, { state: 'hidden' });
+                    }
+                }
+
+                // Handle extra search tools
+
+                await Promise.race([
+                    page.waitForSelector("#content > ytd-feed-nudge-renderer"),
+                    page.waitForSelector("ytd-rich-item-renderer.style-scope:nth-child(1)")
+                ])
+
+                const historyUpdater = await page.$("#primary-button > ytd-button-renderer > yt-button-shape > a")
+                const videosList = await page.$("ytd-rich-item-renderer.style-scope:nth-child(1)")
+
+                if(historyUpdater){
+                    await Promise.all([
+                        page.waitForNavigation({ waitUntil: "load" }),
+                        historyUpdater.click()
+                    ])
+
+                    await page.waitForSelector("div.Vvkcxe > div:nth-child(2) > div > button")
+                    await page.click("div.Vvkcxe > div:nth-child(2) > div > button")
+
+                    await page.waitForSelector("div.SDcLBb.IpB0ve > form:nth-child(2) > div > button")
+
+                    await Promise.all([
+                        page.waitForNavigation({ waitUntil: "load" }),
+                        page.click("div.SDcLBb.IpB0ve > form:nth-child(2) > div > button")
+                    ])
+                }
 
                 await page.close();
 
