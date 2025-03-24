@@ -148,7 +148,7 @@ class YoutubeSelfbotBrowser {
                 enableQUIC: false // Most proxies dont support UDP
             })
             plugin.useFingerprint(fingerprint, {
-                safeElementSize: true,
+                //safeElementSize: true,
             });
 
             const browser = await plugin.launchPersistentContext(this.opts.userDataDir, {
@@ -157,6 +157,27 @@ class YoutubeSelfbotBrowser {
                 //bypassCSP: true,
                 args: userPrefs
             });
+
+            ///////////////////////////////////////////////////
+            // Kill extensions default webpages
+
+            const blockedPluginsURLS = ["https://adblock-for-y.com/"]
+
+            for (const page of browser.pages()) {
+                if (blockedPluginsURLS.some(url => page.url().startsWith(url))) {
+                    await page.close();
+                }
+            }
+        
+            browser.on('page', async (page) => {
+                page.once('load', async () => {
+                    if (blockedPluginsURLS.some(url => page.url().startsWith(url))) {
+                        await page.close();
+                    }
+                });
+            });
+
+            ///////////////////////////////////////////////////
 
             this.browser = browser
             this.context = browser
@@ -199,10 +220,7 @@ class YoutubeSelfbotBrowser {
     clearStorage() {
         return new Promise(async (resolve, reject) => {
             try {
-                const [page] = await Promise.all([
-                    this.context.waitForEvent('page'),
-                    (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
-                ]);
+                const page = await this.context.newPage();
                 //const page = await this.context.newPage()
 
                 await page.context().clearCookies();
@@ -239,13 +257,15 @@ class YoutubeSelfbotBrowser {
             this.context.waitForEvent('page'),
             (await this.context.pages())[0].evaluate(() => window.open('about:blank'))
         ]);
+        //const page = await this.context.newPage();
+
 
         //const page = await this.context.newPage()
 
-        if (!this.#firstPageCreated) {
+        /*if (!this.#firstPageCreated) {
             this.#firstPageCreated = true;
             (await this.context.pages())[0].close()
-        }
+        }*/
 
         let pgClass = new pageClass(page, this.extra, this)
         await pgClass.initPage()
